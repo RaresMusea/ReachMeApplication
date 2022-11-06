@@ -1,6 +1,7 @@
-# Getting Started with Create React App
+# Lucrare de licență realizată de Mușea Rareș-Gabriel.
+##Titlul lucrării: Avansul tehnologic și impactul asupra comunicării. Aplicație social-media destinată uzului personal cât și soluțiilor de business.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
 
 ## Available Scripts
 

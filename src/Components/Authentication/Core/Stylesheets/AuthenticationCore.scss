@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Montserrat+Alternates:wght@100&family=PT+Sans&family=Rajdhani&display=swap');
+
+body {
+  @apply m-0;
+  @apply p-0;
+  @apply box-border;
+  @apply bg-white;
+}
+
+.Main {
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  @apply flex-col-reverse;
+
+  @apply mt-[3em];
+  @apply w-[100%];
+  @apply h-[100%];
+
+
+  .AuthShowOff {
+    .AuthImage {
+      @apply max-w-[95%];
+      @apply min-w-[65%];
+      @apply h-auto;
+      @apply mt-[4em];
+    }
+  }
+
+  .AuthContainer {
+    border: 1px solid #dbdbdb;
+    @apply p-[1em];
+    @apply w-[100%];
+    @apply h-[100%];
+    @apply rounded-md;
+    @apply text-center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+    @apply pb-[1.5em];
+
+    .LogoWrapper {
+      @apply flex;
+      @apply items-center;
+      @apply justify-center;
+      @apply flex-row;
+      @apply gap-1;
+      @apply mt-[.2em];
+
+      .ReachMeLogoImage {
+        @apply h-[8vmin];
+      }
+
+      .LogoText {
+        font-family: 'Rajdhani', sans-serif;
+        @apply text-[8vmin];
+        @apply text-[#108c8e];
+        @apply font-extrabold;
+      }
+
+      .LogoText::selection {
+        @apply bg-[#108c8e];
+        @apply text-white;
+      }
+    }
+
+    .Subtitle {
+      font-family: 'Montserrat Alternates', sans-serif;
+      @apply text-[1em];
+      @apply font-bold;
+    }
+
+    .InfoMessage{
+      font-family: 'Rajdhani', sans-serif;
+      @apply text-[1.4em];
+      @apply mt-3;
+      @apply font-bold;
+      @apply text-[#094561];
+    }
+
+    .SeparatorContainer {
+      @apply flex;
+      @apply justify-center;
+      @apply items-center;
+      @apply mt-[1em];
+    }
+
+    .LineSeparator {
+      @apply w-[75%];
+      border: 1px solid #dbdbdb;
+      height: 0;
+      @apply bg-[#dbdbdb];
+    }
+
+    .Or {
+      @apply pt-[.2em];
+      @apply px-[.5em];
+      font-family: 'PT Sans', sans-serif;
+      @apply opacity-[60%];
+      @apply font-bold;
+    }
+
+    .FlexWrapper {
+      font-family: 'PT Sans', sans-serif;
+      @apply flex;
+      @apply flex-row;
+      @apply items-center;
+      @apply justify-center;
+      @apply cursor-pointer;
+      @apply opacity-[60%];
+
+      .GoogleLogo {
+        @apply w-[1em];
+        @apply h-[1em];
+        @apply mr-[.2em];
+      }
+    }
+
+    .HeadingFour {
+      @apply font-[1em];
+      @apply font-[bolder];
+    }
+  }
+
+  .DynamicAuth {
+    border: 1px solid #dbdbdb;
+
+  }
+
+  @media screen and (min-width: 1170px) {
+
+    @apply block;
+    .AuthShowOff {
+      .AuthImage {
+        float: right;
+        @apply w-[65%];
+        @apply h-[50%];
+        @apply mt-[0];
+      }
+    }
+    .AuthContainer {
+      @apply w-[30%];
+      @apply h-[95%];
+      @apply ml-[1em];
+
+      .LogoWrapper {
+        @apply mt-[.5em];
+      }
+
+      .Subtitle {
+        @apply text-[1.5em];
+      }
+
+      .InfoMessage{
+        @apply text-[1.7em];
+      }
+    }
+  }
+
+  @media screen and (min-width: 850px) {
+    .LogoWrapper {
+      @apply scale-[80%];
+      transition: .2s ease-in-out;
+    }
+  }
+
+  @media screen and (min-width: 1150px) {
+    .LogoWrapper {
+      @apply scale-[100%];
+    }
+  }
+}

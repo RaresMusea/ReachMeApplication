@@ -5,6 +5,7 @@ import './SignUpUtils';
 import ImageInput from "../../../General Purpose/Inputs/ImageInput";
 import MailIcon from "@mui/icons-material/Mail";
 import {Lock, Person2, Tag,} from "@mui/icons-material";
+import PasswordImageInput from "../../../General Purpose/Inputs/PasswordImageInput";
 
 
 export default function SignUp() {
@@ -15,6 +16,7 @@ export default function SignUp() {
     const [nameError, setNameError] = useState({});
     const [passwordError, setPasswordError] = useState({});
     const [userNameError, setUserNameError] = useState({});
+
 
     const getInputText = (event, className) => {
         setInputType(className);
@@ -112,14 +114,14 @@ export default function SignUp() {
                         adornmentPosition={'start'}
                         getInputText={getInputText}/>
 
-            <ImageInput classname='password'
-                        className='password'
-                        type={2}
-                        error={passwordError}
-                        icon={Lock}
-                        placeholder={'Password'}
-                        adornmentPosition={'start'}
-                        getInputText={getInputText}/>
+            <PasswordImageInput classname='password'
+                                className='password'
+                                placeholder={'Password'}
+                                icon={Lock}
+                                error={passwordError}
+                                adornmentPosition={'start'}
+                                getInputText={getInputText}/>
+
             <button style={{backgroundColor: "#108e8e", borderRadius: '15px', marginRight: '1em'}}
                     onClick={resetForm}>toggle error
             </button>

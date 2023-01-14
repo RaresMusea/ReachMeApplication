@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import AuthenticationCore from "./Components/Authentication/Core/Scripts/AuthenticationCore";
+import Homepage from "./Components/Landing/Scripts/Homepage";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,7 +13,8 @@ root.render(
         <BrowserRouter>
             <Routes>
                 <Route index element={<App/>}/>
-                <Route path={'/authentication/signup'} element={<AuthenticationCore/>}/>
+                <Route path={'/authentication'} element={<AuthenticationCore/>}/>
+                <Route path={'/feed'} element={<Homepage/>}/>
             </Routes>
         </BrowserRouter>
     </React.StrictMode>

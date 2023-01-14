@@ -3,29 +3,14 @@ import Box from '@mui/material/Box';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import './ImageInput.scss';
-import {createTheme, ThemeProvider} from "@mui/material";
-import {useState} from "react";
+import {ThemeProvider} from "@mui/material";
 import isObjectEmpty from "../Objects";
-
-const styles = {
-    textInput: {
-        fontFamily: 'serif'
-    }
-};
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#094561',
-        },
-        secondary: {
-            main: '#094561',
-        },
-    },
-});
+import {theme, styles} from "./InputTheme";
 
 
-export default function ImageInput(props, {getInputText}) {
+
+
+export default function ImageInput(props) {
     const [value, setValue] = React.useState("action.active");
     const [name, setName] = React.useState("");
 

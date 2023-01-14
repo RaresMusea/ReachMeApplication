@@ -1,14 +1,13 @@
-import React, {Component, useEffect, useRef} from "react";
+import React from "react";
 import Grid from '@mui/material/Grid';
 import connection from '../../../../Media/Images/logoPic.jpg';
 import '../Stylesheets/AuthenticationCore.scss';
 import SignUp from "../../Sign Up/Scripts/SignUp";
 import logoPic from '../../../../Media/Images/logoPic.svg';
 import googleLogo from '../../../../Media/Images/google.svg';
-import {setRef} from "@mui/material";
 import Login from "../../Login/Scripts/Login";
 
-export default function AuthenticationCore(props) {
+export default function AuthenticationCore() {
 
     const [userLogged, setUserLogged] = React.useState(false);
 
@@ -32,7 +31,7 @@ export default function AuthenticationCore(props) {
                             <img src={logoPic}
                                  alt='Logo'
                                  className="ReachMeLogoImage"/>
-                            <h1 className='LogoText'>ReachMe</h1>
+                            <h1 className='LogoText'>ReachMe®</h1>
                         </div>
                         <h3 className="Subtitle">The social media app that fulfills your needs.</h3>
                         <h4 className="InfoMessage">{userLogged?"Sign in to continue":"Register on ReachMe"}</h4>

@@ -13,7 +13,7 @@ body {
   @apply justify-center;
   @apply flex-col-reverse;
 
-  @apply mt-[3em];
+  @apply mt-[2em];
   @apply w-[100%];
   @apply h-[100%];
 
@@ -31,11 +31,11 @@ body {
     border: 1px solid #dbdbdb;
     @apply p-[1em];
     @apply w-[100%];
-    @apply h-[100%];
+    @apply h-[auto];
     @apply rounded-md;
     @apply text-center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
-    @apply pb-[1.5em];
+    @apply pb-[1em];
 
     .LogoWrapper {
       @apply flex;
@@ -68,7 +68,30 @@ body {
       @apply font-bold;
     }
 
-    .InfoMessage{
+    .AuthButton {
+      @apply w-[85%];
+      @apply h-[2em];
+      @apply rounded-[10px];
+      @apply font-extrabold;
+      @apply border-0;
+      @apply text-white;
+      transition: all .4s ease 0s;
+      @apply cursor-pointer;
+      font-family: 'PT Sans', sans-serif;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      @apply mt-[.8em];
+      @apply outline-0;
+      @apply text-[1.2em];
+      @apply bg-[#094561];
+    }
+
+    .AuthButton:hover {
+      box-shadow: 0 6px 6px #108c8e;
+      @apply bg-[#108e8e];
+      @apply translate-y-[-7px];
+    }
+
+    .InfoMessage {
       font-family: 'Rajdhani', sans-serif;
       @apply text-[1.4em];
       @apply mt-3;
@@ -98,10 +121,20 @@ body {
       @apply font-bold;
     }
 
+    .ForgotPasswordSection {
+      @apply opacity-[60%];
+    }
+
+    .ForgotPasswordSection:active{
+      @apply animate-pulse;
+      @apply opacity-100;
+    }
+
     .FlexWrapper {
       font-family: 'PT Sans', sans-serif;
       @apply flex;
       @apply flex-row;
+      @apply m-1;
       @apply items-center;
       @apply justify-center;
       @apply cursor-pointer;
@@ -111,21 +144,55 @@ body {
         @apply w-[1em];
         @apply h-[1em];
         @apply mr-[.2em];
+        @apply mb-2;
       }
     }
 
     .HeadingFour {
       @apply font-[1em];
-      @apply font-[bolder];
+      @apply font-extrabold;
+      font-family: 'PT Sans', sans-serif;
+      @apply mb-2;
     }
   }
 
-  .DynamicAuth {
-    border: 1px solid #dbdbdb;
+  .FlexColumnGroupMobile {
+    @apply flex-col-reverse;
+  }
 
+  .AdditionalAuthContainer {
+    border: 1px solid #dbdbdb;
+    @apply w-[100%];
+    @apply h-[auto];
+    @apply rounded-[15px];
+    @apply text-center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+    @apply mt-[1em];
+    font-family: 'PT Sans', sans-serif;
+  }
+
+  .ChangeContextText {
+    @apply text-center;
+    @apply align-middle;
+    @apply m-2;
+  }
+
+  .ContextOptions {
+    @apply font-bold;
+    font-family: 'PT Sans', sans-serif;
+    @apply text-[#094561];
+    @apply cursor-pointer;
+  }
+
+  .ContextOptions:active {
+    @apply animate-ping;
   }
 
   @media screen and (min-width: 1170px) {
+
+    .Main {
+      @apply mt-[3em];
+    }
 
     @apply block;
     .AuthShowOff {
@@ -138,7 +205,7 @@ body {
     }
     .AuthContainer {
       @apply w-[30%];
-      @apply h-[95%];
+      @apply h-[85%];
       @apply ml-[1em];
 
       .LogoWrapper {
@@ -149,11 +216,32 @@ body {
         @apply text-[1.5em];
       }
 
-      .InfoMessage{
+      .InfoMessage {
         @apply text-[1.7em];
       }
     }
+    .AdditionalAuthContainer {
+      @apply ml-[1em];
+      @apply w-[30%];
+      @apply h-[5%];
+      @apply text-center;
+    }
+
+
+    .FlexWrapper {
+      transition: .2s ease-in-out;
+    }
+
+    .FlexWrapper:hover {
+      @apply animate-pulse;
+      @apply opacity-100;
+    }
+
+    .GoogleLogo {
+      @apply mr-[.2em];
+    }
   }
+
 
   @media screen and (min-width: 850px) {
     .LogoWrapper {

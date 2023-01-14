@@ -1,4 +1,4 @@
-import {React, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import '../Stylesheets/SignUp.scss'
 import './SignUpUtils';
 //@TODO import alertBox
@@ -9,6 +9,10 @@ import PasswordImageInput from "../../../General Purpose/Inputs/PasswordImageInp
 
 
 export default function SignUp() {
+
+    useEffect(() => {
+        document.title = 'ReachMe - Sign Up'
+    }, []);
 
     const [name, setName] = useState("");
     const [inputType, setInputType] = useState("");
@@ -26,17 +30,17 @@ export default function SignUp() {
         }
     }
 
-    const resetForm = () => {
-        setEmailError({});
-    }
+    /*    const resetForm = () => {
+            setEmailError({});
+        }
 
-    const simError = () => {
-        const errorRef = {
-            'message': 'Invalid email address',
-            'hasErrors': true
-        };
-        setEmailError(errorRef);
-    }
+        const simError = () => {
+            const errorRef = {
+                'message': 'Invalid email address',
+                'hasErrors': true
+            };
+            setEmailError(errorRef);
+        }*/
 
     // const [name, setName] = React.useState("");
     // const [username, setUsername] = React.useState("");
@@ -77,15 +81,6 @@ export default function SignUp() {
     //
     return (
         <div className='SignUp'>
-            {/* <input type='email'
-                   className='AuthenticationInput'
-                   placeholder='Email address'
-                   />
-
-            <input type='text'
-                   className='AuthenticationInput'
-                   placeholder='First Name & Last Name'
-                   />*/}
             <ImageInput classname='fullName'
                         className='fullName'
                         type={2}
@@ -122,12 +117,12 @@ export default function SignUp() {
                                 adornmentPosition={'start'}
                                 getInputText={getInputText}/>
 
-            <button style={{backgroundColor: "#108e8e", borderRadius: '15px', marginRight: '1em'}}
+            {/* <button style={{backgroundColor: "#108e8e", borderRadius: '15px', marginRight: '1em'}}
                     onClick={resetForm}>toggle error
             </button>
             <button style={{backgroundColor: "#108e8e", borderRadius: '15px'}} onClick={simError}>simulate error
             </button>
-            <p>{name}</p>
+            <p>{name}</p>*/}
         </div>
     )
 }

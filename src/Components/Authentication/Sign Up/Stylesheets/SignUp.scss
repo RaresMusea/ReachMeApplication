@@ -1,26 +1,5 @@
 .SignUp {
-  /*@apply w-[350px];
-  @apply h-[50px];
-  @apply rounded-lg;
-  @apply text-center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
-  @apply ml-[5px];
-  @apply mt-[1em];
-  font-family: 'PT Sans',sans-serif;
-  @apply text-[.9em];*/
   margin-top: 1em;
   border: none;
   @apply p-[.2em];
-}
-
-.AuthenticationInput {
-  @apply w-[250px];
-  @apply h-[2.5em];
-  @apply m-[.5em];
-  font-family: 'PT-Sans', sans-serif;
-  border-radius: .5em;
-  @apply bg-[#fafafa];
-  border: 1px solid #108c8e;
-  outline: none;
-  transition: 1s ease-in-out;
 }

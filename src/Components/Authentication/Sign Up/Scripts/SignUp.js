@@ -1,14 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import '../Stylesheets/SignUp.scss'
 import './SignUpUtils';
-//@TODO import alertBox
 import ImageInput from "../../../General Purpose/Inputs/ImageInput";
 import MailIcon from "@mui/icons-material/Mail";
 import {Lock, Person2, Tag,} from "@mui/icons-material";
 import PasswordImageInput from "../../../General Purpose/Inputs/PasswordImageInput";
 import {
     displaySignUpFailedAlert,
-    displaySignUpSuccessAlert,
     emptyForm,
     validateEmailAddress,
     validateName,
@@ -17,7 +15,11 @@ import {
 } from "./SignUpUtils";
 import isObjectEmpty from "../../../General Purpose/Objects";
 import {authentication} from "../../Misc/Firebase/FirebaseIntegration";
-import {saveUserAccountMetadata} from "./SignUpService";
+import {
+    accountWithSameCredentialsAlreadyExists,
+    isLocalServerAvailable,
+    saveUserAccountMetadata
+} from "./SignUpService";
 
 export const signUpCredentials = {
     emailAddress: '', username: '', fullName: '', pass: ''
@@ -30,6 +32,7 @@ export default function SignUp(props) {
     const [passwordError, setPasswordError] = useState({});
     const [userNameError, setUserNameError] = useState({});
     let canSignUp = true;
+    let userInUse = false;
 
     useEffect(() => {
         document.title = 'ReachMe - Sign Up';
@@ -83,30 +86,36 @@ export default function SignUp(props) {
     }
 
     const signUp = () => {
-        authentication.createUserWithEmailAndPassword(signUpCredentials.emailAddress, signUpCredentials.pass)
-            .then((userCredential) => {
-                const response = userCredential.user;
-                saveUserAccountMetadata(response);
-                displaySignUpSuccessAlert();
-                //@TODO reset auth form
-                setTimeout(() => {
-                    props.switchAuthState();
-                }, 7000);
-            })
-            .catch(err => {
-                console.log(err);
-            })
+        if (isLocalServerAvailable()) {
+            if (!accountWithSameCredentialsAlreadyExists()) {
+                userInUse = false;
+                authentication.createUserWithEmailAndPassword(signUpCredentials.emailAddress, signUpCredentials.pass)
+                    .then((userCredential) => {
+                        const response = userCredential.user;
+                        saveUserAccountMetadata(response);
+                        setTimeout(() => {
+                            props.switchAuthState();
+                        }, 7000);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            } else {
+                userInUse = true;
+            }
+        }
     }
 
     const onSignUpButtonPressed = (e) => {
-        console.log(signUpCredentials);
         e.preventDefault();
         validateSignUpCredentials();
 
         if (canSignUp) {
             signUp();
         } else {
-            displaySignUpFailedAlert();
+            if (!(localStorage.getItem("connection") === "false") && !userInUse) {
+                displaySignUpFailedAlert(`Sign up failed due to an input mismatch!`);
+            }
             canSignUp = true;
         }
 

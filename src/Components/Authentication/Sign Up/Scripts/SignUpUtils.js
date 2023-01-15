@@ -4,7 +4,6 @@ import {
     containsSymbols,
     containsUppercase
 } from "../../../General Purpose/Text/TextFunctions";
-import {signUpCredentials} from "./SignUp";
 import {renderAlert} from "../../../General Purpose/Alerts/AlertUtil";
 
 
@@ -142,13 +141,11 @@ export const generateAlertsDependingOnStates = (errorCode) => {
     }
 }
 
-export const displaySignUpSuccessAlert = () => {
+export const displaySignUpSuccessAlert = (message) => {
     const alertConfig = {
         severity: 'success',
         class: 'AlertSuccess',
-        message: `Account created successfully, ${signUpCredentials.fullName}!
-         Enjoy the ReachMe App and stay surrounded only by wonderful people!&nbsp;
-         You will be automatically redirected to the Log In page where you can enter your credentials and access your profile.`,
+        message: message,
         targetId: '#errors',
         alertType: 'success',
         fadeOutTimeout: 3000,
@@ -157,15 +154,15 @@ export const displaySignUpSuccessAlert = () => {
     renderAlert(alertConfig);
 }
 
-export const displaySignUpFailedAlert = () => {
+export const displaySignUpFailedAlert = (message) => {
     const alertConfig = {
         severity: 'error',
         class: 'AlertError',
-        message: `Sign up failed due to an input mismatch!`,
+        message: message,
         targetId: '#errors',
         alertType: 'error',
-        fadeOutTimeout: 3000,
-        removeTimeout: 3500,
+        fadeOutTimeout: 4000,
+        removeTimeout: 4500,
     }
 
     renderAlert(alertConfig);

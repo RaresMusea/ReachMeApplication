@@ -5,7 +5,7 @@ export const increaseTheOpacity = (element) => {
     (function next() {
         element.style.opacity = opacityArray[index];
         if (index++ < opacityArray.length) {
-            setTimeout(next, 50);
+            setTimeout(next, 40);
         }
     })();
 }
@@ -16,7 +16,7 @@ export const decreaseTheOpacity = (element) => {
     (function next() {
         element.style.opacity = opacityArray[index];
         if (index++ < opacityArray.length) {
-            setTimeout(next, 50);
+            setTimeout(next, 40);
         }
     })();
 }

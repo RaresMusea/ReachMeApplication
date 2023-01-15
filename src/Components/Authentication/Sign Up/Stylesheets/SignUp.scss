@@ -3,3 +3,18 @@
   border: none;
   @apply p-[.2em];
 }
+
+.Alert{
+  @apply w-[100%];
+  @apply mt-[1em];
+  @apply mb-[1em];
+  border-radius:15px !important;
+  background-color: #108c8e !important;
+}
+
+@media screen and (min-width: 1170px){
+  .Alert{
+    @apply w-[30%];
+    @apply ml-[1em];
+  }
+}

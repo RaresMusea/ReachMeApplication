@@ -1,18 +1,20 @@
 import {useEffect, useState} from "react";
 import '../../Sign Up/Stylesheets/SignUp.scss';
 import ImageInput from "../../../General Purpose/Inputs/ImageInput";
-import {Person2} from "@mui/icons-material";
+import {AlternateEmail, Lock} from "@mui/icons-material";
+import PasswordImageInput from "../../../General Purpose/Inputs/PasswordImageInput";
 
 
-export default function Login(){
+export default function Login() {
 
-    const [inputType, setInputType]=useState("");
-    const [name, setName]=useState("");
-    const [nameError, setNameError]=useState("");
+    const [inputType, setInputType] = useState("");
+    const [name, setName] = useState("");
+    const [nameError, setNameError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
 
-    useEffect(()=>{
-        document.title='ReachMe - Log In'
-    },[]);
+    useEffect(() => {
+        document.title = 'ReachMe - Log In'
+    }, []);
 
     const getInputText = (event, className) => {
         setInputType(className);
@@ -22,16 +24,32 @@ export default function Login(){
         }
     }
 
-    return(
-    <div className='SignUp'>
-        <ImageInput classname='fullName'
-                    className='fullName'
-                    type={2}
-                    error={nameError}
-                    icon={Person2}
-                    placeholder={'First name & Last name'}
-                    adornmentPosition={'start'}
-                    getInputText={getInputText}/>
-    </div>
+    const onLogInButtonPressed=()=>{
+
+    }
+
+    return (
+        <div className='SignUp'>
+            <ImageInput classname='email'
+                        className='email'
+                        type={2}
+                        error={nameError}
+                        icon={AlternateEmail}
+                        placeholder={'Username or Email'}
+                        adornmentPosition={'start'}
+                        getInputText={getInputText}/>
+
+            <PasswordImageInput classname='password'
+                                className='password'
+                                error={passwordError}
+                                icon={Lock}
+                                placeholder='Password'
+                                adornmentPosition={'start'}
+                                getInputText={getInputText}/>
+
+            <button className='AuthButton'
+                    onClick={onLogInButtonPressed}
+            >Log In</button>
+        </div>
     );
 }

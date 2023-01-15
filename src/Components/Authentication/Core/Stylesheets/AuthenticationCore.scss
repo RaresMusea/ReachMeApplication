@@ -200,13 +200,14 @@ body {
         float: right;
         @apply w-[65%];
         @apply h-[50%];
-        @apply mt-[0];
+        @apply mt-[3em];
       }
     }
     .AuthContainer {
       @apply w-[30%];
       @apply h-[85%];
       @apply ml-[1em];
+      @apply mt-[3em];
 
       .LogoWrapper {
         @apply mt-[.5em];

@@ -1,19 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import Grid from '@mui/material/Grid';
 import connection from '../../../../Media/Images/logoPic.jpg';
 import '../Stylesheets/AuthenticationCore.scss';
-import SignUp from "../../Sign Up/Scripts/SignUp";
+import SignUp, {signUpCredentials} from "../../Sign Up/Scripts/SignUp";
 import logoPic from '../../../../Media/Images/logoPic.svg';
 import googleLogo from '../../../../Media/Images/google.svg';
 import Login from "../../Login/Scripts/Login";
 
 export default function AuthenticationCore() {
 
-    /*useEffect(()=>{
-        document.title='ReachMe - Authentication'
-    },[]);*/
-
-    const [userLogged, setUserLogged] = React.useState(false);
+    const [userLogged, setUserLogged] = useState(false);
 
     const switchAuthState = () => {
         setUserLogged(!userLogged);
@@ -38,13 +34,9 @@ export default function AuthenticationCore() {
                                 <h1 className='LogoText'>ReachMe</h1>
                             </div>
                             <h3 className="Subtitle">The social media app that fulfills your needs.</h3>
-                            <h4 className="InfoMessage">{userLogged ? "Sign in to continue" : "Register on ReachMe"}</h4>
+                            <h4 className="InfoMessage">{userLogged ? "Log in to continue" : "Register on ReachMe"}</h4>
                             <section className="Authentication">
-                                {userLogged ? <Login/> : <SignUp/>}
-
-                                <button className='AuthButton'
-                                        onClick={switchAuthState}
-                                >{userLogged ? "Log In" : "Sign Up"}</button>
+                                {userLogged ? <Login/> : <SignUp switchAuthState={switchAuthState}/>}
                                 <div className="SeparatorContainer">
                                     <div className="LineSeparator"/>
                                     <div className="Or">OR</div>
@@ -65,7 +57,10 @@ export default function AuthenticationCore() {
                                 }
                             </section>
                         </div>
-                        <div className='AdditionalAuthContainer'>
+                        <div id='errors'/>
+                        <div className='AdditionalAuthContainer' style={{
+                            marginTop:userLogged?'4em':'.5em'
+                        }}>
                             {userLogged ?
                                 <p className='ChangeContextText'>
                                     Don't you have an account?&nbsp;

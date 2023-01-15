@@ -6,26 +6,29 @@ import './ImageInput.scss';
 import {ThemeProvider} from "@mui/material";
 import isObjectEmpty from "../Objects";
 import {theme, styles} from "./InputTheme";
-
-
+import {useEffect, useState} from "react";
 
 
 export default function ImageInput(props) {
-    const [value, setValue] = React.useState("action.active");
     const [name, setName] = React.useState("");
-
-
-    const handleChange = (e) => {
-        setName(e.target.value);
-    }
-
-    const onInputChanged = (event) => {
-        setValue(event.target.value);
-    }
-
+    const [inputValue,setInputValue]=useState(props.inputValue);
     const [focus, setFocus] = React.useState("action.active");
+    const [error, setError]=useState(props.error);
 
-    const focused = () => {
+/*    const onInputChanged = (event) => {
+        setInputValue(event.target.value);
+    }*/
+
+    useEffect(()=>{
+        if(!isObjectEmpty(props.error)){
+            setError(props.error);
+        }
+    }, [props.error])
+    
+    const focused = (e) => {
+        if(error['hasErrors']){
+            //setInputValue("");
+        }
         setFocus("#094561");
     }
 
@@ -39,9 +42,7 @@ export default function ImageInput(props) {
             {props.type === 1 ?
                 <ThemeProvider theme={theme}>
                     <Box>
-                        <TextField
-                            id="input-with-icon-textfield"
-                            label="TextField"
+                        <TextField label="TextField"
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position={props.adornmentPosition}>
@@ -55,10 +56,16 @@ export default function ImageInput(props) {
                             }}
                             variant="standard"
                             error={isObjectEmpty(props.error) ? undefined : true}
-                            helperText={(isObjectEmpty(props.error) || !props.error['hasErrors']) ? undefined : props.error['message']}
+                            helperText={(isObjectEmpty(error) || !error['hasErrors']) ? undefined : error['message']}
                             onChange={(e) => {
-                                props.getInputText(e, props.classname)
+                                props.getInputText(e, props.classname);
+                                setInputValue(e.target.value);
+
+                                if(error['hasErrors']){
+                                    setError({});
+                                }
                             }}
+                            value={inputValue}
                             onFocus={focused}
                             onBlur={blurred}
                         />
@@ -67,12 +74,11 @@ export default function ImageInput(props) {
                 :
                 <ThemeProvider theme={theme}>
                     <Box sx={{display: 'flex', alignItems: 'flex-end', justifyContent:'center',mb:1.8}}>
-                        <props.icon sx={{color: focus, mr: 1, my:!isObjectEmpty(props.error)?2.9:0.5}}/>
-                        <TextField id="input-with-sx"
-                                   label={props.placeholder}
-                                   sx={{width: {sm: 200, md:300, lg: 400}, fontWeight: "bolder"}}
-                                   error={isObjectEmpty(props.error) ? undefined : true}
-                                   helperText={(isObjectEmpty(props.error) || !props.error['hasErrors']) ? undefined : props.error['message']}
+                        <props.icon sx={{color: focus, mr: 1, my:!isObjectEmpty(error)?2.9:0.5}}/>
+                        <TextField label={props.placeholder}
+                                   sx={{width: {sm: 200, md:300, lg: 400}, fontWeight: "bolder",}}
+                                   error={isObjectEmpty(error) ? undefined : true}
+                                   helperText={(isObjectEmpty(error) || !error['hasErrors']) ? undefined : error['message']}
                                    InputProps={{
                                        classes: {
                                            input: styles.textInput,
@@ -81,8 +87,16 @@ export default function ImageInput(props) {
                                    variant="standard"
                                    className='text-field'
                                    onChange={(e) => {
-                                       props.getInputText(e, props.classname)
+                                       if(error['hasErrors']){
+                                           setError({});
+                                       }
+
+                                       props.getInputText(e, props.classname);
+                                       console.log(props.classname);
+                                       setInputValue(e.target.value);
+                                       //console.log("Input value: "+inputValue);
                                    }}
+                                   value={inputValue}
                                    onFocus={focused}
                                    onBlur={blurred}
                         />

@@ -7,6 +7,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import {Lock, Person2, Tag,} from "@mui/icons-material";
 import PasswordImageInput from "../../../General Purpose/Inputs/PasswordImageInput";
 import {
+    displaySignUpSuccessAlert,
     emptyForm, validateEmailAddress, validateName, validatePassword, validateUsername
 } from "./SignUpUtils";
 import isObjectEmpty from "../../../General Purpose/Objects";
@@ -90,50 +91,29 @@ export default function SignUp(props) {
     }
 
 
-    const signUp = async () => {
+    const signUp = () => {
         authentication.createUserWithEmailAndPassword(signUpCredentials.emailAddress, signUpCredentials.pass)
             .then((userCredential) => {
                 const response = userCredential.user;
                 saveUserAccountMetadata(response);
-
-                const alert = <Alert variant="filled" severity="success" className='Alert'>
-                    Account created successfully, {signUpCredentials.fullName}! Enjoy the ReachMe app and
-                    stay surrounded only by wonderful people!&nbsp;You will be automatically redirected to the Log In
-                    page where you can enter your credentials and access your profile.</Alert>
-
-                const location = document.querySelector('#errors');
-                const wrapper = document.createElement('div');
-                wrapper.id = 'success';
-                location.appendChild(wrapper);
-                const root = ReactDOM.createRoot(document.getElementById('success'));
-                root.render(alert);
-
-                setTimeout(() => {
-                    wrapper.remove();
-                }, 6500);
-
+                displaySignUpSuccessAlert();
                 //@TODO reset auth form
                 setTimeout(() => {
                     props.switchAuthState();
                 }, 7000);
-
-
             })
             .catch(err => {
                 console.log(err);
             })
     }
 
-    const onSignUpButtonPressed = async (e) => {
+    const onSignUpButtonPressed = (e) => {
         console.log(signUpCredentials);
         e.preventDefault();
         validateSignUpCredentials();
-
-        if (findErrors()) {
-            return;
+        if (!findErrors()) {
+            signUp();
         }
-
-        await signUp();
 
     }
 
@@ -176,59 +156,59 @@ export default function SignUp(props) {
     //
     //
     return (<div className='SignUp'>
-            <form>
-                <ImageInput classname='fullName'
-                            className='fullName'
-                            type={2}
-                            error={nameError}
-                            inputValue={""}
-                            icon={Person2}
-                            placeholder={'First name & Last name'}
-                            adornmentPosition={'start'}
-                            getInputText={getInputText}/>
+        <form>
+            <ImageInput classname='fullName'
+                        className='fullName'
+                        type={2}
+                        error={nameError}
+                        inputValue={""}
+                        icon={Person2}
+                        placeholder={'First name & Last name'}
+                        adornmentPosition={'start'}
+                        getInputText={getInputText}/>
 
-                <ImageInput classname='email'
-                            className='email'
-                            type={2}
-                            inputValue={""}
-                            error={emailError}
-                            icon={MailIcon}
-                            placeholder={'Email address'}
-                            adornmentPosition={'start'}
-                            fontFamily={'PT Sans'}
-                            getInputText={getInputText}/>
+            <ImageInput classname='email'
+                        className='email'
+                        type={2}
+                        inputValue={""}
+                        error={emailError}
+                        icon={MailIcon}
+                        placeholder={'Email address'}
+                        adornmentPosition={'start'}
+                        fontFamily={'PT Sans'}
+                        getInputText={getInputText}/>
 
-                <ImageInput classname='username'
-                            className='username'
-                            type={2}
-                            inputValue={""}
-                            error={userNameError}
-                            icon={Tag}
-                            placeholder={'ReachMe username'}
-                            adornmentPosition={'start'}
-                            getInputText={getInputText}/>
+            <ImageInput classname='username'
+                        className='username'
+                        type={2}
+                        inputValue={""}
+                        error={userNameError}
+                        icon={Tag}
+                        placeholder={'ReachMe username'}
+                        adornmentPosition={'start'}
+                        getInputText={getInputText}/>
 
-                <PasswordImageInput classname='password'
-                                    className='password'
-                                    inputValue={""}
-                                    placeholder={'Password'}
-                                    icon={Lock}
-                                    error={passwordError}
-                                    adornmentPosition={'start'}
-                                    getInputText={getInputText}/>
+            <PasswordImageInput classname='password'
+                                className='password'
+                                inputValue={""}
+                                placeholder={'Password'}
+                                icon={Lock}
+                                error={passwordError}
+                                adornmentPosition={'start'}
+                                getInputText={getInputText}/>
 
-                {/*<button style={{backgroundColor: "#108e8e", borderRadius: '15px', marginRight: '1em'}}
+            {/*<button style={{backgroundColor: "#108e8e", borderRadius: '15px', marginRight: '1em'}}
                     onClick={resetForm}>toggle error
             </button>
             <button style={{backgroundColor: "#108e8e", borderRadius: '15px'}} onClick={simError}>simulate error
             </button>
             <button onClick={resetSignUpForm}>Reset Form</button>*/}
-                <button className='AuthButton'
-                        onClick={onSignUpButtonPressed}
-                >Sign Up
-                </button>
-            </form>
-        </div>)
+            <button className='AuthButton'
+                    onClick={onSignUpButtonPressed}
+            >Sign Up
+            </button>
+        </form>
+    </div>)
 }
 
 

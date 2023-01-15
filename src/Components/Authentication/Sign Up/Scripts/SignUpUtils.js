@@ -1,18 +1,22 @@
 import {React} from "react";
 import {authentication} from "../../Misc/Firebase/FirebaseIntegration";
-import AlertBox from "../../../General Purpose/Alert/Scripts/AlertBox";
+import AlertBox from "../../../General Purpose/AlertBox/Scripts/AlertBox";
 import ReactDOM from "react-dom/client";
-import {containsLowercase, containsSymbols, containsUppercase} from "../../../General Purpose/Text/TextFunctions";
+import {
+    constainsWhiteSpaces,
+    containsLowercase,
+    containsSymbols,
+    containsUppercase
+} from "../../../General Purpose/Text/TextFunctions";
+import {Alert} from "@mui/material";
+import {signUpCredentials} from "./SignUp";
 
 const POSTAuthEndpoint = `http://localhost:8080/account`;
 let successfullySignedUp = false;
 
 
 export const emptyForm = {
-    fullName: ``,
-    email: ``,
-    username: ``,
-    pass: ``
+    fullName: ``, email: ``, username: ``, pass: ``
 }
 
 const isStringEmpty = (email) => {
@@ -20,8 +24,7 @@ const isStringEmpty = (email) => {
 }
 
 const isEmailValid = (email) => {
-    const regexp =
-        /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    const regexp = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
     return String(email).toLowerCase().match(regexp);
 }
@@ -39,9 +42,11 @@ export const validateEmailAddress = (emailAddress) => {
 
 
 const isNameWrittenCorrect = (name) => {
-    if (name[0] === name[0].toUpperCase() && name.length > 3) {
-        return true;
-    }
+    const tokens = name.split(' ');
+    const firstName = tokens[0];
+    const lastName = tokens[1];
+
+    return (firstName[0] === firstName[0].toUpperCase() && firstName.length > 3) && (lastName[0] === lastName[0].toUpperCase() && lastName.length > 3);
 }
 
 const isNameValid = (fullName) => {
@@ -77,6 +82,10 @@ const isUsernameValid = (username) => {
 export const validateUsername = (username) => {
     if (isStringEmpty(username)) {
         return buildError("The username cannot be marked as empty!");
+    }
+
+    if(constainsWhiteSpaces(username)){
+        return buildError("The username cannot contain whitespaces!");
     }
 
     if (!isUsernameValid(username)) {
@@ -121,8 +130,7 @@ export const validatePassword = (password) => {
 
 export const buildError = (message) => {
     return {
-        'message': message,
-        'hasErrors': true
+        'message': message, 'hasErrors': true
     };
 }
 
@@ -157,12 +165,9 @@ export const signUpUser = (name, username, pass, email) => {
             };
 
             const requestOptions = {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payloadBody),
+                method: "POST", headers: {
+                    'Accept': 'application/json', 'Content-Type': 'application/json'
+                }, body: JSON.stringify(payloadBody),
             };
 
             fetch(POSTAuthEndpoint, requestOptions)
@@ -187,4 +192,22 @@ export const signUpUser = (name, username, pass, email) => {
             root.render(alertBox);
             setTimeout(() => elem.remove(), 6000);
         });
+}
+
+export const displaySignUpSuccessAlert = () => {
+    const alert = <Alert variant="filled" severity="success" className='Alert'>
+        Account created successfully, {signUpCredentials.fullName}! Enjoy the ReachMe app and
+        stay surrounded only by wonderful people!&nbsp;You will be automatically redirected to the Log In
+        page where you can enter your credentials and access your profile.</Alert>
+
+    const location = document.querySelector('#errors');
+    const wrapper = document.createElement('div');
+    wrapper.id = 'success';
+    location.appendChild(wrapper);
+    const root = ReactDOM.createRoot(document.getElementById('success'));
+    root.render(alert);
+
+    setTimeout(() => {
+        wrapper.remove();
+    }, 6500);
 }

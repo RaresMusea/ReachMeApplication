@@ -27,7 +27,7 @@ export default function ImageInput(props) {
     
     const focused = (e) => {
         if(error['hasErrors']){
-            //setInputValue("");
+            setInputValue("");
         }
         setFocus("#094561");
     }

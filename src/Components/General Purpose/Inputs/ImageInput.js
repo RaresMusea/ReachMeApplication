@@ -10,7 +10,6 @@ import {useEffect, useState} from "react";
 
 
 export default function ImageInput(props) {
-    const [name, setName] = React.useState("");
     const [inputValue,setInputValue]=useState(props.inputValue);
     const [focus, setFocus] = React.useState("action.active");
     const [error, setError]=useState(props.error);
@@ -25,7 +24,7 @@ export default function ImageInput(props) {
         }
     }, [props.error])
     
-    const focused = (e) => {
+    const focused = () => {
         if(error['hasErrors']){
             setInputValue("");
         }
@@ -60,7 +59,7 @@ export default function ImageInput(props) {
                             onChange={(e) => {
                                 props.getInputText(e, props.classname);
                                 setInputValue(e.target.value);
-
+                                console.log(error);
                                 if(error['hasErrors']){
                                     setError({});
                                 }

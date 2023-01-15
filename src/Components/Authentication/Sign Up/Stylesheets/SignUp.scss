@@ -4,7 +4,7 @@
   @apply p-[.2em];
 }
 
-.Alert{
+.AlertSuccess{
   @apply w-[100%];
   @apply mt-[1em];
   @apply mb-[1em];
@@ -12,8 +12,29 @@
   background-color: #108c8e !important;
 }
 
+.AlertError,
+.AlertSuccess{
+  @apply w-[100%];
+  @apply mt-[1em];
+  @apply mb-[1em];
+  border-radius:15px !important;
+}
+
+.AlertError{
+  background-color:red;
+}
+
+.AlertSuccess{
+  background-color: #108c8e;
+}
+
+#success{
+  @apply opacity-0;
+}
+
 @media screen and (min-width: 1170px){
-  .Alert{
+  .AlertSuccess,
+  .AlertError{
     @apply w-[30%];
     @apply ml-[1em];
   }

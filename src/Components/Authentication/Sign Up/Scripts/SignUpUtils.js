@@ -1,18 +1,11 @@
-import {React} from "react";
-import {authentication} from "../../Misc/Firebase/FirebaseIntegration";
-import AlertBox from "../../../General Purpose/AlertBox/Scripts/AlertBox";
-import ReactDOM from "react-dom/client";
 import {
     constainsWhiteSpaces,
     containsLowercase,
     containsSymbols,
     containsUppercase
 } from "../../../General Purpose/Text/TextFunctions";
-import {Alert} from "@mui/material";
 import {signUpCredentials} from "./SignUp";
-
-const POSTAuthEndpoint = `http://localhost:8080/account`;
-let successfullySignedUp = false;
+import {renderAlert} from "../../../General Purpose/Alerts/AlertUtil";
 
 
 export const emptyForm = {
@@ -52,11 +45,9 @@ const isNameWrittenCorrect = (name) => {
 const isNameValid = (fullName) => {
     const tokens = fullName.split(' ');
 
-    if (tokens.length > 2 || tokens.length < 2) {
-        return false;
-    }
+    return !(tokens.length > 2 || tokens.length < 2);
 
-    return true
+
 }
 
 export const validateName = (name) => {
@@ -84,7 +75,7 @@ export const validateUsername = (username) => {
         return buildError("The username cannot be marked as empty!");
     }
 
-    if(constainsWhiteSpaces(username)){
+    if (constainsWhiteSpaces(username)) {
         return buildError("The username cannot contain whitespaces!");
     }
 
@@ -120,8 +111,8 @@ export const validatePassword = (password) => {
         return buildError("The password is way too weak!");
     }
 
-    if (password.length > 15) {
-        return buildError("The password should have at most 15 characters!");
+    if (password.length > 30) {
+        return buildError("The password should have at most 30 characters!");
     }
 
     return validatePasswordSyntactically(password);
@@ -151,63 +142,31 @@ export const generateAlertsDependingOnStates = (errorCode) => {
     }
 }
 
-export const signUpUser = (name, username, pass, email) => {
-    authentication.createUserWithEmailAndPassword(email, pass)
-        .then((userCredential) => {
-            const user = userCredential.user;
-
-            const payloadBody = {
-                "userFirebaseIndentifier": user.uid,
-                "userName": username,
-                "profilePhotoHref": "",
-                "userRealName": name,
-                "emailAddress": email
-            };
-
-            const requestOptions = {
-                method: "POST", headers: {
-                    'Accept': 'application/json', 'Content-Type': 'application/json'
-                }, body: JSON.stringify(payloadBody),
-            };
-
-            fetch(POSTAuthEndpoint, requestOptions)
-                .then(response => response.json())
-                .then(() => {
-                })
-                .catch(console.log);
-
-            successfullySignedUp = true;
-        })
-        .catch(error => {
-            const errorCode = error.code;
-            console.log(errorCode);
-            const div = document.createElement('div');
-            const signUp = (document.querySelector('.SignUp'));
-            signUp.appendChild(div);
-            div.id = 'errors';
-            const elem = document.getElementById('errors');
-            const message = generateAlertsDependingOnStates(errorCode);
-            const alertBox = <AlertBox isOpen={true} message={message}/>
-            const root = ReactDOM.createRoot(document.getElementById('errors'));
-            root.render(alertBox);
-            setTimeout(() => elem.remove(), 6000);
-        });
+export const displaySignUpSuccessAlert = () => {
+    const alertConfig = {
+        severity: 'success',
+        class: 'AlertSuccess',
+        message: `Account created successfully, ${signUpCredentials.fullName}!
+         Enjoy the ReachMe App and stay surrounded only by wonderful people!&nbsp;
+         You will be automatically redirected to the Log In page where you can enter your credentials and access your profile.`,
+        targetId: '#errors',
+        alertType: 'success',
+        fadeOutTimeout: 3000,
+        removeTimeout: 3500,
+    }
+    renderAlert(alertConfig);
 }
 
-export const displaySignUpSuccessAlert = () => {
-    const alert = <Alert variant="filled" severity="success" className='Alert'>
-        Account created successfully, {signUpCredentials.fullName}! Enjoy the ReachMe app and
-        stay surrounded only by wonderful people!&nbsp;You will be automatically redirected to the Log In
-        page where you can enter your credentials and access your profile.</Alert>
+export const displaySignUpFailedAlert = () => {
+    const alertConfig = {
+        severity: 'error',
+        class: 'AlertError',
+        message: `Sign up failed due to an input mismatch!`,
+        targetId: '#errors',
+        alertType: 'error',
+        fadeOutTimeout: 3000,
+        removeTimeout: 3500,
+    }
 
-    const location = document.querySelector('#errors');
-    const wrapper = document.createElement('div');
-    wrapper.id = 'success';
-    location.appendChild(wrapper);
-    const root = ReactDOM.createRoot(document.getElementById('success'));
-    root.render(alert);
-
-    setTimeout(() => {
-        wrapper.remove();
-    }, 6500);
+    renderAlert(alertConfig);
 }

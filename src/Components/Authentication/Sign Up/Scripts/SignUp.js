@@ -7,14 +7,17 @@ import MailIcon from "@mui/icons-material/Mail";
 import {Lock, Person2, Tag,} from "@mui/icons-material";
 import PasswordImageInput from "../../../General Purpose/Inputs/PasswordImageInput";
 import {
+    displaySignUpFailedAlert,
     displaySignUpSuccessAlert,
-    emptyForm, validateEmailAddress, validateName, validatePassword, validateUsername
+    emptyForm,
+    validateEmailAddress,
+    validateName,
+    validatePassword,
+    validateUsername
 } from "./SignUpUtils";
 import isObjectEmpty from "../../../General Purpose/Objects";
 import {authentication} from "../../Misc/Firebase/FirebaseIntegration";
 import {saveUserAccountMetadata} from "./SignUpService";
-import {Alert} from "@mui/material";
-import ReactDOM from 'react-dom/client';
 
 export const signUpCredentials = {
     emailAddress: '', username: '', fullName: '', pass: ''
@@ -26,10 +29,11 @@ export default function SignUp(props) {
     const [nameError, setNameError] = useState({});
     const [passwordError, setPasswordError] = useState({});
     const [userNameError, setUserNameError] = useState({});
+    let canSignUp = true;
 
     useEffect(() => {
         document.title = 'ReachMe - Sign Up';
-    }, []);
+    },);
 
 
     const [formValues, setFormValues] = useState(emptyForm);
@@ -57,39 +61,26 @@ export default function SignUp(props) {
         const nameValidation = validateName(signUpCredentials.fullName);
         if (!isObjectEmpty(nameValidation)) {
             setNameError(nameValidation);
+            canSignUp = false;
         }
         const emailValidation = validateEmailAddress(signUpCredentials.emailAddress);
         if (!isObjectEmpty(emailValidation)) {
             setEmailError(emailValidation);
+            canSignUp = false;
         }
 
         const usernameValidation = validateUsername(signUpCredentials.username);
         if (!isObjectEmpty(usernameValidation)) {
             setUserNameError(usernameValidation);
+            canSignUp = false;
         }
 
         const passwordValidation = validatePassword(signUpCredentials.pass);
         if (!isObjectEmpty(passwordValidation)) {
             setPasswordError(passwordValidation);
+            canSignUp = false;
         }
     }
-
-    const findErrors = () => {
-        const errors = [];
-        errors.push(emailError);
-        errors.push(passwordError);
-        errors.push(nameError);
-        errors.push(userNameError);
-
-        errors.forEach(err => {
-            if (!isObjectEmpty(err)) {
-                return true;
-            }
-        });
-
-        return false;
-    }
-
 
     const signUp = () => {
         authentication.createUserWithEmailAndPassword(signUpCredentials.emailAddress, signUpCredentials.pass)
@@ -111,8 +102,12 @@ export default function SignUp(props) {
         console.log(signUpCredentials);
         e.preventDefault();
         validateSignUpCredentials();
-        if (!findErrors()) {
+
+        if (canSignUp) {
             signUp();
+        } else {
+            displaySignUpFailedAlert();
+            canSignUp = true;
         }
 
     }
@@ -204,8 +199,8 @@ export default function SignUp(props) {
             </button>
             <button onClick={resetSignUpForm}>Reset Form</button>*/}
             <button className='AuthButton'
-                    onClick={onSignUpButtonPressed}
-            >Sign Up
+                    onClick={onSignUpButtonPressed}>
+                Sign Up
             </button>
         </form>
     </div>)

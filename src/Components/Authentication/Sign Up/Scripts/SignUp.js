@@ -6,8 +6,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import {Lock, Person2, Tag,} from "@mui/icons-material";
 import PasswordImageInput from "../../../General Purpose/Inputs/PasswordImageInput";
 import {
+    displayFirebaseAuthFailureAlert,
     displaySignUpFailedAlert,
-    emptyForm,
     validateEmailAddress,
     validateName,
     validatePassword,
@@ -15,11 +15,7 @@ import {
 } from "./SignUpUtils";
 import isObjectEmpty from "../../../General Purpose/Objects";
 import {authentication} from "../../Misc/Firebase/FirebaseIntegration";
-import {
-    accountWithSameCredentialsAlreadyExists,
-    isLocalServerAvailable,
-    saveUserAccountMetadata
-} from "./SignUpService";
+import {accountWithSameCredentialsAlreadyExists, isConnectionAvailable, saveUserAccountMetadata} from "./SignUpService";
 
 export const signUpCredentials = {
     emailAddress: '', username: '', fullName: '', pass: ''
@@ -37,9 +33,6 @@ export default function SignUp(props) {
     useEffect(() => {
         document.title = 'ReachMe - Sign Up';
     },);
-
-
-    const [formValues, setFormValues] = useState(emptyForm);
 
     const getInputText = (event, className) => {
         switch (className) {
@@ -85,8 +78,8 @@ export default function SignUp(props) {
         }
     }
 
-    const signUp = () => {
-        if (isLocalServerAvailable()) {
+    const signUp = async () => {
+        if (await isConnectionAvailable()) {
             if (!accountWithSameCredentialsAlreadyExists()) {
                 userInUse = false;
                 authentication.createUserWithEmailAndPassword(signUpCredentials.emailAddress, signUpCredentials.pass)
@@ -95,10 +88,14 @@ export default function SignUp(props) {
                         saveUserAccountMetadata(response);
                         setTimeout(() => {
                             props.switchAuthState();
+                            props.updateLoginCredentials({
+                                "email": signUpCredentials.emailAddress,
+                                "pass": signUpCredentials.pass
+                            })
                         }, 7000);
                     })
                     .catch(err => {
-                        console.log(err);
+                        displayFirebaseAuthFailureAlert(err.code);
                     })
             } else {
                 userInUse = true;
@@ -106,12 +103,12 @@ export default function SignUp(props) {
         }
     }
 
-    const onSignUpButtonPressed = (e) => {
+    const onSignUpButtonPressed = async (e) => {
         e.preventDefault();
         validateSignUpCredentials();
 
         if (canSignUp) {
-            signUp();
+            await signUp();
         } else {
             if (!(localStorage.getItem("connection") === "false") && !userInUse) {
                 displaySignUpFailedAlert(`Sign up failed due to an input mismatch!`);
@@ -121,44 +118,6 @@ export default function SignUp(props) {
 
     }
 
-
-    // const [name, setName] = React.useState("");
-    // const [username, setUsername] = React.useState("");
-    // const [pass, setPass] = React.useState("");
-    // const [inputType, setInputType] = React.useState("text");
-    //
-    // const retrieveEmailAddress = (e) => setEmailAddress(e.currentTarget.value);
-    // const retrieveName = (e) => setName(e.currentTarget.value);
-    // const retrievePass = (e) => setPass(e.currentTarget.value);
-    // const retrieveUsername=(e)=>setUsername(e.currentTarget.value);
-    // const showPassword = () => setInputType("password");
-    // const hidePassword = () => setInputType("text");
-    //
-    //
-    // //@TODO call this immediately after signUpUser() gets called
-    // const generateSuccessSignUpAlert = () => {
-    //     const signUpSuccessful = <AlertBox
-    //         variant={"filled"}
-    //         severity={'success'}
-    //         className={'alert'}
-    //     >
-    //         Account created successfully, {name}! Enjoy the ReachMe app and stay surrounded only by wonderful
-    //         people!<br/> You will be automatically redirected to the Log In page once the Sign Up process is complete.
-    //         Don't worry, it won't take long!
-    //     </AlertBox>
-    //     const container = document.createElement('div');
-    //     let signUp = document.querySelector('.SignUp');
-    //     container.id = `success`;
-    //     signUp.appendChild(container);
-    //
-    //     const root = ReactDOM.createRoot(document.getElementById('success'));
-    //     root.render(signUpSuccessful);
-    //     setTimeout(() => container.remove(), 8000);
-    //     resetAuthenticationForm();
-    //     setTimeout(window.location.reload(), 2000);
-    // }
-    //
-    //
     return (<div className='SignUp'>
         <form>
             <ImageInput classname='fullName'

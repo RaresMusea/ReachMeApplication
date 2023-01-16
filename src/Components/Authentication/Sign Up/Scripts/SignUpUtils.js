@@ -124,10 +124,10 @@ export const buildError = (message) => {
     };
 }
 
-export const generateAlertsDependingOnStates = (errorCode) => {
+const generateErrorMessagesDependingOnStates = (errorCode) => {
     switch (errorCode) {
         case (`auth/email-already-in-use`): {
-            return "Sign up failed! The email address you have entered is already used by another ReachMe account! Try another email address!";
+            return "Sign up failed! The email address you have provided is already used by another ReachMe account! Try another email address!";
         }
         case(`auth/invalid-email`): {
             return "Sign up failed! The email address you have entered is invalid!";
@@ -166,4 +166,9 @@ export const displaySignUpFailedAlert = (message) => {
     }
 
     renderAlert(alertConfig);
+}
+
+export const displayFirebaseAuthFailureAlert = (errorCode) => {
+    const message = generateErrorMessagesDependingOnStates(errorCode);
+    displaySignUpFailedAlert(message);
 }

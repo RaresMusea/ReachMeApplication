@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import Grid from '@mui/material/Grid';
 import connection from '../../../../Media/Images/logoPic.jpg';
 import '../Stylesheets/AuthenticationCore.scss';
-import SignUp, {signUpCredentials} from "../../Sign Up/Scripts/SignUp";
+import SignUp from "../../Sign Up/Scripts/SignUp";
 import logoPic from '../../../../Media/Images/logoPic.svg';
 import googleLogo from '../../../../Media/Images/google.svg';
 import Login from "../../Login/Scripts/Login";
@@ -10,9 +10,15 @@ import Login from "../../Login/Scripts/Login";
 export default function AuthenticationCore() {
 
     const [userLogged, setUserLogged] = useState(false);
-
+    const [loginCredentials, setloginCredentials] = useState({});
+    let loginInfo = {};
     const switchAuthState = () => {
         setUserLogged(!userLogged);
+    }
+
+    const updateLoginCredentials = (credentials) => {
+        loginInfo = credentials;
+        console.log(credentials);
     }
 
     return (
@@ -36,7 +42,10 @@ export default function AuthenticationCore() {
                             <h3 className="Subtitle">The social media app that fulfills your needs.</h3>
                             <h4 className="InfoMessage">{userLogged ? "Log in to continue" : "Register on ReachMe"}</h4>
                             <section className="Authentication">
-                                {userLogged ? <Login/> : <SignUp switchAuthState={switchAuthState}/>}
+                                {userLogged ?
+                                    <Login loginCredentials={loginInfo}/> :
+                                    <SignUp switchAuthState={switchAuthState}
+                                            updateLoginCredentials={updateLoginCredentials}/>}
                                 <div className="SeparatorContainer">
                                     <div className="LineSeparator"/>
                                     <div className="Or">OR</div>
@@ -59,7 +68,7 @@ export default function AuthenticationCore() {
                         </div>
                         <div id='errors'/>
                         <div className='AdditionalAuthContainer' style={{
-                            marginTop:userLogged?'4em':'.5em'
+                            marginTop: userLogged ? '4em' : '.5em'
                         }}>
                             {userLogged ?
                                 <p className='ChangeContextText'>

@@ -17,27 +17,26 @@ const setRequestOptions = (payload) => {
     postMethodRequestOpt.body = JSON.stringify(payload);
 }
 
-export const isLocalServerAvailable = () => {
-    let response = true;
-    localStorage.setItem("connection", "true");
+const testLocalServerConnection = async () => {
+    try {
+        await fetch(testConnectionEndpoint);
+    } catch (error) {
+        return false;
+    }
+    return true;
+}
 
-    if (localStorage.getItem("connection") === "false") {
+export const isConnectionAvailable = async () => {
+    const connectionSucceeded = await testLocalServerConnection();
 
-        fetch(testConnectionEndpoint)
-            .then(() => response.json())
-            .then((data) => {
-                console.log(data);
-            })
-            .catch(() => {
-                localStorage.setItem("connection", "false");
-            })
+    if (!connectionSucceeded) {
         displaySignUpFailedAlert(`Server down for maintenance. We are apologizing for this inconvenient and we're trying
             out best to solve the problem as soon as possible so you can use ReachMe App again.
             Best regards,
             ReachMe development team`);
         return false;
     }
-    return response;
+    return true;
 }
 
 export const accountWithSameCredentialsAlreadyExists = () => {
@@ -47,15 +46,13 @@ export const accountWithSameCredentialsAlreadyExists = () => {
         })
         .then(data => {
             if (data.userName === null) {
-                console.log("Account is new");
                 return false;
             }
             if (data.userName === signUpCredentials.username) {
                 throw new Error();
             }
         })
-        .catch((err) => {
-            console.log("ERROR CATCHED" + err);
+        .catch(() => {
             displaySignUpFailedAlert("The username you have provided is already used by another ReachMe account!");
             return true;
         })

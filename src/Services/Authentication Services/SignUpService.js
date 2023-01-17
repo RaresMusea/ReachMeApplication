@@ -1,5 +1,5 @@
-import {signUpCredentials} from "./SignUp";
-import {displaySignUpFailedAlert, displaySignUpSuccessAlert} from "./SignUpUtils";
+import {displaySignUpFailedAlert, displaySignUpSuccessAlert} from "../../Modules/Sign Up/SignUpUtils";
+import {signUpCredentials} from "../../Modules/Validation/SignUpValidation";
 
 const postEndpoint = `http://localhost:8080/account`;
 const testConnectionEndpoint = `http://localhost:8080/connectionAvailable`;

@@ -1,9 +1,9 @@
-import {Snackbar, Fade} from "@mui/material";
-import React, {Component} from 'react';
+import {Fade, Snackbar} from "@mui/material";
+import {useState} from "react";
 
-export default function AlertBox(props) {
+export default function AlertBox() {
 
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = useState(true);
 
     return (
         <div>

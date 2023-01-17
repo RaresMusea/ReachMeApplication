@@ -1,25 +1,20 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
-import './ImageInput.scss';
+import '../../../Styles/Forms/Input/ImageInput.scss';
 import {ThemeProvider} from "@mui/material";
-import isObjectEmpty from "../Objects";
-import {theme, styles} from "./InputTheme";
-import {useEffect, useState} from "react";
-
+import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
+import {styles, theme} from "../../../Modules/Themes/InputTheme";
 
 export default function ImageInput(props) {
-    const [inputValue,setInputValue]=useState(props.inputValue);
+    const [inputValue, setInputValue] = useState(props.inputValue);
     const [focus, setFocus] = React.useState("action.active");
-    const [error, setError]=useState(props.error);
+    const [error, setError] = useState(props.error);
 
-/*    const onInputChanged = (event) => {
-        setInputValue(event.target.value);
-    }*/
-
-    useEffect(()=>{
-        if(!isObjectEmpty(props.error)){
+    useEffect(() => {
+        if (!isObjectEmpty(props.error)) {
             setError(props.error);
         }
     }, [props.error])

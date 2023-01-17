@@ -1,10 +1,10 @@
 import {IconButton, ThemeProvider} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {styles, theme} from "./InputTheme";
+import {styles, theme} from "../../../Modules/Themes/InputTheme";
 import Box from "@mui/material/Box";
-import isObjectEmpty from "../Objects";
 import TextField from "@mui/material/TextField";
 import {useEffect, useState} from "react";
+import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
 
 export default function PasswordImageInput(props) {
 

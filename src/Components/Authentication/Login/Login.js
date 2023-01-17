@@ -1,31 +1,32 @@
-import {useEffect, useState} from "react";
-import '../../Sign Up/Stylesheets/SignUp.scss';
-import ImageInput from "../../../General Purpose/Inputs/ImageInput";
+import {useState} from "react";
+import '../../../Styles/Authentication/Sign Up/SignUp.scss';
+import ImageInput from "../../Forms/Inputs/ImageInput";
 import {AlternateEmail, Lock} from "@mui/icons-material";
-import PasswordImageInput from "../../../General Purpose/Inputs/PasswordImageInput";
-import isObjectEmpty from "../../../General Purpose/Objects";
+import PasswordImageInput from "../../Forms/Inputs/PasswordImageInput";
+import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
+import {signUpCredentials} from "../../../Modules/Validation/SignUpValidation";
+import {logInCredentials} from "../../../Modules/Validation/LogInValidation";
 
 
 export default function Login(props) {
 
-    const [inputType, setInputType] = useState("");
-    const [name, setName] = useState("");
     const [nameError, setNameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    const [credentials, setCredentials] = useState({});
 
-    useEffect(() => {
-        document.title = 'ReachMe - Log In'
-        if (!isObjectEmpty(props.loginCredentials)) {
-            setCredentials(props.loginCredentials);
-        }
-    }, [props.loginCredentials]);
 
     const getInputText = (event, className) => {
-        setInputType(className);
-        if (inputType === 'email') {
-            setName(event.target.value);
-            console.log(name);
+        switch (className) {
+            case 'userOrEmail': {
+                logInCredentials.name.userOrEmail = event.target.value;
+                break;
+            }
+            case 'password': {
+                logInCredentials.pass = event.target.value;
+                break;
+            }
+            default: {
+                return;
+            }
         }
     }
 
@@ -35,12 +36,12 @@ export default function Login(props) {
 
     return (
         <div className='SignUp'>
-            <ImageInput classname='email'
+            <ImageInput classname='userOrEmail'
                         className='email'
                         type={2}
                         error={nameError}
                         icon={AlternateEmail}
-                        inputValue={credentials.email}
+                        inputValue={isObjectEmpty(signUpCredentials) ? '' : signUpCredentials.emailAddress}
                         placeholder={'Username or Email'}
                         adornmentPosition={'start'}
                         getInputText={getInputText}/>
@@ -49,7 +50,7 @@ export default function Login(props) {
                                 className='password'
                                 error={passwordError}
                                 icon={Lock}
-                                inputValue={credentials.pass}
+                                inputValue={isObjectEmpty(signUpCredentials) ? '' : signUpCredentials.pass}
                                 placeholder='Password'
                                 adornmentPosition={'start'}
                                 getInputText={getInputText}/>

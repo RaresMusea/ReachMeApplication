@@ -1,7 +1,7 @@
 import './App.css';
-import AuthenticationCore from "./Components/Authentication/Core/Scripts/AuthenticationCore";
+import AuthenticationCore from "./Components/Authentication/Core/AuthenticationCore";
 import {useNavigate} from 'react-router-dom';
-import userWasPreviouslyLoggedIn from "./Components/General Purpose/MiscModule";
+import {userWasLoggedInPreviously} from "./Modules/Session/CurrentSessionModule";
 import Homepage from "./Components/Landing/Scripts/Homepage";
 
 function App() {
@@ -18,12 +18,12 @@ function App() {
 
     return (
         <>
-            { userWasPreviouslyLoggedIn()?
+            {userWasLoggedInPreviously() ?
                 <div className="App" onLoad={navigateToAuth}>
                     <AuthenticationCore navigator={navigator}/>
                 </div>
                 :
-                <div onLoad ={navigateToFeed}>
+                <div onLoad={navigateToFeed}>
                     <Homepage/>
                 </div>
             }

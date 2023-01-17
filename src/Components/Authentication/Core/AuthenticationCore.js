@@ -1,24 +1,32 @@
 import React, {useState} from "react";
 import Grid from '@mui/material/Grid';
-import connection from '../../../../Media/Images/logoPic.jpg';
-import '../Stylesheets/AuthenticationCore.scss';
-import SignUp from "../../Sign Up/Scripts/SignUp";
-import logoPic from '../../../../Media/Images/logoPic.svg';
-import googleLogo from '../../../../Media/Images/google.svg';
-import Login from "../../Login/Scripts/Login";
+import connection from '../../../Media/Images/logoPic.jpg';
+import '../../../Styles/Authentication/Core/AuthenticationCore.scss';
+import SignUp from "../Sign Up/SignUp";
+import logoPic from '../../../Media/Images/logoPic.svg';
+import googleLogo from '../../../Media/Images/google.svg';
+import Login from "../Login/Login";
+
 
 export default function AuthenticationCore() {
 
     const [userLogged, setUserLogged] = useState(false);
-    const [loginCredentials, setloginCredentials] = useState({});
     let loginInfo = {};
+
     const switchAuthState = () => {
         setUserLogged(!userLogged);
     }
 
+    /*    useEffect(() => {
+            if(isObjectEmpty(loginInfo)){
+                setloginCredentials(loginInfo);
+                console.log(loginCredentials);
+            }}
+        , [loginCredentials, loginInfo, setloginCredentials]);*/
+
     const updateLoginCredentials = (credentials) => {
         loginInfo = credentials;
-        console.log(credentials);
+        console.log(loginInfo);
     }
 
     return (

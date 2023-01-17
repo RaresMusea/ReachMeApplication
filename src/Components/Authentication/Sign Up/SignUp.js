@@ -1,25 +1,24 @@
 import React, {useEffect, useState} from 'react'
-import '../Stylesheets/SignUp.scss'
-import './SignUpUtils';
-import ImageInput from "../../../General Purpose/Inputs/ImageInput";
+import '../../../Styles/Authentication/Sign Up/SignUp.scss'
+import '../../../Modules/Sign Up/SignUpUtils';
+import ImageInput from "../../Forms/Inputs/ImageInput";
 import MailIcon from "@mui/icons-material/Mail";
 import {Lock, Person2, Tag,} from "@mui/icons-material";
-import PasswordImageInput from "../../../General Purpose/Inputs/PasswordImageInput";
+import PasswordImageInput from "../../Forms/Inputs/PasswordImageInput";
 import {
     displayFirebaseAuthFailureAlert,
     displaySignUpFailedAlert,
-    validateEmailAddress,
-    validateName,
-    validatePassword,
-    validateUsername
-} from "./SignUpUtils";
-import isObjectEmpty from "../../../General Purpose/Objects";
-import {authentication} from "../../Misc/Firebase/FirebaseIntegration";
-import {accountWithSameCredentialsAlreadyExists, isConnectionAvailable, saveUserAccountMetadata} from "./SignUpService";
-
-export const signUpCredentials = {
-    emailAddress: '', username: '', fullName: '', pass: ''
-}
+    setSignUpCredentialFromFormValue,
+} from "../../../Modules/Sign Up/SignUpUtils";
+import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
+import {authentication} from "../../../Modules/Firebase/FirebaseIntegration";
+import {
+    accountWithSameCredentialsAlreadyExists,
+    isConnectionAvailable,
+    saveUserAccountMetadata
+} from "../../../Services/Authentication Services/SignUpService";
+import {signUpCredentials, validateName} from "../../../Modules/Validation/SignUpValidation";
+import {validateEmailAddress, validatePassword, validateUsername} from "../../../Modules/Validation/AuthValidationBase";
 
 export default function SignUp(props) {
 
@@ -35,22 +34,7 @@ export default function SignUp(props) {
     },);
 
     const getInputText = (event, className) => {
-        switch (className) {
-            case `email`:
-                signUpCredentials.emailAddress = event.target.value;
-                return;
-            case `password`:
-                signUpCredentials.pass = event.target.value;
-                return;
-            case `fullName`:
-                signUpCredentials.fullName = event.target.value;
-                return;
-            case `username`:
-                signUpCredentials.username = event.target.value;
-                return;
-            default:
-                return;
-        }
+        setSignUpCredentialFromFormValue(className, event.target.value);
     }
 
     const validateSignUpCredentials = () => {
@@ -106,7 +90,6 @@ export default function SignUp(props) {
     const onSignUpButtonPressed = async (e) => {
         e.preventDefault();
         validateSignUpCredentials();
-
         if (canSignUp) {
             await signUp();
         } else {
@@ -159,13 +142,6 @@ export default function SignUp(props) {
                                 error={passwordError}
                                 adornmentPosition={'start'}
                                 getInputText={getInputText}/>
-
-            {/*<button style={{backgroundColor: "#108e8e", borderRadius: '15px', marginRight: '1em'}}
-                    onClick={resetForm}>toggle error
-            </button>
-            <button style={{backgroundColor: "#108e8e", borderRadius: '15px'}} onClick={simError}>simulate error
-            </button>
-            <button onClick={resetSignUpForm}>Reset Form</button>*/}
             <button className='AuthButton'
                     onClick={onSignUpButtonPressed}>
                 Sign Up

@@ -1,24 +1,36 @@
-import logo from './logo.svg';
 import './App.css';
+<<<<<<< HEAD
+=======
+import AuthenticationCore from "./Components/Authentication/Core/AuthenticationCore";
+import {useNavigate} from 'react-router-dom';
+import {userWasLoggedInPreviously} from "./Modules/Session/CurrentSessionModule";
+import Homepage from "./Components/Landing/Scripts/Homepage";
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const navigator = useNavigate();
+
+    const navigateToAuth = () => {
+        navigator('/authentication');
+    }
+
+    const navigateToFeed=()=>{
+        navigator('/feed');
+    }
+
+    return (
+        <>
+            {userWasLoggedInPreviously() ?
+                <div className="App" onLoad={navigateToAuth}>
+                    <AuthenticationCore navigator={navigator}/>
+                </div>
+                :
+                <div onLoad={navigateToFeed}>
+                    <Homepage/>
+                </div>
+            }
+        </>
+    );
 }
 
 export default App;

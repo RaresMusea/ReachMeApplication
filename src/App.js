@@ -1,6 +1,4 @@
 import './App.css';
-<<<<<<< HEAD
-=======
 import AuthenticationCore from "./Components/Authentication/Core/AuthenticationCore";
 import {useNavigate} from 'react-router-dom';
 import {userWasLoggedInPreviously} from "./Modules/Session/CurrentSessionModule";

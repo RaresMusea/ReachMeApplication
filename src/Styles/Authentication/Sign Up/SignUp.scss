@@ -20,21 +20,26 @@
   border-radius:15px !important;
 }
 
-.AlertError{
-  background-color:red;
+.AlertError {
+  background-color: red;
 }
 
-.AlertSuccess{
+.AlertSuccess {
   background-color: #108c8e;
 }
 
-#success{
+.AlertSuccess2 {
+  background-color: #094561;
+}
+
+#success {
   @apply opacity-0;
 }
 
-@media screen and (min-width: 1170px){
+@media screen and (min-width: 1170px) {
   .AlertSuccess,
-  .AlertError{
+  .AlertError,
+  .AlertSuccess2 {
     @apply w-[30%];
     @apply ml-[1em];
   }

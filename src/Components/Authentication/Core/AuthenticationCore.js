@@ -8,7 +8,8 @@ import googleLogo from '../../../Media/Images/google.svg';
 import Login from "../Login/Login";
 
 
-export default function AuthenticationCore() {
+export default function AuthenticationCore(props) {
+
 
     const [userLogged, setUserLogged] = useState(false);
     let loginInfo = {};
@@ -16,13 +17,6 @@ export default function AuthenticationCore() {
     const switchAuthState = () => {
         setUserLogged(!userLogged);
     }
-
-    /*    useEffect(() => {
-            if(isObjectEmpty(loginInfo)){
-                setloginCredentials(loginInfo);
-                console.log(loginCredentials);
-            }}
-        , [loginCredentials, loginInfo, setloginCredentials]);*/
 
     const updateLoginCredentials = (credentials) => {
         loginInfo = credentials;
@@ -51,7 +45,9 @@ export default function AuthenticationCore() {
                             <h4 className="InfoMessage">{userLogged ? "Log in to continue" : "Register on ReachMe"}</h4>
                             <section className="Authentication">
                                 {userLogged ?
-                                    <Login loginCredentials={loginInfo}/> :
+                                    <Login loginCredentials={loginInfo}
+                                           navigate={props.navigate}
+                                           navigateToFeed={props.navigateToFeed}/> :
                                     <SignUp switchAuthState={switchAuthState}
                                             updateLoginCredentials={updateLoginCredentials}/>}
                                 <div className="SeparatorContainer">

@@ -16,7 +16,9 @@ root.render(
                 <Route index element={<App/>}/>
                 <Route path={'/authentication'} element={<AuthenticationCore/>}/>
                 <Route path={'/feed'} element={<Feed/>}/>
+                <Route path='*' element={<Feed/>}/>
             </Routes>
+            }
         </BrowserRouter>
     </React.StrictMode>
 );

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import '../../../Styles/Authentication/Sign Up/SignUp.scss';
 import ImageInput from "../../Forms/Inputs/ImageInput";
 import {AlternateEmail, Lock} from "@mui/icons-material";
@@ -6,13 +6,20 @@ import PasswordImageInput from "../../Forms/Inputs/PasswordImageInput";
 import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
 import {signUpCredentials} from "../../../Modules/Validation/SignUpValidation";
 import {logInCredentials} from "../../../Modules/Validation/LogInValidation";
+import {isConnectionAvailable} from "../../../Services/Authentication Services/SignUpService";
+import {authentication} from "../../../Modules/Firebase/FirebaseIntegration";
+import {displayLogInSuccessAlert, markCurrentUserAsLoggedIn} from "../../../Modules/Log In/LogInModule";
+import {displayFirebaseAuthFailureAlert} from "../../../Modules/Sign Up/SignUpUtils";
 
 
-export default function Login(props) {
-
+export default function Login() {
+    /*const navigator = useNavigate();*/
     const [nameError, setNameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
 
+    useEffect(() => {
+        document.title = 'ReachMe - Log In';
+    },);
 
     const getInputText = (event, className) => {
         switch (className) {
@@ -30,8 +37,31 @@ export default function Login(props) {
         }
     }
 
-    const onLogInButtonPressed=()=>{
+    const onLogInButtonPressed = async (e) => {
+        e.preventDefault();
+        /*if (!wasLoginProcessRedirected()) {
+            console.log("nu aici ba");
+        }*/
 
+        await logIn();
+    }
+
+    const logIn = async () => {
+        if (await isConnectionAvailable()) {
+            authentication.signInWithEmailAndPassword(logInCredentials.name.userOrEmail, logInCredentials.pass)
+                .then(userCredential => {
+                    const accountUid = userCredential.user.uid;
+                    console.log(accountUid);
+                    markCurrentUserAsLoggedIn(accountUid);
+                    displayLogInSuccessAlert("You've been logged in successfully!");
+                    //navigator('/feed');
+                })
+                .catch(error => {
+                    const errorCode = error.code;
+                    console.log(error);
+                    displayFirebaseAuthFailureAlert(errorCode);
+                });
+        }
     }
 
     return (
@@ -57,7 +87,8 @@ export default function Login(props) {
 
             <button className='AuthButton'
                     onClick={onLogInButtonPressed}
-            >Log In</button>
+            >Log In
+            </button>
         </div>
     );
 }

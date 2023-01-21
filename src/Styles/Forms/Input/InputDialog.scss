@@ -1,0 +1,54 @@
+*::selection {
+  background-color: #094561 !important;
+  color: white !important;
+}
+
+.TriggerResetButton {
+  @apply font-[1em];
+  @apply font-extrabold;
+  font-family: 'PT Sans', sans-serif !important;
+  @apply cursor-pointer;
+  @apply mb-2;
+}
+
+.DialogTitle {
+  font-family: 'Rajdhani', sans-serif !important;
+  @apply font-extrabold;
+  font-size: 1.5em !important;
+  @apply text-center;
+}
+
+.DialogContentText {
+  font-family: 'PT Sans', sans-serif !important;
+  @apply font-semibold;
+  margin-bottom: 1.2em !important;
+}
+
+label {
+  font-family: 'PT Sans', sans-serif !important;
+}
+
+.CancelButton,
+.ActionButton {
+  color: white !important;
+  font-family: 'PT Sans', sans-serif !important;
+  border-radius: 10px !important;
+  text-transform: initial !important;
+  font-weight: bolder;
+}
+
+.CancelButton {
+  background-color: #fed349 !important;
+}
+
+.CancelButton:active {
+  background-color: #edc444 !important;
+}
+
+.ActionButton {
+  background-color: #094561 !important;
+}
+
+.InputDialogError {
+  background-color: red !important;
+}

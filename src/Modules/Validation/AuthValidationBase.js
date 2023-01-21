@@ -13,6 +13,7 @@ const isEmailValid = (email) => {
     return String(email).toLowerCase().match(regexp);
 }
 
+
 export const validateEmailAddress = (emailAddress) => {
     if (isEmptyString(emailAddress)) {
         return buildError("The email address cannot be empty!");
@@ -38,6 +39,10 @@ export const validateUsername = (username) => {
 
     if (!isUsernameValid(username)) {
         return buildError("Invalid username! It must contain 5 characters at least and 30 at most!")
+    }
+
+    if (isEmailValid(username)) {
+        return buildError("The username cannot be an email address!");
     }
 
     return {};

@@ -28,6 +28,7 @@ export default function SignUp(props) {
     const [userNameError, setUserNameError] = useState({});
     let canSignUp = true;
     let userInUse = false;
+    localStorage.setItem("redirectedFromSignUp", "false");
 
     useEffect(() => {
         document.title = 'ReachMe - Sign Up';
@@ -64,7 +65,7 @@ export default function SignUp(props) {
 
     const signUp = async () => {
         if (await isConnectionAvailable()) {
-            if (!accountWithSameCredentialsAlreadyExists()) {
+            if (!accountWithSameCredentialsAlreadyExists(signUpCredentials.username)) {
                 userInUse = false;
                 authentication.createUserWithEmailAndPassword(signUpCredentials.emailAddress, signUpCredentials.pass)
                     .then((userCredential) => {
@@ -74,8 +75,9 @@ export default function SignUp(props) {
                             props.switchAuthState();
                             props.updateLoginCredentials({
                                 "email": signUpCredentials.emailAddress,
-                                "pass": signUpCredentials.pass
-                            })
+                                "pass": signUpCredentials.pass,
+                            });
+                            localStorage.setItem("redirectedFromSignUp", "true");
                         }, 7000);
                     })
                     .catch(err => {

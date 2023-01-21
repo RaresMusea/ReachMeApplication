@@ -1,18 +1,25 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import '../../../Styles/Authentication/Sign Up/SignUp.scss';
 import ImageInput from "../../Forms/Inputs/ImageInput";
 import {AlternateEmail, Lock} from "@mui/icons-material";
 import PasswordImageInput from "../../Forms/Inputs/PasswordImageInput";
 import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
 import {signUpCredentials} from "../../../Modules/Validation/SignUpValidation";
-import {logInCredentials} from "../../../Modules/Validation/LogInValidation";
+import {determineLoginType, logInCredentials} from "../../../Modules/Validation/LogInValidation";
+import {wasLoginProcessRedirected} from "../../../Modules/Log In/LogInModule";
+import {buildError} from "../../../Modules/Sign Up/SignUpUtils";
+import {validatePassword} from "../../../Modules/Validation/AuthValidationBase";
+import {logInWithEmailAndPassword} from "../../../Services/Authentication Services/LogInService";
 
 
-export default function Login(props) {
+export default function Login() {
+    const [nameError, setNameError] = useState({});
+    const [passwordError, setPasswordError] = useState({});
+    let canLogIn = true;
 
-    const [nameError, setNameError] = useState("");
-    const [passwordError, setPasswordError] = useState("");
-
+    useEffect(() => {
+        document.title = 'ReachMe - Log In';
+    },);
 
     const getInputText = (event, className) => {
         switch (className) {
@@ -30,8 +37,35 @@ export default function Login(props) {
         }
     }
 
-    const onLogInButtonPressed=()=>{
+    const validateLoginCredentials = () => {
+        determineLoginType();
+        if (logInCredentials.name.type === 'unknown') {
+            canLogIn = false;
+            const error = buildError("Invalid email or username provided!");
+            setNameError(error);
+        }
 
+        const passValidation = validatePassword(logInCredentials.pass);
+        if (!isObjectEmpty(passValidation)) {
+            canLogIn = false;
+            setPasswordError(passValidation);
+        }
+    }
+
+    const onLogInButtonPressed = async (e) => {
+        e.preventDefault();
+        if (!wasLoginProcessRedirected()) {
+            validateLoginCredentials();
+        }
+
+        if (canLogIn) {
+
+            await logIn();
+        }
+    }
+
+    const logIn = async () => {
+        await logInWithEmailAndPassword();
     }
 
     return (
@@ -57,7 +91,8 @@ export default function Login(props) {
 
             <button className='AuthButton'
                     onClick={onLogInButtonPressed}
-            >Log In</button>
+            >Log In
+            </button>
         </div>
     );
 }

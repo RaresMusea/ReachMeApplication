@@ -88,7 +88,6 @@ export default function ImageInput(props) {
                                        props.getInputText(e, props.classname);
                                        console.log(props.classname);
                                        setInputValue(e.target.value);
-                                       //console.log("Input value: "+inputValue);
                                    }}
                                    value={inputValue}
                                    onFocus={focused}

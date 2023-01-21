@@ -4,20 +4,6 @@ import {useNavigate} from 'react-router-dom';
 import Feed from "./Components/Feed/Feed";
 
 function App() {
-    /*    const handlePageLoad=useCallback(()=>{
-            if(localStorage.getItem("currentlyLoggedInUser")===null){
-                navigateToAuth();
-                return;
-            }
-            navigateToFeed();
-        });*/
-
-    /* useEffect(()=>{
-         if(localStorage.getItem("currentlyLoggedInUser")!==null) {
-             handlePageLoad();
-         }
-     },[handlePageLoad]);*/
-
     const navigator = useNavigate();
 
     const navigateToAuth = () => {

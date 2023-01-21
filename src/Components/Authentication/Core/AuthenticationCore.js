@@ -13,6 +13,7 @@ import {resetPasswordDialogProps} from "../../../Modules/Object/ComponentProps";
 import {validateEmailAddress} from "../../../Modules/Validation/AuthValidationBase";
 import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
 import {userExists} from "../../../Modules/Session/CurrentSessionModule";
+import {errorsEncountered, resetPasswordViaEmail} from "../../../Services/Authentication Services/LogInService";
 
 export let emailForPassReset;
 export default function AuthenticationCore(props) {
@@ -44,7 +45,7 @@ export default function AuthenticationCore(props) {
         console.log(emailForPassReset);
     }
 
-    const requestPasswordReset = () => {
+    const requestPasswordReset = async () => {
         setPasswordModalForceClose(false);
         const emailValidation = validateEmailAddress(emailForPassReset);
         if (!isObjectEmpty(emailValidation)) {
@@ -53,6 +54,10 @@ export default function AuthenticationCore(props) {
         }
         if (userExists()) {
             localStorage.removeItem("userRequestingPasswordResetExists");
+            await resetPasswordViaEmail();
+            if (errorsEncountered) {
+                setPasswordModalForceClose(true);
+            }
         } else {
             setPasswordModalForceClose(true);
         }

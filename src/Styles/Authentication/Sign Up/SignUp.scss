@@ -4,32 +4,38 @@
   @apply p-[.2em];
 }
 
-.AlertSuccess{
+.AlertSuccess {
   @apply w-[100%];
   @apply mt-[1em];
   @apply mb-[1em];
-  border-radius:15px !important;
+  border-radius: 15px !important;
   background-color: #108c8e !important;
 }
 
 .AlertError,
-.AlertSuccess{
+.AlertSuccess,
+.AlertSuccess2,
+.AlertInfo {
   @apply w-[100%];
   @apply mt-[1em];
   @apply mb-[1em];
-  border-radius:15px !important;
+  border-radius: 15px !important;
 }
 
 .AlertError {
   background-color: red;
 }
 
+.AlertInfo {
+  background-color: #afdac9 !important;
+}
+
 .AlertSuccess {
-  background-color: #108c8e;
+  background-color: #108c8e !important;
 }
 
 .AlertSuccess2 {
-  background-color: #094561;
+  background-color: #094561 !important;
 }
 
 #success {

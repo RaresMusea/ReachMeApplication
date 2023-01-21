@@ -61,7 +61,6 @@ export default function Login() {
         e.preventDefault();
         if (!wasLoginProcessRedirected()) {
             validateLoginCredentials();
-
         }
 
         if (canLogIn) {

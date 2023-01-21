@@ -4,7 +4,19 @@ import {useNavigate} from 'react-router-dom';
 import Feed from "./Components/Feed/Feed";
 
 function App() {
+    /*    const handlePageLoad=useCallback(()=>{
+            if(localStorage.getItem("currentlyLoggedInUser")===null){
+                navigateToAuth();
+                return;
+            }
+            navigateToFeed();
+        });*/
 
+    /* useEffect(()=>{
+         if(localStorage.getItem("currentlyLoggedInUser")!==null) {
+             handlePageLoad();
+         }
+     },[handlePageLoad]);*/
 
     const navigator = useNavigate();
 
@@ -12,16 +24,12 @@ function App() {
         navigator('/authentication');
     }
 
-    const navigateToFeed = () => {
-        console.log("da")
-        navigator('/feed');
-    }
-
     return (
         <>
             <div className="App">
+
                 {localStorage.getItem("currentlyLoggedInUser") === null ?
-                    <AuthenticationCore navigator={navigator} navigateToFeed={navigateToFeed}
+                    <AuthenticationCore navigator={navigator}
                                         navigateToAuth={navigateToAuth}/>
                     :
                     <Feed/>

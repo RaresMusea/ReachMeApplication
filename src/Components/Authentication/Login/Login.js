@@ -5,17 +5,22 @@ import {AlternateEmail, Lock} from "@mui/icons-material";
 import PasswordImageInput from "../../Forms/Inputs/PasswordImageInput";
 import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
 import {signUpCredentials} from "../../../Modules/Validation/SignUpValidation";
-import {logInCredentials} from "../../../Modules/Validation/LogInValidation";
+import {determineLoginType, logInCredentials} from "../../../Modules/Validation/LogInValidation";
 import {isConnectionAvailable} from "../../../Services/Authentication Services/SignUpService";
 import {authentication} from "../../../Modules/Firebase/FirebaseIntegration";
-import {displayLogInSuccessAlert, markCurrentUserAsLoggedIn} from "../../../Modules/Log In/LogInModule";
-import {displayFirebaseAuthFailureAlert} from "../../../Modules/Sign Up/SignUpUtils";
+import {
+    displayLogInSuccessAlert,
+    markCurrentUserAsLoggedIn,
+    wasLoginProcessRedirected
+} from "../../../Modules/Log In/LogInModule";
+import {buildError, displayFirebaseAuthFailureAlert} from "../../../Modules/Sign Up/SignUpUtils";
+import {validatePassword} from "../../../Modules/Validation/AuthValidationBase";
 
 
 export default function Login() {
-    /*const navigator = useNavigate();*/
-    const [nameError, setNameError] = useState("");
-    const [passwordError, setPasswordError] = useState("");
+    const [nameError, setNameError] = useState({});
+    const [passwordError, setPasswordError] = useState({});
+    let canLogIn = true;
 
     useEffect(() => {
         document.title = 'ReachMe - Log In';
@@ -37,13 +42,31 @@ export default function Login() {
         }
     }
 
+    const validateLoginCredentials = () => {
+        determineLoginType();
+        if (logInCredentials.name.type === 'unknown') {
+            canLogIn = false;
+            const error = buildError("Invalid email or username provided!");
+            setNameError(error);
+        }
+
+        const passValidation = validatePassword(logInCredentials.pass);
+        if (!isObjectEmpty(passValidation)) {
+            canLogIn = false;
+            setPasswordError(passValidation);
+        }
+    }
+
     const onLogInButtonPressed = async (e) => {
         e.preventDefault();
-        /*if (!wasLoginProcessRedirected()) {
-            console.log("nu aici ba");
-        }*/
+        if (!wasLoginProcessRedirected()) {
+            validateLoginCredentials();
 
-        await logIn();
+        }
+
+        if (canLogIn) {
+            await logIn();
+        }
     }
 
     const logIn = async () => {
@@ -54,7 +77,9 @@ export default function Login() {
                     console.log(accountUid);
                     markCurrentUserAsLoggedIn(accountUid);
                     displayLogInSuccessAlert("You've been logged in successfully!");
-                    //navigator('/feed');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
                 })
                 .catch(error => {
                     const errorCode = error.code;

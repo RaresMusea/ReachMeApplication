@@ -1,4 +1,5 @@
 import {validateEmailAddress, validateUsername} from "./AuthValidationBase";
+import {isObjectEmpty} from "../Object/ObjectModule";
 
 export const logInCredentials = {
     name: {
@@ -11,7 +12,7 @@ export const logInCredentials = {
 export const isUsername = false;
 
 export const determineLoginType = () => {
-    if (validateEmailAddress(logInCredentials.name.userOrEmail) === {}) {
+    if (isObjectEmpty(validateEmailAddress(logInCredentials.name.userOrEmail))) {
         logInCredentials.name.type = "email";
         return;
     }

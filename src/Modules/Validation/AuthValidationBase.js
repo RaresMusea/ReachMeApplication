@@ -13,6 +13,7 @@ const isEmailValid = (email) => {
     return String(email).toLowerCase().match(regexp);
 }
 
+
 export const validateEmailAddress = (emailAddress) => {
     if (isEmptyString(emailAddress)) {
         return buildError("The email address cannot be empty!");

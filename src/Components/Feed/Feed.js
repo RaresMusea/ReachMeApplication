@@ -7,11 +7,10 @@ export default function Feed() {
         document.title = 'ReachMe - Feed';
     },);
 
-    window.addEventListener("popstate", (e) => {
-        e.preventDefault();
-    })
-
     return (
-        <h1>Hai noroc</h1>
+        <>
+            <div id='SignOutModal'/>
+            <h1>Hai noroc</h1>
+        </>
     );
 }

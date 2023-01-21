@@ -1,5 +1,6 @@
 import {displaySignUpFailedAlert, displaySignUpSuccessAlert} from "../../Modules/Sign Up/SignUpUtils";
 import {signUpCredentials} from "../../Modules/Validation/SignUpValidation";
+import {getAuth, signOut} from "firebase/auth";
 
 const postEndpoint = `http://localhost:8080/account`;
 const testConnectionEndpoint = `http://localhost:8080/connectionAvailable`;
@@ -81,4 +82,15 @@ export const saveUserAccountMetadata = (user) => {
         .catch(() => {
             displaySignUpFailedAlert(`Sign up failed due to an internal server error!\nPlease try again later.`);
         })
+}
+
+export const signOutUser = () => {
+    const auth = getAuth();
+    signOut(auth)
+        .then(() => {
+            localStorage.removeItem("currentlyLoggedInUser");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }

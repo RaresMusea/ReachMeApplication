@@ -6,15 +6,10 @@ import PasswordImageInput from "../../Forms/Inputs/PasswordImageInput";
 import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
 import {signUpCredentials} from "../../../Modules/Validation/SignUpValidation";
 import {determineLoginType, logInCredentials} from "../../../Modules/Validation/LogInValidation";
-import {isConnectionAvailable} from "../../../Services/Authentication Services/SignUpService";
-import {authentication} from "../../../Modules/Firebase/FirebaseIntegration";
-import {
-    displayLogInSuccessAlert,
-    markCurrentUserAsLoggedIn,
-    wasLoginProcessRedirected
-} from "../../../Modules/Log In/LogInModule";
-import {buildError, displayFirebaseAuthFailureAlert} from "../../../Modules/Sign Up/SignUpUtils";
+import {wasLoginProcessRedirected} from "../../../Modules/Log In/LogInModule";
+import {buildError} from "../../../Modules/Sign Up/SignUpUtils";
 import {validatePassword} from "../../../Modules/Validation/AuthValidationBase";
+import {logInWithEmailAndPassword} from "../../../Services/Authentication Services/LogInService";
 
 
 export default function Login() {
@@ -64,28 +59,13 @@ export default function Login() {
         }
 
         if (canLogIn) {
+
             await logIn();
         }
     }
 
     const logIn = async () => {
-        if (await isConnectionAvailable()) {
-            authentication.signInWithEmailAndPassword(logInCredentials.name.userOrEmail, logInCredentials.pass)
-                .then(userCredential => {
-                    const accountUid = userCredential.user.uid;
-                    console.log(accountUid);
-                    markCurrentUserAsLoggedIn(accountUid);
-                    displayLogInSuccessAlert("You've been logged in successfully!");
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                })
-                .catch(error => {
-                    const errorCode = error.code;
-                    console.log(error);
-                    displayFirebaseAuthFailureAlert(errorCode);
-                });
-        }
+        await logInWithEmailAndPassword();
     }
 
     return (

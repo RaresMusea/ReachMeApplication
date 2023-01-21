@@ -65,7 +65,7 @@ export default function SignUp(props) {
 
     const signUp = async () => {
         if (await isConnectionAvailable()) {
-            if (!accountWithSameCredentialsAlreadyExists()) {
+            if (!accountWithSameCredentialsAlreadyExists(signUpCredentials.username)) {
                 userInUse = false;
                 authentication.createUserWithEmailAndPassword(signUpCredentials.emailAddress, signUpCredentials.pass)
                     .then((userCredential) => {

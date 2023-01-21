@@ -40,8 +40,8 @@ export const isConnectionAvailable = async () => {
     return true;
 }
 
-export const accountWithSameCredentialsAlreadyExists = () => {
-    fetch(`http://localhost:8080/account/username=${signUpCredentials.username}`)
+export const accountWithSameCredentialsAlreadyExists = (username) => {
+    fetch(`http://localhost:8080/account/username=${username}`)
         .then(response => {
             return response.json();
         })

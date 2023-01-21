@@ -41,6 +41,10 @@ export const validateUsername = (username) => {
         return buildError("Invalid username! It must contain 5 characters at least and 30 at most!")
     }
 
+    if (isEmailValid(username)) {
+        return buildError("The username cannot be an email address!");
+    }
+
     return {};
 }
 

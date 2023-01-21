@@ -17,7 +17,7 @@ export const determineLoginType = () => {
         return;
     }
 
-    if (validateUsername(logInCredentials.name.userOrEmail) === {}) {
+    if (isObjectEmpty(validateUsername(logInCredentials.name.userOrEmail))) {
         logInCredentials.name.type = "username";
         return;
     }

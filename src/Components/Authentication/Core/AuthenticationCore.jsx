@@ -96,10 +96,6 @@ export default function AuthenticationCore(props) {
                                 </div>
                                 {userLogged ?
                                     <section className='ForgotPasswordSection'>
-                                        {/*<h4 className="HeadingFour"
-                                            style={{
-                                                cursor: "pointer"
-                                            }}>Forgot password?</h4>*/}
                                         <InputDialog dialogTitle={resetPasswordDialogProps.dialogTitle}
                                                      dialogMessage={resetPasswordDialogProps.dialogMessage}
                                                      actionName={resetPasswordDialogProps.actionName}

@@ -1,0 +1,67 @@
+.MuiDrawer-paper {
+  width: 400px !important;
+}
+
+.NavigationWrapper {
+  @apply p-1;
+  @apply flex;
+  @apply align-middle;
+  @apply justify-between;
+  @apply w-[100%];
+  @apply bg-[#ffff];
+  @apply fixed;
+  z-index: 1;
+  box-shadow: 0 2px 2px #dbdbdb;
+}
+
+.LeftSideNavigation {
+  @apply ml-[1em];
+  @apply flex;
+  @apply justify-center;
+  transition: .2s ease-in-out;
+  align-items: center;
+
+  .LogoImage {
+    @apply h-[60px];
+  }
+
+  .ReachMeLogoText {
+    @apply text-[#108c8e];
+    @apply font-extrabold;
+    @apply ml-[.2em];
+    @apply cursor-pointer;
+    @apply text-[2.5em];
+    transition: transform .2s ease-in-out;
+    vertical-align: middle;
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  .Drawer {
+    width: 400px !important;
+  }
+}
+
+.LeftSideNavigation:hover {
+  transform: translateX(50px);
+}
+
+.RightSideNavigation {
+  .IconsDrawer {
+    @apply flex;
+    align-items: center;
+    @apply justify-center;
+
+    .Icon {
+      @apply mt-[0.5em];
+      @apply w-[2.5em];
+      @apply h-[2.5em];
+      @apply cursor-pointer;
+      @apply mr-[.5em];
+      transition: .2s ease-in-out;
+    }
+
+    .Icon:active, .Icon:hover {
+      @apply animate-pulse
+    }
+  }
+}

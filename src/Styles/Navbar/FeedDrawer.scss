@@ -1,0 +1,57 @@
+.DrawerHeading {
+  @apply mt-2;
+  @apply flex;
+  @apply align-middle;
+  @apply justify-center;
+
+
+  .UpperDrawerTitle {
+    font-family: 'Rajdhani', sans-serif;
+    @apply text-[2.5em];
+    @apply font-bold;
+    @apply text-center;
+    @apply text-[#108e8e]
+  }
+}
+
+.DrawerProfilePicWrapper {
+  @apply rounded-[100%];
+  @apply m-0;
+  @apply p-0;
+  @apply mt-[1em];
+  @apply w-[120px];
+  @apply h-[120px];
+  margin: 0 auto;
+
+  .DrawerProfilePic {
+    @apply w-[120px];
+    @apply h-[120px];
+    @apply rounded-[100%];
+    margin: 0 auto;
+    border: 5px solid #108c8e;
+    transition: .2s ease-in-out;
+  }
+
+  .DrawerProfilePic:hover {
+    filter: grayscale(1);
+  }
+
+  .DrawerProfilePic:active {
+    transform: scale(0.8);
+  }
+}
+
+.RealName {
+  @apply text-[#094561];
+  @apply text-center;
+  @apply font-bold;
+  @apply font-[1.3em];
+  @apply mt-[.2em];
+  font-family: 'PT Sans', sans-serif;
+}
+
+.Text {
+  @apply text-center;
+  @apply font-bold;
+  font-family: 'PT Sans', sans-serif;
+}

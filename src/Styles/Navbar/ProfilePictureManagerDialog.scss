@@ -1,0 +1,29 @@
+.ProfilePictureManagerDialog {
+  border-radius: 15px !important;
+
+  .ProfilePictureManagerTitle {
+    @apply text-[1.5em];
+    @apply font-extrabold;
+    @apply text-[#094561];
+    @apply text-center;
+    font-family: 'Rajdhani', sans-serif !important;
+
+  }
+
+  .UploadButton,
+  .DeleteButton,
+  .Cancel {
+    font-family: 'PT Sans', sans-serif !important;
+    @apply font-bold;
+    @apply text-[#108e8e];
+  }
+
+  .DeleteButton {
+    @apply text-[red];
+  }
+
+  .Cancel {
+    @apply text-[#fed349];
+  }
+}
+

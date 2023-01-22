@@ -13,13 +13,6 @@ export default function Navbar(props) {
     return (
         <>
             <div className='NavigationWrapper'>
-                {/*<div className='LeftSideNavigation'>
-                    <img src={logoPic}
-                         alt='ReachMe App Logo'
-                         className='LogoImage'/>
-                    <h1 className='ReachMeLogoText'>
-                        ReachMe
-                    </h1>*/}
                 <FeedDrawer className='Drawer'
                             update={props.scheduleUpdate}/>
                 <div className='RightSideNavigation'>

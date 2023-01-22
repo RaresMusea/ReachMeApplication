@@ -5,7 +5,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {loggedInAccount, removeProfilePictureForUser} from "../../../Services/Feed Services/FeedDrawerService";
 import '../../../Styles/Navbar/FeedDrawer.scss';
 import '../../../Styles/Navbar/ProfilePictureManagerDialog.scss';
-import {Divider, ListItem} from "@mui/material";
+import {Avatar, Divider, ListItem} from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import {CameraAlt, Cancel, DeleteForever, Upload} from "@mui/icons-material";
@@ -29,19 +29,19 @@ export default function ProfilePhotoManager(props) {
         setOpen(false);
     };
 
-    const removeProfilePicture = () => {
-        removeProfilePictureForUser();
+    const removeProfilePicture = async () => {
+        await removeProfilePictureForUser();
         props.update();
     }
 
     return (
         <div>
             <span className='DrawerProfilePicWrapper' title='Manage your profile picture'>
-                <img className='DrawerProfilePic'
-                     onClick={handleClickOpen}
-                     src={getProfilePictureForLoggedInUser()}
-                     alt='Circ'
-                     title='Manage your profile picture'/>
+                <Avatar className='DrawerProfilePic'
+                        onClick={handleClickOpen}
+                        src={getProfilePictureForLoggedInUser()}
+                        alt='Profile picture'
+                        title='Manage your profile picture'/>
             </span>
             <Dialog
                 className='ProfilePictureManagerDialog'

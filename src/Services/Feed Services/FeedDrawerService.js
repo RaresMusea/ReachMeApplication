@@ -1,4 +1,5 @@
 import {displayRemovalSuccessfulAlert} from "../../Modules/Feed/Navbar/Account Management/AccountManagementModule";
+import {storage} from "../../Modules/Firebase/FirebaseIntegration";
 
 export let update = false;
 export let loggedInAccount = {};
@@ -21,7 +22,13 @@ const getCurrentUserInfo = (identifier) => {
         })
 }
 
-export const removeProfilePictureForUser = () => {
+export const getRequiredMetadata = (identifier) => {
+    getCurrentUserInfo(identifier);
+}
+
+export const removeProfilePictureForUser = async () => {
+
+    const imageHref = loggedInAccount.profilePhotoHref;
     const patchRequestConfig = {
         method: "PATCH",
         body: "",
@@ -46,8 +53,14 @@ export const removeProfilePictureForUser = () => {
             console.log(err);
 
         });
+    deletePictureFromFirebaseStorage(imageHref);
 }
 
-export const getRequiredMetadata = (identifier) => {
-    getCurrentUserInfo(identifier);
+const deletePictureFromFirebaseStorage = (url) => {
+    const pictureReference = storage.refFromURL(url);
+
+    pictureReference.delete()
+        .then(() => console.log("Deletion from firebase successfully"))
+        .catch(err => console.log(err));
 }
+

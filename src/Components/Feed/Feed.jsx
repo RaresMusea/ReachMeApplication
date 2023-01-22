@@ -15,9 +15,7 @@ export default function Feed() {
         if (update) {
             getRequiredMetadata(currentlyLoggedInUser);
             setUpdate(false);
-            if (update === false) {
-                console.log("i was reset");
-            }
+            console.log("he updated me!!!");
         }
     }, [update]);
 

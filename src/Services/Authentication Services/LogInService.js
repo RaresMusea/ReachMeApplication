@@ -5,55 +5,62 @@ import {displayFirebaseAuthFailureAlert, displaySignUpFailedAlert} from "../../M
 import {emailForPassReset} from "../../Components/Authentication/Core/AuthenticationCore";
 import {handleFailedPasswordReset} from "../../Modules/Session/CurrentSessionModule";
 import {authentication} from "../../Modules/Firebase/FirebaseIntegration";
-import {logInCredentials} from "../../Modules/Validation/LogInValidation";
+import {logInCredentials as loginCredentials, logInCredentials} from "../../Modules/Validation/LogInValidation";
 import {displayLogInSuccessAlert, markCurrentUserAsLoggedIn} from "../../Modules/Log In/LogInModule";
 
 export let errorsEncountered = false;
 export let account = {};
 export let retrievedEmailAddress = ``;
 
-export const logInWithEmailAndPassword = async () => {
+export const logInUser = async () => {
     if (await isConnectionAvailable()) {
-        if (logInCredentials.name.type === 'username') {
-            await getEmailForGivenUsername(logInCredentials.name.userOrEmail);
+        if (loginCredentials.name.type === 'email') {
+            await logInWithEmailAndPassword();
+        } else {
+            await logInWithUsernameAndPassword();
         }
-        authentication.signInWithEmailAndPassword(logInCredentials.name.type === 'username' ?
-                retrievedEmailAddress :
-                logInCredentials.name.userOrEmail
-            , logInCredentials.pass)
-
-            .then(userCredential => {
-                const accountUid = userCredential.user.uid;
-                console.log(accountUid);
-                markCurrentUserAsLoggedIn(accountUid);
-                displayLogInSuccessAlert("You've been logged in successfully!");
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            })
-
-            .catch(error => {
-                const errorCode = error.code;
-                console.log(error);
-                displayFirebaseAuthFailureAlert(errorCode);
-            });
+    } else {
+        displaySignUpFailedAlert(`Server down for maintenance. We are apologizing for this inconvenient and we're trying
+            out best to solve the problem as soon as possible so you can use ReachMe App again.
+            Best regards,
+            ReachMe development team`);
     }
 }
 
-const getEmailForGivenUsername = async (username) => {
-    fetch(`http://localhost:8080/account/username=${username}`)
+const logInWithEmailAndPassword = async () => {
+    authentication.signInWithEmailAndPassword(logInCredentials.name.userOrEmail, logInCredentials.pass)
+
+        .then(userCredential => {
+            const accountUid = userCredential.user.uid;
+            console.log(accountUid);
+            markCurrentUserAsLoggedIn(accountUid);
+            displayLogInSuccessAlert("You've been logged in successfully!");
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        })
+
+        .catch(error => {
+            const errorCode = error.code;
+            console.log(error);
+            displayFirebaseAuthFailureAlert(errorCode);
+        });
+}
+
+
+const logInWithUsernameAndPassword = async () => {
+    fetch(`http://localhost:8080/account/username=${logInCredentials.name.userOrEmail}`)
         .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            localStorage.setItem("reqResp", data.emailAddress)
+        .then(async (data) => {
+            logInCredentials.name.userOrEmail = data.emailAddress;
+            await logInWithEmailAndPassword();
         })
         .catch(() => {
             displaySignUpFailedAlert('The provided username does not describe any of the registered accounts within' +
                 'the application!');
         });
-    retrievedEmailAddress = localStorage.getItem("reqResp");
-    localStorage.removeItem("reqResp");
 }
+
 
 export const retrieveUserAccountDetailsByEmail = (email) => {
     const passResetAccountDataObtainEndpoint = `http://localhost:8080/account/email=${email}`;
@@ -87,9 +94,8 @@ export const resetPasswordViaEmail = async () => {
     }
 }
 
-export const storeData = async (value) => {
-    retrievedEmailAddress = value;
-}
+
+
 
 
 

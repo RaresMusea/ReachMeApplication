@@ -9,7 +9,7 @@ import {determineLoginType, logInCredentials} from "../../../Modules/Validation/
 import {wasLoginProcessRedirected} from "../../../Modules/Log In/LogInModule";
 import {buildError} from "../../../Modules/Sign Up/SignUpUtils";
 import {validatePassword} from "../../../Modules/Validation/AuthValidationBase";
-import {logInWithEmailAndPassword} from "../../../Services/Authentication Services/LogInService";
+import {logInUser} from "../../../Services/Authentication Services/LogInService";
 
 
 export default function Login() {
@@ -59,14 +59,10 @@ export default function Login() {
         }
 
         if (canLogIn) {
-
-            await logIn();
+            await logInUser();
         }
     }
 
-    const logIn = async () => {
-        await logInWithEmailAndPassword();
-    }
 
     return (
         <div className='SignUp'>

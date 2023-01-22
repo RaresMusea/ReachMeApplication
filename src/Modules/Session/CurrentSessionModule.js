@@ -2,6 +2,8 @@ import {displaySignUpFailedAlert} from "../Sign Up/SignUpUtils";
 import {retrieveUserAccountDetailsByEmail} from "../../Services/Authentication Services/LogInService";
 import {emailForPassReset} from "../../Components/Authentication/Core/AuthenticationCore";
 
+export const currentlyLoggedInUser = localStorage.getItem("currentlyLoggedInUser");
+
 export const userWasLoggedInPreviously = () => {
     const result = localStorage.getItem("currentlyLoggedInUser");
     return result === undefined || result === null;
@@ -17,4 +19,8 @@ export const handleFailedPasswordReset = () => {
 export const userExists = () => {
     retrieveUserAccountDetailsByEmail(emailForPassReset);
     return localStorage.getItem("userRequestingPasswordResetExists") === "true";
+}
+
+export const updateIsNeeded = () => {
+    return localStorage.getItem("updateNeeded") === "true";
 }

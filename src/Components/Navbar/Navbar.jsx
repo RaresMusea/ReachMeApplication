@@ -3,11 +3,7 @@ import {defaultSearchIconName, searchIconEngaged} from "../../Modules/Object/Com
 import {changeIconSource} from "../../Modules/Feed/Navbar/NavbarModule";
 import FeedDrawer from "../Feed/Drawer/FeedDrawer";
 
-export default function Navbar() {
-
-    const reload = () => {
-        window.location.reload();
-    }
+export default function Navbar(props) {
 
     const toggleSearch = (event) => {
         const identifier = event.target.id;
@@ -24,7 +20,8 @@ export default function Navbar() {
                     <h1 className='ReachMeLogoText'>
                         ReachMe
                     </h1>*/}
-                <FeedDrawer className='Drawer'/>
+                <FeedDrawer className='Drawer'
+                            update={props.scheduleUpdate}/>
                 <div className='RightSideNavigation'>
                     <div className='IconsDrawer'>
                         <img src={defaultSearchIconName}

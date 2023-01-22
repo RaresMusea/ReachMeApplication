@@ -1,5 +1,5 @@
 .MuiDrawer-paper {
-  width: 400px !important;
+  width: 250px;
 }
 
 .NavigationWrapper {
@@ -63,5 +63,11 @@
     .Icon:active, .Icon:hover {
       @apply animate-pulse
     }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .MuiDrawer-paper {
+    width: 400px;
   }
 }

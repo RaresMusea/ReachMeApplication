@@ -1,21 +1,21 @@
-import {currentLoggedInUser} from "../../../Services/Feed Services/FeedDrawerService";
+import {loggedInAccount} from "../../../Services/Feed Services/FeedDrawerService";
 import ProfilePhotoManager from "./ProfilePhotoManager";
 
-export default function UpperSection() {
+export default function UpperSection(props) {
 
     return (
         <div className='Upper'>
             <div className='DrawerHeading'>
                 <h3 className='UpperDrawerTitle'>My account</h3>
             </div>
-            <ProfilePhotoManager/>
+            <ProfilePhotoManager update={props.update}/>
             <p className='RealName'
                title='Name'>
-                {currentLoggedInUser.userRealName}
+                {loggedInAccount.userRealName}
             </p>
             <p className='Text'
                title='Username'>
-                {currentLoggedInUser.userName}
+                {loggedInAccount.userName}
             </p>
         </div>);
 }

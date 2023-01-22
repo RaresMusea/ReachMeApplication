@@ -25,5 +25,20 @@
   .Cancel {
     @apply text-[#fed349];
   }
+
+  .ProfilePictureSuccessAlert,
+  .ProfilePictureErrorAlert {
+    margin: 0 auto !important;
+    @apply w-[200px];
+  }
+
+  .ProfilePictureErrorAlert {
+    @apply bg-[red];
+  }
+
+  .ProfilePictureSuccessAlert {
+    @apply bg-[#094561];
+  }
+
 }
 

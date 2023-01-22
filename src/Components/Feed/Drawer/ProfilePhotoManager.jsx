@@ -2,20 +2,23 @@ import * as React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import {currentLoggedInUser} from "../../../Services/Feed Services/FeedDrawerService";
+import {loggedInAccount, removeProfilePictureForUser} from "../../../Services/Feed Services/FeedDrawerService";
 import '../../../Styles/Navbar/FeedDrawer.scss';
 import '../../../Styles/Navbar/ProfilePictureManagerDialog.scss';
 import {Divider, ListItem} from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import {CameraAlt, Cancel, DeleteForever, Upload} from "@mui/icons-material";
+import {
+    getProfilePictureForLoggedInUser
+} from "../../../Modules/Feed/Navbar/Account Management/AccountManagementModule";
 
 
 /*const Transition = React.forwardRef(function Transition(props, ref) {
     return <Zoom timeout={500} ref={ref} {...props}  children={{name:"John"}}/>;
 });*/
 
-export default function ProfilePhotoManager() {
+export default function ProfilePhotoManager(props) {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -26,12 +29,17 @@ export default function ProfilePhotoManager() {
         setOpen(false);
     };
 
+    const removeProfilePicture = () => {
+        removeProfilePictureForUser();
+        props.update();
+    }
+
     return (
         <div>
             <span className='DrawerProfilePicWrapper' title='Manage your profile picture'>
                 <img className='DrawerProfilePic'
                      onClick={handleClickOpen}
-                     src={currentLoggedInUser.profilePhotoHref}
+                     src={getProfilePictureForLoggedInUser()}
                      alt='Circ'
                      title='Manage your profile picture'/>
             </span>
@@ -39,7 +47,6 @@ export default function ProfilePhotoManager() {
                 className='ProfilePictureManagerDialog'
                 open={open}
                 maxWidth="md"
-                maxHeight="md"
                 keepMounted
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
@@ -67,9 +74,10 @@ export default function ProfilePhotoManager() {
                         </ListItemButton>
                     </ListItem>
                     <Divider/>
-                    {currentLoggedInUser.profilePhotoHref === "" ? null :
+                    {loggedInAccount.profilePhotoHref === "" ? null :
                         <>
-                            <ListItem disablePadding>
+                            <ListItem disablePadding
+                                      onClick={removeProfilePicture}>
                                 <ListItemButton>
                                     <ListItemIcon>
                                         <DeleteForever/>
@@ -93,7 +101,9 @@ export default function ProfilePhotoManager() {
                     </ListItem>
                     <Divider/>
                 </DialogContent>
+                <div id="ProfilePictureManagementAlerts"/>
             </Dialog>
         </div>
+
     );
 }

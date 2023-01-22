@@ -14,7 +14,7 @@ import '../../../Styles/Navbar/FeedDrawer.scss';
 import logoPic from "../../../Media/Images/logoPic.svg";
 import UpperSection from "./UpperSection";
 
-export default function FeedDrawer() {
+export default function FeedDrawer(props) {
     const [state, setState] = React.useState({
         top: false,
         left: false,
@@ -33,13 +33,13 @@ export default function FeedDrawer() {
 
     const list = (anchor) => (
         <Box
-            sx={{width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 400}}
+            sx={{width: anchor === 'top' || anchor === 'bottom' ? 'auto' : (window.innerWidth > 800 ? 400 : 230)}}
             role="presentation"
             /*onClick={toggleDrawer(anchor, false)}*/
             onKeyDown={toggleDrawer(anchor, false)}
         >
 
-            <UpperSection/>
+            <UpperSection update={props.update}/>
             {/* <List>
                 {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem key={text} disablePadding>
@@ -84,7 +84,6 @@ export default function FeedDrawer() {
                     </div>
                     <Drawer
                         anchor={anchor}
-                        style={{width: '200px'}}
                         open={state[anchor]}
                         variant="temporary"
                         onClose={toggleDrawer(anchor, false)}

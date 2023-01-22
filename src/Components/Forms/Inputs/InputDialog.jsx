@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -8,7 +9,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import '../../../Styles/Forms/Input/InputDialog.scss';
 import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
-import {useEffect, useState} from "react";
 import {theme} from "../../../Modules/Themes/InputTheme";
 import {ThemeProvider} from "@mui/material";
 

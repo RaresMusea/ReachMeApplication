@@ -50,7 +50,7 @@ export default function ProfilePhotoManager(props) {
         if (fileToUpload !== undefined) {
             await updateProfilePictureWithLocalFileUpload(fileToUpload);
             props.update();
-            setTimeout(() => handleClose(), 700);
+            setTimeout(() => handleClose(), 1000);
         }
     }
 

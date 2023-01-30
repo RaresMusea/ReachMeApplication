@@ -91,7 +91,8 @@ const uploadLocalProfilePicture = async (payload) => {
         },
         (error) => {
             const alertConfiguration = {
-                message: "Cannot process your request due to an internal server error.",
+                message: "Cannot process your request due to an internal server error." +
+                    "More details: " + error,
                 severity: "error",
                 target: "#ProfilePictureManagementAlerts",
                 style: "ProfilePictureErrorAlert",
@@ -101,8 +102,8 @@ const uploadLocalProfilePicture = async (payload) => {
         () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                 console.log(downloadURL);
-                /*localStorage.setItem("newProfilePictureHref", downloadURL);*/
                 saveUploadedProfilePictureDataLocally(downloadURL);
+                loggedInAccount.profilePhotoHref = downloadURL;
             });
         }
     );

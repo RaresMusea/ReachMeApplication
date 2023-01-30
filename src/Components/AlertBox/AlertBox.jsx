@@ -1,7 +1,7 @@
 import {Fade, Snackbar} from "@mui/material";
 import {useState} from "react";
 
-export default function AlertBox() {
+export default function AlertBox(props) {
 
     const [open, setOpen] = useState(true);
 
@@ -11,7 +11,7 @@ export default function AlertBox() {
                       autoHideDuration={500}
                       onClose={() => setOpen(false)}
                       TransitionComponent={Fade}
-                      message={this.props.message}/>
+                      message={props.message}/>
         </div>
     );
 }

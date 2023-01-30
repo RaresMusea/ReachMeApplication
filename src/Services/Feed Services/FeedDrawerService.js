@@ -1,10 +1,19 @@
-import {displayRemovalSuccessfulAlert} from "../../Modules/Feed/Navbar/Account Management/AccountManagementModule";
+import {
+    displayFailAlert,
+    displayRemovalSuccessfulAlert,
+    displayUploadStatusAlertBox
+} from "../../Modules/Feed/Navbar/Account Management/AccountManagementModule";
 import {storage} from "../../Modules/Firebase/FirebaseIntegration";
+import {isConnectionAvailable} from "../Authentication Services/SignUpService";
+import {currentlyLoggedInUser} from "../../Modules/Session/CurrentSessionModule";
+import {getDownloadURL} from "firebase/storage";
 
 export let update = false;
 export let loggedInAccount = {};
+export const allowedProfilePicturesTypes = "image/png,image/jpeg,image/svg,image/jpg";
 const uploadProfilePictureEndpoint = `http://localhost:8080/account/${localStorage.getItem(`currentlyLoggedInUser`)}
 /RemoveProfilePicture`;
+
 
 export const setUpdate = (value) => {
     update = value;
@@ -41,13 +50,13 @@ export const removeProfilePictureForUser = async () => {
     fetch(uploadProfilePictureEndpoint, patchRequestConfig)
         .then(response => response.json())
         .then(() => {
-            const dialogConfiguration = {
+            const alertConfiguration = {
                 message: "The picture was deleted successfully!",
                 severity: "success",
                 target: "#ProfilePictureManagementAlerts",
                 style: "ProfilePictureSuccessAlert"
             };
-            displayRemovalSuccessfulAlert(dialogConfiguration);
+            displayRemovalSuccessfulAlert(alertConfiguration);
         })
         .catch((err) => {
             console.log(err);
@@ -62,5 +71,83 @@ const deletePictureFromFirebaseStorage = (url) => {
     pictureReference.delete()
         .then(() => console.log("Deletion from firebase successfully"))
         .catch(err => console.log(err));
+}
+
+const uploadLocalProfilePicture = async (payload) => {
+    const fileName = payload.name;
+
+    const uploadTask = storage.ref("ProfilePictures")
+        .child(currentlyLoggedInUser)
+        .child(fileName)
+        .put(payload);
+
+    uploadTask.on('state_changed', (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            displayUploadStatusAlertBox(`Your new profile picture is being uploaded on ReachMe - 
+        ${Math.floor(progress)}% complete`);
+
+            setTimeout(() => {
+            }, 120);
+        },
+        (error) => {
+            const alertConfiguration = {
+                message: "Cannot process your request due to an internal server error.",
+                severity: "error",
+                target: "#ProfilePictureManagementAlerts",
+                style: "ProfilePictureErrorAlert",
+            };
+            displayFailAlert(alertConfiguration);
+        },
+        () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                console.log(downloadURL);
+                /*localStorage.setItem("newProfilePictureHref", downloadURL);*/
+                saveUploadedProfilePictureDataLocally(downloadURL);
+            });
+        }
+    );
+}
+
+const saveUploadedProfilePictureDataLocally = async (href) => {
+    const patchRequestOptions = {
+        method: `PATCH`,
+        body: href,
+        headers: {
+            'Content-Type': `text/html`,
+            "Accept": "application/json",
+        }
+    };
+
+    fetch(`http://localhost:8080/account/${localStorage.getItem('currentUserIdentifier')}/ChangeProfilePicture`, patchRequestOptions)
+        .then(response => response.json())
+        .then((data) => {
+            loggedInAccount.profilePhotoHref = data.profilePhotoHref;
+        })
+        .catch(() => {
+            const alertConfiguration = {
+                message: "Cannot process your request due to an internal server error. Please try again later.",
+                severity: "error",
+                target: "#ProfilePictureManagementAlerts",
+                style: "ProfilePictureErrorAlert",
+            };
+            displayFailAlert(alertConfiguration);
+        });
+}
+
+export const saveLocalStoredProfilePicture = async (file) => {
+    if (await isConnectionAvailable()) {
+        if (loggedInAccount.profilePhotoHref !== "") {
+            await deletePictureFromFirebaseStorage(loggedInAccount.profilePhotoHref);
+        }
+        await uploadLocalProfilePicture(file);
+    } else {
+        const alertConfiguration = {
+            message: "The server is down for maintenance. Your picture upload could not be processed.",
+            severity: "error",
+            target: "#ProfilePictureManagementAlerts",
+            style: "ProfilePictureErrorAlert",
+        };
+        displayFailAlert(alertConfiguration);
+    }
 }
 

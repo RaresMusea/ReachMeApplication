@@ -2,21 +2,31 @@ import * as React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import {loggedInAccount, removeProfilePictureForUser} from "../../../Services/Feed Services/FeedDrawerService";
+import {
+    allowedProfilePicturesTypes,
+    loggedInAccount,
+    removeProfilePictureForUser
+} from "../../../Services/Feed Services/FeedDrawerService";
 import '../../../Styles/Navbar/FeedDrawer.scss';
 import '../../../Styles/Navbar/ProfilePictureManagerDialog.scss';
-import {Avatar, Divider, ListItem} from "@mui/material";
+import {Avatar, Divider, ListItem, Slide} from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import {CameraAlt, Cancel, DeleteForever, Upload} from "@mui/icons-material";
 import {
-    getProfilePictureForLoggedInUser
+    getProfilePictureForLoggedInUser,
+    updateProfilePictureWithLocalFileUpload,
+    verifyPictureUpload
 } from "../../../Modules/Feed/Navbar/Account Management/AccountManagementModule";
 
 
 /*const Transition = React.forwardRef(function Transition(props, ref) {
     return <Zoom timeout={500} ref={ref} {...props}  children={{name:"John"}}/>;
 });*/
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props}/>;
+});
 
 export default function ProfilePhotoManager(props) {
     const [open, setOpen] = React.useState(false);
@@ -32,6 +42,16 @@ export default function ProfilePhotoManager(props) {
     const removeProfilePicture = async () => {
         await removeProfilePictureForUser();
         props.update();
+        setTimeout(() => handleClose(), 700);
+    }
+
+    const uploadProfilePictureUsingLocalResource = async (e) => {
+        const fileToUpload = verifyPictureUpload(e);
+        if (fileToUpload !== undefined) {
+            await updateProfilePictureWithLocalFileUpload(fileToUpload);
+            props.update();
+            setTimeout(() => handleClose(), 700);
+        }
     }
 
     return (
@@ -46,6 +66,7 @@ export default function ProfilePhotoManager(props) {
             <Dialog
                 className='ProfilePictureManagerDialog'
                 open={open}
+                TransitionComponent={Transition}
                 maxWidth="md"
                 keepMounted
                 onClose={handleClose}
@@ -61,7 +82,13 @@ export default function ProfilePhotoManager(props) {
                             <ListItemIcon>
                                 <Upload/>
                             </ListItemIcon>
-                            <p className="UploadButton">Upload a picture from your device</p>
+                            <label htmlFor="ChangeProfilePictureInput">
+                                <input type="file"
+                                       id="ChangeProfilePictureInput"
+                                       accept={allowedProfilePicturesTypes}
+                                       onChange={uploadProfilePictureUsingLocalResource}/>
+                                <p className="UploadButton">Upload a picture from your device</p>
+                            </label>
                         </ListItemButton>
                     </ListItem>
                     <Divider/>

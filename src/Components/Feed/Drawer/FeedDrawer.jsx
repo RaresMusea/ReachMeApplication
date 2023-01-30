@@ -1,14 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import '../../../Styles/Navbar/Navbar.scss';
 import '../../../Styles/Navbar/FeedDrawer.scss';
 import logoPic from "../../../Media/Images/logoPic.svg";
@@ -53,7 +46,7 @@ export default function FeedDrawer(props) {
                 ))}
             </List>*/}
             <Divider/>
-            <List>
+            {/*<List>
                 {['All mail', 'Trash', 'Spam'].map((text, index) => (
                     <ListItem key={text} disablePadding>
                         <ListItemButton>
@@ -64,7 +57,7 @@ export default function FeedDrawer(props) {
                         </ListItemButton>
                     </ListItem>
                 ))}
-            </List>
+            </List>*/}
         </Box>
     );
 

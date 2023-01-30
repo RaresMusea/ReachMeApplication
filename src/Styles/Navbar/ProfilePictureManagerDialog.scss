@@ -1,5 +1,6 @@
 .ProfilePictureManagerDialog {
   border-radius: 15px !important;
+  transition: .2s ease-in-out !important;
 
   .ProfilePictureManagerTitle {
     @apply text-[1.5em];
@@ -28,8 +29,8 @@
 
   .ProfilePictureSuccessAlert,
   .ProfilePictureErrorAlert {
-    margin: 0 auto !important;
-    @apply w-[200px];
+    @apply mt-[1em];
+    border-radius: 0 !important;
   }
 
   .ProfilePictureErrorAlert {
@@ -38,6 +39,10 @@
 
   .ProfilePictureSuccessAlert {
     @apply bg-[#094561];
+  }
+
+  #ChangeProfilePictureInput {
+    display: none;
   }
 
 }

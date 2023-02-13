@@ -119,7 +119,7 @@ const saveUploadedProfilePictureDataLocally = async (href) => {
         }
     };
 
-    fetch(`http://localhost:8080/account/${localStorage.getItem('currentUserIdentifier')}/ChangeProfilePicture`, patchRequestOptions)
+    fetch(`http://localhost:8080/account/${localStorage.getItem('currentlyLoggedInUser')}/ChangeProfilePicture`, patchRequestOptions)
         .then(response => response.json())
         .then((data) => {
             loggedInAccount.profilePhotoHref = data.profilePhotoHref;

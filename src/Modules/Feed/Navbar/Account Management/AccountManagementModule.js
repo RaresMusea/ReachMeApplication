@@ -32,6 +32,10 @@ export const displayFailAlert = (config) => {
 }
 
 export const displayUploadStatusAlertBox = (message) => {
+    displayAlertBox(message);
+}
+
+export const displayAlertBox = (message) => {
     const div = document.createElement('div');
     const profilePictureAlertContainer = document.getElementById('ProfilePictureManagementAlerts');
     profilePictureAlertContainer.appendChild(div);

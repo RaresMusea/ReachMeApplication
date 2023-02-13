@@ -9,8 +9,9 @@ import {
     SettingsApplications
 } from "@mui/icons-material";
 import "../../../Styles/Navbar/FeedDrawer.scss";
+import SignOutModal from "../../Modals/SignOutModal";
 
-export default function MiddleSection(props) {
+export default function MiddleSection() {
 
     return (
         <>
@@ -41,7 +42,7 @@ export default function MiddleSection(props) {
                         <div className="ListItemText">Privacy</div>
                     </ListItemButton>
                 </ListItem>
-                <ListItem key="accountPrivacy" disablePadding>
+                <ListItem key="accountBackup" disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
                             <BackupRounded/>
@@ -73,7 +74,7 @@ export default function MiddleSection(props) {
                 </ListItem>
             </List>
             <Divider/>
-            <button className="SignOutButton">Sign Out</button>
+            <SignOutModal/>
         </>
     );
 }

@@ -91,10 +91,55 @@
   @apply block;
   @apply bg-[#032435];
   @apply text-white;
+  @apply font-extrabold;
   font-family: 'Rajdhani', sans-serif;
   @apply text-[1.5em];
   @apply rounded-md;
   @apply w-1/2;
   margin: 0 auto;
   @apply mt-8;
+  transition: .2s ease-in-out;
+}
+
+.SignOutButton:hover {
+  @apply bg-[#108e8e];
+  box-shadow: 0 6px 6px #108c8e;
+}
+
+.SignOutModalTitle {
+  font-family: 'Rajdhani', sans-serif !important;
+  font-size: 1.5em !important;
+  font-weight: bolder !important;
+  @apply text-[#094561];
+}
+
+.SignOutModalContentText {
+  p {
+    font-family: 'PT Sans', sans-serif !important;
+    @apply text-[1em];
+    @apply font-bold;
+    text-indent: .2em;
+  }
+}
+
+.SignOutModalButton {
+  @apply text-[white];
+  @apply rounded;
+  @apply p-1;
+  @apply mr-2;
+  @apply ml-1;
+}
+
+.SignOutModalCancelButton {
+  @apply bg-[#fed349];
+}
+
+.SignOutModalProceedButton {
+  @apply bg-[#094561];
+}
+
+@media screen and (max-height: 600px) {
+  .SignOutButton {
+    @apply mb-8;
+  }
 }

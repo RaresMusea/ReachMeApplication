@@ -1,4 +1,5 @@
 import {
+    displayAlertBox,
     displayFailAlert,
     displayRemovalSuccessfulAlert,
     displayUploadStatusAlertBox
@@ -7,6 +8,7 @@ import {storage} from "../../Modules/Firebase/FirebaseIntegration";
 import {isConnectionAvailable} from "../Authentication Services/SignUpService";
 import {currentlyLoggedInUser} from "../../Modules/Session/CurrentSessionModule";
 import {getDownloadURL} from "firebase/storage";
+import {getAuth, signOut} from "firebase/auth";
 
 export let update = false;
 export let loggedInAccount = {};
@@ -150,5 +152,19 @@ export const saveLocalStoredProfilePicture = async (file) => {
         };
         displayFailAlert(alertConfiguration);
     }
+}
+
+export const signOutUser = async () => {
+    const currentAuth = getAuth();
+
+    signOut(currentAuth).then(() => {
+        localStorage.removeItem('currentlyLoggedInUser');
+        displayAlertBox("You are being logged out...");
+        setTimeout(() => {
+            window.location.reload()
+        }, 1000);
+    }).catch(err => {
+        console.log(err);
+    });
 }
 

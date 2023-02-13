@@ -96,6 +96,7 @@ export default function FeedDrawer(props) {
                     >
                         {list(anchor)}
                     </Drawer>
+                    <div id="ProfilePictureManagementAlerts"/>
                 </React.Fragment>
             ))}
         </div>

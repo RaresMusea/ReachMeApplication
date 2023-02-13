@@ -1,3 +1,11 @@
+.DrawerBox {
+  max-width: 100%;
+}
+
+.DrawerBox::-webkit-scrollbar {
+  display: none;
+}
+
 .DrawerHeading {
   @apply mt-2;
   @apply flex;
@@ -53,5 +61,40 @@
 .Text {
   @apply text-center;
   @apply font-bold;
+  @apply mb-2;
   font-family: 'PT Sans', sans-serif;
+}
+
+.ListButton {
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: flex-end !important;
+
+  .ListItemText {
+    @apply ml-1;
+    font-weight: bold !important;
+    font-family: 'PT Sans', sans-serif !important;
+  }
+}
+
+.SubHeading {
+  font-family: 'Rajdhani', sans-serif;
+  @apply text-[1.4em];
+  @apply font-bold;
+  @apply mt-3;
+  @apply cursor-pointer;
+  @apply text-center;
+  @apply text-[#108e8e]
+}
+
+.SignOutButton {
+  @apply block;
+  @apply bg-[#032435];
+  @apply text-white;
+  font-family: 'Rajdhani', sans-serif;
+  @apply text-[1.5em];
+  @apply rounded-md;
+  @apply w-1/2;
+  margin: 0 auto;
+  @apply mt-8;
 }

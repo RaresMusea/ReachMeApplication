@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Divider from '@mui/material/Divider';
@@ -6,14 +7,24 @@ import '../../../Styles/Navbar/Navbar.scss';
 import '../../../Styles/Navbar/FeedDrawer.scss';
 import logoPic from "../../../Media/Images/logoPic.svg";
 import UpperSection from "./UpperSection";
+import MiddleSection from "./MiddleSection";
 
 export default function FeedDrawer(props) {
+    const [width, setWidth] = React.useState(0);
     const [state, setState] = React.useState({
         top: false,
         left: false,
         bottom: false,
         right: false,
     });
+
+    useEffect(() => {
+        if (window.innerWidth > 600) {
+            setWidth(400);
+        } else {
+            setWidth(250);
+        }
+    }, [width]);
 
     const toggleDrawer = (anchor, open) => (event) => {
 
@@ -26,7 +37,8 @@ export default function FeedDrawer(props) {
 
     const list = (anchor) => (
         <Box
-            sx={{width: anchor === 'top' || anchor === 'bottom' ? 'auto' : (window.innerWidth > 800 ? 400 : 230)}}
+            className="DrawerBox"
+            sx={{width: anchor === 'top' || anchor === 'bottom' ? 'auto' : width}}
             role="presentation"
             /*onClick={toggleDrawer(anchor, false)}*/
             onKeyDown={toggleDrawer(anchor, false)}
@@ -58,6 +70,7 @@ export default function FeedDrawer(props) {
                     </ListItem>
                 ))}
             </List>*/}
+            <MiddleSection/>
         </Box>
     );
 

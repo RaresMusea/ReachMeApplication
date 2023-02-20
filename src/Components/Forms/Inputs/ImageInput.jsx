@@ -18,9 +18,9 @@ export default function ImageInput(props) {
             setError(props.error);
         }
     }, [props.error])
-    
+
     const focused = () => {
-        if(error['hasErrors']){
+        if (error['hasErrors']) {
             setInputValue("");
         }
         setFocus("#094561");
@@ -37,40 +37,40 @@ export default function ImageInput(props) {
                 <ThemeProvider theme={theme}>
                     <Box>
                         <TextField label="TextField"
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position={props.adornmentPosition}>
-                                        <props.icon sx={{color:focus, mr: 1, my: 0.5}}/>
-                                    </InputAdornment>
-                                ),
-                                classes: {
-                                    input: styles.textInput
-                                },
+                                   InputProps={{
+                                       startAdornment: (
+                                           <InputAdornment position={props.adornmentPosition}>
+                                               <props.icon sx={{color: focus, mr: 1, my: 0.5}}/>
+                                           </InputAdornment>
+                                       ),
+                                       classes: {
+                                           input: styles.textInput
+                                       },
 
-                            }}
-                            variant="standard"
-                            error={isObjectEmpty(props.error) ? undefined : true}
-                            helperText={(isObjectEmpty(error) || !error['hasErrors']) ? undefined : error['message']}
-                            onChange={(e) => {
-                                props.getInputText(e, props.classname);
-                                setInputValue(e.target.value);
-                                console.log(error);
-                                if(error['hasErrors']){
-                                    setError({});
-                                }
-                            }}
-                            value={inputValue}
-                            onFocus={focused}
-                            onBlur={blurred}
+                                   }}
+                                   variant="standard"
+                                   error={isObjectEmpty(props.error) ? undefined : true}
+                                   helperText={(isObjectEmpty(error) || !error['hasErrors']) ? undefined : error['message']}
+                                   onChange={(e) => {
+                                       props.getInputText(e, props.classname);
+                                       setInputValue(e.target.value);
+                                       console.log(error);
+                                       if (error['hasErrors']) {
+                                           setError({});
+                                       }
+                                   }}
+                                   value={inputValue}
+                                   onFocus={focused}
+                                   onBlur={blurred}
                         />
                     </Box>
                 </ThemeProvider>
                 :
                 <ThemeProvider theme={theme}>
-                    <Box sx={{display: 'flex', alignItems: 'flex-end', justifyContent:'center',mb:1.8}}>
-                        <props.icon sx={{color: focus, mr: 1, my:!isObjectEmpty(error)?2.9:0.5}}/>
+                    <Box sx={{display: 'flex', alignItems: 'flex-end', justifyContent: 'center', mb: 1.8}}>
+                        <props.icon sx={{color: focus, mr: 1, my: !isObjectEmpty(error) ? 2.9 : 0.5}}/>
                         <TextField label={props.placeholder}
-                                   sx={{width: {sm: 200, md:300, lg: 400}, fontWeight: "bolder",}}
+                                   sx={{width: {sm: 200, md: 300, lg: 400}, fontWeight: "bolder",}}
                                    error={isObjectEmpty(error) ? undefined : true}
                                    helperText={(isObjectEmpty(error) || !error['hasErrors']) ? undefined : error['message']}
                                    InputProps={{
@@ -81,7 +81,7 @@ export default function ImageInput(props) {
                                    variant="standard"
                                    className='text-field'
                                    onChange={(e) => {
-                                       if(error['hasErrors']){
+                                       if (error['hasErrors']) {
                                            setError({});
                                        }
 

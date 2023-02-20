@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Divider from '@mui/material/Divider';
@@ -17,6 +17,12 @@ export default function FeedDrawer(props) {
         bottom: false,
         right: false,
     });
+
+    const [optionSelected, setOptionSelected] = useState(false);
+
+    const toggleOption = () => {
+        setOptionSelected(!optionSelected);
+    }
 
     useEffect(() => {
         if (window.innerWidth > 600) {
@@ -40,8 +46,7 @@ export default function FeedDrawer(props) {
             className="DrawerBox"
             sx={{width: anchor === 'top' || anchor === 'bottom' ? 'auto' : width}}
             role="presentation"
-            /*onClick={toggleDrawer(anchor, false)}*/
-            onKeyDown={toggleDrawer(anchor, false)}
+            onKeyDown={toggleDrawer(anchor, optionSelected)}
         >
 
             <UpperSection update={props.update}/>
@@ -70,7 +75,7 @@ export default function FeedDrawer(props) {
                     </ListItem>
                 ))}
             </List>*/}
-            <MiddleSection/>
+            <MiddleSection toggleOption={toggleOption}/>
         </Box>
     );
 
@@ -92,11 +97,11 @@ export default function FeedDrawer(props) {
                         anchor={anchor}
                         open={state[anchor]}
                         variant="temporary"
-                        onClose={toggleDrawer(anchor, false)}
+                        onClose={toggleDrawer(anchor, optionSelected)}
                     >
                         {list(anchor)}
                     </Drawer>
-                    <div id="ProfilePictureManagementAlerts"/>
+                    {/*<div id="ProfilePictureManagementAlerts"/>*/}
                 </React.Fragment>
             ))}
         </div>

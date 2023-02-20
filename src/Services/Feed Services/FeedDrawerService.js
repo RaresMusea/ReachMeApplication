@@ -168,3 +168,9 @@ export const signOutUser = async () => {
     });
 }
 
+/*export const getLoggedInUserInfo=()=>{
+    fetch(`https://localhost:8080/account/${localStorage.getItem(`currentlyLoggedInUser`)}`)
+        .then(response=>response.json())
+
+}*/
+

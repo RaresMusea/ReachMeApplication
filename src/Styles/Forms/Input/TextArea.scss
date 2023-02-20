@@ -1,0 +1,17 @@
+.FormLabel {
+  font-family: "PT Sans", sans-serif !important;
+  margin-left: .6em !important;
+  font-size: 1em !important;
+  font-weight: 500 !important;
+  opacity: 75%;
+}
+
+.TextArea {
+  border: 3px solid #094561 !important;
+  transition: .2s ease-in-out !important;
+}
+
+.TextArea:focus {
+  border: none !important;
+  outline: none !important;
+}

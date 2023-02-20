@@ -1,8 +1,9 @@
-.ProfilePictureManagerDialog {
+.ProfilePictureManagerDialog,
+.ProfileInfoManagementDialog {
   border-radius: 15px !important;
   transition: .2s ease-in-out !important;
 
-  .ProfilePictureManagerTitle {
+  .ManagerDialogTitle {
     @apply text-[1.5em];
     @apply font-extrabold;
     @apply text-[#094561];

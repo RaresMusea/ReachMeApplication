@@ -1,31 +1,26 @@
 import ListItemButton from "@mui/material/ListItemButton";
 import {Divider, List, ListItem, ListItemIcon} from "@mui/material";
-import {
-    AccountBox,
-    BackupRounded,
-    PieChart,
-    PrivacyTip,
-    QuestionMarkSharp,
-    SettingsApplications
-} from "@mui/icons-material";
+import {BackupRounded, PieChart, PrivacyTip, QuestionMarkSharp, SettingsApplications} from "@mui/icons-material";
 import "../../../Styles/Navbar/FeedDrawer.scss";
 import SignOutModal from "../../Modals/SignOutModal";
+import ProfileInfoManager from "./ProfileInfoManager";
 
-export default function MiddleSection() {
+export default function MiddleSection(props) {
 
     return (
         <>
             <h4 className='SubHeading'>Personal Settings</h4>
             <List>
-                <ListItem key="accountManagement" disablePadding
+                {/*<ListItem key="accountManagement" disablePadding
                           style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <ListItemButton alignItems="center">
                         <ListItemIcon>
                             <AccountBox/>
                         </ListItemIcon>
-                        <div className="ListItemText">Manage Account Info</div>
-                    </ListItemButton>
-                </ListItem>
+                        <div className="ListItemText">Manage Account Info</div>*/}
+                <ProfileInfoManager toggleOption={props.toggleOption}/>
+                {/* </ListItemButton>
+                </ListItem>*/}
                 <ListItem key="accountReputation" disablePadding>
                     <ListItemButton>
                         <ListItemIcon>

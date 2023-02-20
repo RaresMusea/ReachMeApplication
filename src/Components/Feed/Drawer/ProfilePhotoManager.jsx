@@ -50,7 +50,12 @@ export default function ProfilePhotoManager(props) {
         if (fileToUpload !== undefined) {
             await updateProfilePictureWithLocalFileUpload(fileToUpload);
             props.update();
-            setTimeout(() => handleClose(), 1000);
+            const extension = fileToUpload.name.split(`.`)[1].toLowerCase();
+            console.log(extension);
+            setTimeout(() => handleClose(), 1500);
+            if (extension === 'jpg')
+                props.update();
+
         }
     }
 
@@ -72,7 +77,7 @@ export default function ProfilePhotoManager(props) {
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle className="ProfilePictureManagerTitle">
+                <DialogTitle className="ManagerDialogTitle">
                     {"Manage profile picture"}
                 </DialogTitle>
                 <DialogContent>

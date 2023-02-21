@@ -31,6 +31,19 @@ export const displayFailAlert = (config) => {
     renderAlert(alertConfig);
 }
 
+export const displaySuccessAlert = (config) => {
+    const alertConfig = {
+        severity: config.severity,
+        class: config.style,
+        message: config.message,
+        targetId: config.target,
+        alertType: 'success',
+        fadeOutTimeout: 3000,
+        removeTimeout: 4000,
+    };
+    renderAlert(alertConfig);
+}
+
 export const displayUploadStatusAlertBox = (message) => {
     displayAlertBox(message);
 }

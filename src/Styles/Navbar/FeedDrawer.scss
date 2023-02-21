@@ -138,6 +138,21 @@
   @apply bg-[#094561];
 }
 
+
+.SuccessAlert,
+.ErrorAlert {
+  @apply mt-[1em];
+  border-radius: 0 !important;
+}
+
+.ErrorAlert {
+  @apply bg-[red];
+}
+
+.SuccessAlert {
+  @apply bg-[#094561];
+}
+
 @media screen and (max-height: 600px) {
   .SignOutButton {
     @apply mb-8;

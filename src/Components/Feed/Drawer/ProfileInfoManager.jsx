@@ -9,18 +9,20 @@ import ImageInput from "../../Forms/Inputs/ImageInput";
 import {modifiedAccountDetails} from "../../../Modules/Object/AccountInfoManagementObjects";
 import {loggedInAccount} from "../../../Services/Feed Services/FeedDrawerService";
 import TextArea from "../../Forms/Inputs/TextArea";
+import {updateBioForUser} from "../../../Modules/FeedModule";
 
 const RightMoveTransition = forwardRef(function Transition(props, ref) {
     return <Slide direction="right" ref={ref} {...props}/>;
 });
 
+export let textareaBio;
 export default function ProfileInfoManager(props) {
 
     const [open, setOpen] = useState(false);
     const [nameError, setNameError] = useState({});
     const [emailError, setEmailError] = useState({});
     const [usernameError, setUsernameError] = useState({});
-    let textareaBio = ``;
+    textareaBio = loggedInAccount.bio;
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -46,9 +48,13 @@ export default function ProfileInfoManager(props) {
             }
         }
     }
-
     const getTextAreaValue = (event) => {
         textareaBio = event.target.value;
+        console.log(textareaBio === loggedInAccount.bio);
+    }
+
+    const updateBio = async () => {
+        await updateBioForUser();
     }
 
     return (
@@ -92,11 +98,21 @@ export default function ProfileInfoManager(props) {
                                 adornmentPosition={'start'}
                                 getInputText={getInputValue}
                     />
-                    <TextArea textareaLabel={"Add a bio to your profile"}
-                              textareaPlaceholder={"Type your bio here"}
-                              textareaButtonText={"Add bio"}
-                              getText={getTextAreaValue}
-                    />
+                    {loggedInAccount.bio ?
+                        <TextArea textareaLabel={"Your account bio"}
+                                  textareaPlaceholder={"Update your bio here"}
+                                  textareaButtonText={"Update bio"}
+                                  value={loggedInAccount.bio}
+                                  getText={getTextAreaValue}
+                                  action={updateBio}
+                        />
+                        :
+                        <TextArea textareaLabel={"Add a bio to your profile"}
+                                  textareaPlaceholder={"Type your bio here"}
+                                  textareaButtonText={"Add bio"}
+                                  getText={getTextAreaValue}
+                        />
+                    }
 
                     <button style={{marginTop: '5em'}}>Save changes</button>
                     <br/>
@@ -106,7 +122,8 @@ export default function ProfileInfoManager(props) {
                     <br/>
                     <Divider/>
                 </DialogContent>
-                <div id="ProfilePictureManagementAlerts"/>
+                <div id="ProfileInfoManagementAlerts"/>
+                <div id="ProfileInfoSuccessAlerts"/>
             </Dialog>
         </>
     );

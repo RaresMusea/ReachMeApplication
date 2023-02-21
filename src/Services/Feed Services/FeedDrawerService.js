@@ -2,6 +2,7 @@ import {
     displayAlertBox,
     displayFailAlert,
     displayRemovalSuccessfulAlert,
+    displaySuccessAlert,
     displayUploadStatusAlertBox
 } from "../../Modules/Feed/Navbar/Account Management/AccountManagementModule";
 import {storage} from "../../Modules/Firebase/FirebaseIntegration";
@@ -15,6 +16,7 @@ export let loggedInAccount = {};
 export const allowedProfilePicturesTypes = "image/png,image/jpeg,image/svg,image/jpg";
 const uploadProfilePictureEndpoint = `http://localhost:8080/account/${localStorage.getItem(`currentlyLoggedInUser`)}
 /RemoveProfilePicture`;
+const updateBioEndpoint = `http://localhost:8080/account/updateBio/accountIdentifier=${localStorage.getItem(`currentlyLoggedInUser`)}`;
 
 
 export const setUpdate = (value) => {
@@ -168,9 +170,38 @@ export const signOutUser = async () => {
     });
 }
 
-/*export const getLoggedInUserInfo=()=>{
-    fetch(`https://localhost:8080/account/${localStorage.getItem(`currentlyLoggedInUser`)}`)
-        .then(response=>response.json())
+export const updateBio = async (newBio) => {
+    const patchRequestConfig = {
+        method: "PATCH",
+        body: newBio,
+        headers: {
+            'Content-type': `text/html;`,
+            "Accept": "application/json",
+        }
+    }
 
-}*/
+    fetch(updateBioEndpoint, patchRequestConfig)
+        .then(response => response.json())
+        .then(data => {
+            loggedInAccount = data;
+            const successAlertConfig = {
+                message: 'Successfully updated your bio!',
+                severity: "success",
+                target: "#ProfileInfoManagementAlerts",
+                style: "SuccessAlert",
+            };
+            displaySuccessAlert(successAlertConfig);
+
+        })
+        .catch((err) => {
+            console.log(err);
+            const alertConfiguration = {
+                message: "Cannot process your request due to an internal server error!",
+                severity: "error",
+                target: "#ProfileInfoManagementAlerts",
+                style: "ErrorAlert",
+            };
+            displayFailAlert(alertConfiguration);
+        })
+}
 

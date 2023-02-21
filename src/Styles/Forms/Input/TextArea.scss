@@ -7,11 +7,19 @@
 }
 
 .TextArea {
-  border: 3px solid #094561 !important;
+  border: 2px solid rgba(9, 69, 97, .75);
   transition: .2s ease-in-out !important;
 }
 
 .TextArea:focus {
-  border: none !important;
+  border: 4px solid rgba(9, 69, 97, 1) !important;
   outline: none !important;
+}
+
+.TextareaButton {
+  font-family: 'PT Sans', sans-serif !important;
+  color: white !important;
+  background-color: rgba(28, 39, 60, .85) !important;
+  @apply font-extrabold;
+  text-transform: capitalize !important;
 }

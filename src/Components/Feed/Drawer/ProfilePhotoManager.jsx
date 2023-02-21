@@ -136,6 +136,5 @@ export default function ProfilePhotoManager(props) {
                 <div id="ProfilePictureManagementAlerts"/>
             </Dialog>
         </div>
-
     );
 }

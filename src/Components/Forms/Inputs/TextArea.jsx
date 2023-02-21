@@ -20,6 +20,8 @@ export default function TextArea(props) {
                 className='TextArea'
                 placeholder={props.textareaPlaceholder}
                 minRows={3}
+                defaultValue={props.value ?? null}
+                color="#094561"
                 onChange={(e) => {
                     props.getText(e);
                 }}
@@ -52,7 +54,9 @@ export default function TextArea(props) {
                         >
                             <FormatItalic style={{opacity: '75%'}}/>
                         </IconButton>
-                        <Button sx={{ml: 'auto'}} onClick={props.action}>{props.textareaButtonText}</Button>
+                        <Button className="TextareaButton" sx={{ml: 'auto'}}
+                                onClick={props.action}
+                        >{props.textareaButtonText}</Button>
                     </Box>
                 }
                 sx={{

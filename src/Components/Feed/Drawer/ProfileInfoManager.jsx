@@ -19,6 +19,7 @@ export let textareaBio;
 export default function ProfileInfoManager(props) {
 
     const [open, setOpen] = useState(false);
+    const [reset, setReset] = useState(false);
     const [nameError, setNameError] = useState({});
     const [emailError, setEmailError] = useState({});
     const [usernameError, setUsernameError] = useState({});
@@ -33,6 +34,7 @@ export default function ProfileInfoManager(props) {
         if (reason && (reason === "backdropClick" || reason === "keyPress")) {
             return;
         }
+        resetFields();
         setOpen(false);
     };
 
@@ -55,6 +57,14 @@ export default function ProfileInfoManager(props) {
 
     const updateBio = async () => {
         await updateBioForUser();
+    }
+
+    const resetFields = () => {
+        setReset(true);
+    }
+
+    const turnOffReset = () => {
+        setReset(false);
     }
 
     return (
@@ -84,6 +94,8 @@ export default function ProfileInfoManager(props) {
                     <ImageInput classname='name'
                                 type={2}
                                 error={nameError}
+                                reset={reset}
+                                turnOffReset={turnOffReset}
                                 icon={AccountBox}
                                 inputValue={loggedInAccount.userRealName}
                                 placeholder={'Name'}
@@ -93,6 +105,8 @@ export default function ProfileInfoManager(props) {
                                 type={2}
                                 error={usernameError}
                                 icon={Email}
+                                reset={reset}
+                                turnOffReset={turnOffReset}
                                 inputValue={loggedInAccount.userName}
                                 placeholder={'Username'}
                                 adornmentPosition={'start'}
@@ -103,6 +117,8 @@ export default function ProfileInfoManager(props) {
                                   textareaPlaceholder={"Update your bio here"}
                                   textareaButtonText={"Update bio"}
                                   value={loggedInAccount.bio}
+                                  reset={reset}
+                                  turnOffReset={turnOffReset}
                                   getText={getTextAreaValue}
                                   action={updateBio}
                         />
@@ -110,16 +126,23 @@ export default function ProfileInfoManager(props) {
                         <TextArea textareaLabel={"Add a bio to your profile"}
                                   textareaPlaceholder={"Type your bio here"}
                                   textareaButtonText={"Add bio"}
+                                  value={loggedInAccount.bio}
+                                  reset={reset}
+                                  turnOffReset={turnOffReset}
                                   getText={getTextAreaValue}
                         />
                     }
 
-                    <button style={{marginTop: '5em'}}>Save changes</button>
-                    <br/>
-                    <button>Reset</button>
-                    <br/>
-                    <button>More account settings</button>
-                    <br/>
+                    <div className="Buttons">
+                        <button className="AdditionalManagementButton" style={{marginTop: '5em'}}>Save changes</button>
+                        <button className="AdditionalManagementButton" onClick={resetFields}>Revert changes</button>
+                        <button className="AdditionalManagementButton" onClick={() => {
+                            handleClose()
+                        }}>Close
+                        </button>
+                        <button className="AdditionalManagementButton LastAdditionalButton">More account settings
+                        </button>
+                    </div>
                     <Divider/>
                 </DialogContent>
                 <div id="ProfileInfoManagementAlerts"/>

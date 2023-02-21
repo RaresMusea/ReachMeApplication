@@ -153,6 +153,24 @@
   @apply bg-[#094561];
 }
 
+.Buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .AdditionalManagementButton {
+    font-family: "PT Sans", sans-serif;
+  }
+
+  .AdditionalManagementButton:hover {
+    @apply underline;
+  }
+
+  .LastAdditionalButton {
+    @apply mb-[1em];
+  }
+}
+
 @media screen and (max-height: 600px) {
   .SignOutButton {
     @apply mb-8;

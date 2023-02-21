@@ -3,7 +3,7 @@ import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Textarea from '@mui/joy/Textarea';
 import IconButton from '@mui/joy/IconButton';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import '../../../Styles/Forms/Input/TextArea.scss';
 import {FormatBold, FormatItalic} from "@mui/icons-material";
 import Button from "@mui/material/Button";
@@ -12,6 +12,14 @@ export default function TextArea(props) {
     const [italic, setItalic] = useState(false);
     const [bold, setBold] = useState(false);
     const [fontWeight, setFontWeight] = useState('normal');
+    const [textareaValue, setTextareaValue] = useState(props.value);
+
+    useEffect(() => {
+        if (props.reset) {
+            setTextareaValue(props.value);
+            props.turnOffReset();
+        }
+    }, [props.reset, props.value]);
 
     return (
         <FormControl>
@@ -20,10 +28,11 @@ export default function TextArea(props) {
                 className='TextArea'
                 placeholder={props.textareaPlaceholder}
                 minRows={3}
-                defaultValue={props.value ?? null}
+                value={textareaValue}
                 color="#094561"
                 onChange={(e) => {
                     props.getText(e);
+                    setTextareaValue(e.target.value);
                 }}
                 endDecorator={
                     <Box

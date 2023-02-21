@@ -17,7 +17,13 @@ export default function ImageInput(props) {
         if (!isObjectEmpty(props.error)) {
             setError(props.error);
         }
-    }, [props.error])
+
+        if (props.reset) {
+            setInputValue(props.inputValue);
+            props.turnOffReset();
+        }
+
+    }, [props.error, props.reset, props.inputValue]);
 
     const focused = () => {
         if (error['hasErrors']) {

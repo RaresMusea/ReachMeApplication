@@ -1,4 +1,5 @@
 .FormLabel {
+  margin-top: .5em !important;
   font-family: "PT Sans", sans-serif !important;
   margin-left: .6em !important;
   font-size: 1em !important;
@@ -9,6 +10,7 @@
 .TextArea {
   border: 2px solid rgba(9, 69, 97, .75);
   transition: .2s ease-in-out !important;
+  margin-bottom: .5em !important;
 }
 
 .TextArea:focus {

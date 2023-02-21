@@ -1,4 +1,4 @@
-export const modifiedAccountDetails = {
+export let modifiedAccountDetails = {
     userRealName: ``,
     emailAddress: ``,
     username: ``,

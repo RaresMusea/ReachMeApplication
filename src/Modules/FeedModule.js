@@ -39,3 +39,7 @@ export const updateBioForUser = async () => {
     }
     await updateBio(textareaBio);
 }
+
+export const validateStandardCredentialsForUpdate = () => {
+
+}

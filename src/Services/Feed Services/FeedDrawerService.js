@@ -10,6 +10,7 @@ import {isConnectionAvailable} from "../Authentication Services/SignUpService";
 import {currentlyLoggedInUser} from "../../Modules/Session/CurrentSessionModule";
 import {getDownloadURL} from "firebase/storage";
 import {getAuth, signOut} from "firebase/auth";
+import {modifiedAccountDetails} from "../../Modules/Object/AccountInfoManagementObjects";
 
 export let update = false;
 export let loggedInAccount = {};
@@ -17,7 +18,7 @@ export const allowedProfilePicturesTypes = "image/png,image/jpeg,image/svg,image
 const uploadProfilePictureEndpoint = `http://localhost:8080/account/${localStorage.getItem(`currentlyLoggedInUser`)}
 /RemoveProfilePicture`;
 const updateBioEndpoint = `http://localhost:8080/account/updateBio/accountIdentifier=${localStorage.getItem(`currentlyLoggedInUser`)}`;
-
+const updateUserIdentityEndpoint = `http://localhost:8080/account/updateUserIdentity/accountIdentifier=${localStorage.getItem(`currentlyLoggedInUser`)}`;
 
 export const setUpdate = (value) => {
     update = value;
@@ -203,5 +204,45 @@ export const updateBio = async (newBio) => {
             };
             displayFailAlert(alertConfiguration);
         })
+}
+
+export const updateUserIdentity = async () => {
+    const patchRequestConfig = {
+        method: "PATCH",
+        body: {
+            "userName": modifiedAccountDetails.username,
+            "userRealName": modifiedAccountDetails.userRealName,
+        },
+        headers: {
+            'Content-type': `text/html;`,
+            "Accept": "application/json",
+        }
+    };
+
+    fetch(updateUserIdentityEndpoint, patchRequestConfig)
+        .then(response => response.json())
+        .then(data => {
+            loggedInAccount = data;
+
+            const successAlertConfig = {
+                message: 'Your name and username were updated successfully!',
+                severity: "success",
+                target: "#ProfileInfoManagementAlerts",
+                style: "SuccessAlert",
+            };
+            displaySuccessAlert(successAlertConfig);
+
+        })
+        .catch(err => {
+            console.log(err);
+            const alertConfiguration = {
+                message: "Cannot process your request due to an internal server error!",
+                severity: "error",
+                target: "#ProfileInfoManagementAlerts",
+                style: "ErrorAlert",
+            };
+            displayFailAlert(alertConfiguration);
+        })
+
 }
 

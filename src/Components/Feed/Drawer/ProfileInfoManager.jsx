@@ -7,15 +7,19 @@ import {forwardRef, useState} from "react";
 import '../../../Styles/Navbar/FeedDrawer.scss';
 import ImageInput from "../../Forms/Inputs/ImageInput";
 import {modifiedAccountDetails} from "../../../Modules/Object/AccountInfoManagementObjects";
-import {loggedInAccount} from "../../../Services/Feed Services/FeedDrawerService";
+import {loggedInAccount, updateUserIdentity} from "../../../Services/Feed Services/FeedDrawerService";
 import TextArea from "../../Forms/Inputs/TextArea";
 import {updateBioForUser} from "../../../Modules/FeedModule";
+import {validateName} from "../../../Modules/Validation/SignUpValidation";
+import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
+import {validateUsername} from "../../../Modules/Validation/AuthValidationBase";
 
 const RightMoveTransition = forwardRef(function Transition(props, ref) {
     return <Slide direction="right" ref={ref} {...props}/>;
 });
 
 export let textareaBio;
+export let canPerformIdentityUpdate = false;
 export default function ProfileInfoManager(props) {
 
     const [open, setOpen] = useState(false);
@@ -65,6 +69,30 @@ export default function ProfileInfoManager(props) {
 
     const turnOffReset = () => {
         setReset(false);
+    }
+
+    const saveChanges = async () => {
+        canPerformCredentialsUpdate();
+
+        if (canPerformIdentityUpdate) {
+            await updateUserIdentity();
+        }
+    }
+
+    const canPerformCredentialsUpdate = () => {
+        canPerformIdentityUpdate = true;
+        const realNameValidation = validateName(modifiedAccountDetails.userRealName);
+        if (!isObjectEmpty(realNameValidation)) {
+            setNameError(realNameValidation);
+            canPerformIdentityUpdate = false;
+        }
+
+        const usernameValidation = validateUsername(modifiedAccountDetails.username);
+        if (!isObjectEmpty(usernameValidation)) {
+            setUsernameError(usernameValidation);
+            canPerformIdentityUpdate = false;
+        }
+
     }
 
     return (
@@ -134,7 +162,11 @@ export default function ProfileInfoManager(props) {
                     }
 
                     <div className="Buttons">
-                        <button className="AdditionalManagementButton" style={{marginTop: '5em'}}>Save changes</button>
+                        <button className="AdditionalManagementButton"
+                                style={{marginTop: '5em'}}
+                                onClick={saveChanges}
+                        >Save changes
+                        </button>
                         <button className="AdditionalManagementButton" onClick={resetFields}>Revert changes</button>
                         <button className="AdditionalManagementButton" onClick={() => {
                             handleClose()

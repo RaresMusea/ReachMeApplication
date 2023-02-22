@@ -18,6 +18,7 @@ import {
 import {validateName} from "../../../Modules/Validation/SignUpValidation";
 import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
 import {validateUsername} from "../../../Modules/Validation/AuthValidationBase";
+import GenericModal from "../../Modals/GenericModal";
 
 const RightMoveTransition = forwardRef(function Transition(props, ref) {
     return <Slide direction="right" ref={ref} {...props}/>;
@@ -26,13 +27,15 @@ const RightMoveTransition = forwardRef(function Transition(props, ref) {
 export let textareaBio;
 export let canPerformIdentityUpdate = false;
 export let credentialsWereModified = false;
+modifiedAccountDetails.userRealName = loggedInAccount.userRealName;
+modifiedAccountDetails.username = loggedInAccount.userName;
 export default function ProfileInfoManager(props) {
-    modifiedAccountDetails.userRealName = loggedInAccount.userRealName;
-    modifiedAccountDetails.username = loggedInAccount.userName;
+
     const [open, setOpen] = useState(false);
     const [reset, setReset] = useState(false);
     const [nameError, setNameError] = useState({});
     const [usernameError, setUsernameError] = useState({});
+    const [formTouched, setFormTouched] = useState(false);
     textareaBio = loggedInAccount.bio;
 
     const handleClickOpen = () => {
@@ -54,11 +57,13 @@ export default function ProfileInfoManager(props) {
             case `name`: {
                 modifiedAccountDetails.userRealName = event.target.value;
                 credentialsWereModified = true;
+                setFormTouched(true);
                 break;
             }
             case `username`: {
                 modifiedAccountDetails.username = event.target.value;
                 credentialsWereModified = true;
+                setFormTouched(true);
                 break;
             }
         }
@@ -76,6 +81,8 @@ export default function ProfileInfoManager(props) {
         setUsernameError({});
         setNameError({});
         setReset(true);
+        setFormTouched(false);
+        credentialsWereModified = false;
     }
 
     const turnOffReset = () => {
@@ -199,10 +206,23 @@ export default function ProfileInfoManager(props) {
                         >Save changes
                         </button>
                         <button className="AdditionalManagementButton" onClick={resetFields}>Revert changes</button>
-                        <button className="AdditionalManagementButton" onClick={() => {
-                            handleClose()
-                        }}>Close
-                        </button>
+                        {
+                            formTouched ?
+                                <GenericModal triggerButtonClassName={"AdditionalManagementButton"}
+                                              triggerButtonText={"Close"}
+                                              modalTitle={"ReachMe - Account Info Management"}
+                                              modalQuestion={"There are some modifications that were not applied yet."}
+                                              additionalInformation={"Are you sure that you want to close this window? " +
+                                                  "All of your modifications will be lost."}
+                                              cancelButtonText={"Cancel"}
+                                              actionButtonText={"Close anyway"}
+                                              action={handleClose}/>
+                                :
+                                <button className="AdditionalManagementButton" onClick={() => {
+                                    handleClose()
+                                }}>Close
+                                </button>
+                        }
                         <button className="AdditionalManagementButton LastAdditionalButton">More account settings
                         </button>
                     </div>

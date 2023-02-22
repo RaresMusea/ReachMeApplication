@@ -218,7 +218,7 @@ export const updateUserIdentity = async () => {
             "Accept": "application/json",
         }
     }
-
+    console.log(patchRequestConfig.body);
     fetch(updateUserIdentityEndpoint, patchRequestConfig)
         .then(response => response.json())
         .then(data => {

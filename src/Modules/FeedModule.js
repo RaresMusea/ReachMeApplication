@@ -1,7 +1,7 @@
 import SignOutModal from "../Components/Authentication/Sign Out/SignOutModal";
 import ReactDOM from 'react-dom/client';
 import {loggedInAccount, updateBio} from "../Services/Feed Services/FeedDrawerService";
-import {textareaBio} from "../Components/Feed/Drawer/ProfileInfoManager";
+import {credentialsWereModified, textareaBio} from "../Components/Feed/Drawer/ProfileInfoManager";
 import {displayFailAlert} from "./Feed/Navbar/Account Management/AccountManagementModule";
 import {modifiedAccountDetails} from "./Object/AccountInfoManagementObjects";
 import {buildError} from "./Sign Up/SignUpUtils";
@@ -43,14 +43,14 @@ export const updateBioForUser = async () => {
 }
 
 export const checkForIdenticalRealNamesBeforeUpdate = () => {
-    if (modifiedAccountDetails.userRealName === loggedInAccount.userRealName) {
+    if (modifiedAccountDetails.userRealName === loggedInAccount.userRealName && !credentialsWereModified) {
         return buildError("The provided name already coincides with your old one!");
     }
     return {};
 }
 
 export const checkForIdenticalUserNamesBeforeUpdate = () => {
-    if (modifiedAccountDetails.username === loggedInAccount.userName) {
+    if (modifiedAccountDetails.username === loggedInAccount.userName && !credentialsWereModified) {
         return buildError("The provided username already coincides with your old one!");
     }
     return {};

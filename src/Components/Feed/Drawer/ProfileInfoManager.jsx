@@ -25,8 +25,10 @@ const RightMoveTransition = forwardRef(function Transition(props, ref) {
 
 export let textareaBio;
 export let canPerformIdentityUpdate = false;
+export let credentialsWereModified = false;
 export default function ProfileInfoManager(props) {
-
+    modifiedAccountDetails.userRealName = loggedInAccount.userRealName;
+    modifiedAccountDetails.username = loggedInAccount.userName;
     const [open, setOpen] = useState(false);
     const [reset, setReset] = useState(false);
     const [nameError, setNameError] = useState({});
@@ -51,10 +53,12 @@ export default function ProfileInfoManager(props) {
         switch (className) {
             case `name`: {
                 modifiedAccountDetails.userRealName = event.target.value;
+                credentialsWereModified = true;
                 break;
             }
             case `username`: {
                 modifiedAccountDetails.username = event.target.value;
+                credentialsWereModified = true;
                 break;
             }
         }
@@ -90,8 +94,6 @@ export default function ProfileInfoManager(props) {
 
     const validateCredentials = () => {
         canPerformIdentityUpdate = true;
-        modifiedAccountDetails.userRealName = loggedInAccount.userRealName;
-        modifiedAccountDetails.username = loggedInAccount.userName;
 
         const sameRealNameValidation = checkForIdenticalRealNamesBeforeUpdate();
         if (!isObjectEmpty(sameRealNameValidation)) {

@@ -11,7 +11,10 @@ export default function Feed() {
     useEffect(() => {
         document.title = 'ReachMe - Feed';
         getRequiredMetadata(currentlyLoggedInUser);
+        console.log("this got called at startup");
+    }, []);
 
+    useEffect(() => {
         if (update) {
             getRequiredMetadata(currentlyLoggedInUser);
             setUpdate(false);

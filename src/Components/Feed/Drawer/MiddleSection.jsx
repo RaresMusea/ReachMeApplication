@@ -18,7 +18,9 @@ export default function MiddleSection(props) {
                             <AccountBox/>
                         </ListItemIcon>
                         <div className="ListItemText">Manage Account Info</div>*/}
-                <ProfileInfoManager toggleOption={props.toggleOption}/>
+                <ProfileInfoManager
+                    scheduleUpdate={props.scheduleUpdate}
+                    toggleOption={props.toggleOption}/>
                 {/* </ListItemButton>
                 </ListItem>*/}
                 <ListItem key="accountReputation" disablePadding>

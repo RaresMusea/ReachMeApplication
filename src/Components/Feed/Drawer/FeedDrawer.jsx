@@ -49,7 +49,7 @@ export default function FeedDrawer(props) {
             onKeyDown={toggleDrawer(anchor, optionSelected)}
         >
 
-            <UpperSection update={props.update}/>
+            <UpperSection update={props.scheduleUpdate}/>
             {/* <List>
                 {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem key={text} disablePadding>
@@ -75,7 +75,9 @@ export default function FeedDrawer(props) {
                     </ListItem>
                 ))}
             </List>*/}
-            <MiddleSection toggleOption={toggleOption}/>
+            <MiddleSection
+                scheduleUpdate={props.scheduleUpdate}
+                toggleOption={toggleOption}/>
         </Box>
     );
 

@@ -14,7 +14,7 @@ export default function Navbar(props) {
         <>
             <div className='NavigationWrapper'>
                 <FeedDrawer className='Drawer'
-                            update={props.scheduleUpdate}/>
+                            scheduleUpdate={props.scheduleUpdate}/>
                 <div className='RightSideNavigation'>
                     <div className='IconsDrawer'>
                         <img src={defaultSearchIconName}

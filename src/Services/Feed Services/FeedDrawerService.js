@@ -209,21 +209,20 @@ export const updateBio = async (newBio) => {
 export const updateUserIdentity = async () => {
     const patchRequestConfig = {
         method: "PATCH",
-        body: {
-            "userName": modifiedAccountDetails.username,
-            "userRealName": modifiedAccountDetails.userRealName,
-        },
+        body: JSON.stringify({
+            userName: modifiedAccountDetails.username,
+            userRealName: modifiedAccountDetails.userRealName,
+        }),
         headers: {
-            'Content-type': `text/html;`,
+            'Content-type': `application/json;`,
             "Accept": "application/json",
         }
-    };
+    }
 
     fetch(updateUserIdentityEndpoint, patchRequestConfig)
         .then(response => response.json())
         .then(data => {
             loggedInAccount = data;
-
             const successAlertConfig = {
                 message: 'Your name and username were updated successfully!',
                 severity: "success",

@@ -1,6 +1,6 @@
 import {Dialog, Divider, ListItem, ListItemIcon, Slide} from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
-import {AccountBox, Email} from "@mui/icons-material";
+import {AccountBox, TagFaces} from "@mui/icons-material";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import {forwardRef, useState} from "react";
@@ -9,7 +9,12 @@ import ImageInput from "../../Forms/Inputs/ImageInput";
 import {modifiedAccountDetails} from "../../../Modules/Object/AccountInfoManagementObjects";
 import {loggedInAccount, updateUserIdentity} from "../../../Services/Feed Services/FeedDrawerService";
 import TextArea from "../../Forms/Inputs/TextArea";
-import {updateBioForUser} from "../../../Modules/FeedModule";
+import {
+    checkForIdenticalRealNamesBeforeUpdate,
+    checkForIdenticalUserNamesBeforeUpdate,
+    renderFailureAlertWhenCredentialsAreIdentical,
+    updateBioForUser
+} from "../../../Modules/FeedModule";
 import {validateName} from "../../../Modules/Validation/SignUpValidation";
 import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
 import {validateUsername} from "../../../Modules/Validation/AuthValidationBase";
@@ -25,7 +30,6 @@ export default function ProfileInfoManager(props) {
     const [open, setOpen] = useState(false);
     const [reset, setReset] = useState(false);
     const [nameError, setNameError] = useState({});
-    const [emailError, setEmailError] = useState({});
     const [usernameError, setUsernameError] = useState({});
     textareaBio = loggedInAccount.bio;
 
@@ -40,6 +44,7 @@ export default function ProfileInfoManager(props) {
         }
         resetFields();
         setOpen(false);
+        props.toggleOption();
     };
 
     const getInputValue = (event, className) => {
@@ -72,15 +77,37 @@ export default function ProfileInfoManager(props) {
     }
 
     const saveChanges = async () => {
-        canPerformCredentialsUpdate();
+        validateCredentials();
 
         if (canPerformIdentityUpdate) {
             await updateUserIdentity();
+            props.scheduleUpdate();
+            setTimeout(() => handleClose(), 1000);
         }
     }
 
-    const canPerformCredentialsUpdate = () => {
+    const validateCredentials = () => {
         canPerformIdentityUpdate = true;
+        modifiedAccountDetails.userRealName = loggedInAccount.userRealName;
+        modifiedAccountDetails.username = loggedInAccount.userName;
+
+        const sameRealNameValidation = checkForIdenticalRealNamesBeforeUpdate();
+        if (!isObjectEmpty(sameRealNameValidation)) {
+            setNameError(sameRealNameValidation);
+            canPerformIdentityUpdate = false;
+        }
+
+        const sameUserNameValidation = checkForIdenticalUserNamesBeforeUpdate();
+        if (!isObjectEmpty(sameUserNameValidation)) {
+            setUsernameError(sameUserNameValidation);
+            canPerformIdentityUpdate = false;
+        }
+
+        if (!isObjectEmpty(sameRealNameValidation) || !isObjectEmpty(sameUserNameValidation)) {
+            renderFailureAlertWhenCredentialsAreIdentical();
+            return;
+        }
+
         const realNameValidation = validateName(modifiedAccountDetails.userRealName);
         if (!isObjectEmpty(realNameValidation)) {
             setNameError(realNameValidation);
@@ -132,7 +159,7 @@ export default function ProfileInfoManager(props) {
                     <ImageInput classname='username'
                                 type={2}
                                 error={usernameError}
-                                icon={Email}
+                                icon={TagFaces}
                                 reset={reset}
                                 turnOffReset={turnOffReset}
                                 inputValue={loggedInAccount.userName}

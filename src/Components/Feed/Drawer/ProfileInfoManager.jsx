@@ -69,6 +69,8 @@ export default function ProfileInfoManager(props) {
     }
 
     const resetFields = () => {
+        setUsernameError({});
+        setNameError({});
         setReset(true);
     }
 

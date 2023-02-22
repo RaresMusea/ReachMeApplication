@@ -20,7 +20,7 @@ export default function ImageInput(props) {
 
         if (props.reset) {
             setInputValue(props.inputValue);
-            setError({});
+            setError(props.error);
             props.turnOffReset();
         }
 

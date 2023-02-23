@@ -144,7 +144,7 @@ export default function ProfileInfoManager(props) {
     }
 
     return (
-        <>
+        <div className='ProfileInfoManager'>
             <ListItem key="accountManagement" disablePadding
                       style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <ListItemButton alignItems="center" onClick={handleClickOpen}>
@@ -242,6 +242,6 @@ export default function ProfileInfoManager(props) {
                 <div id="ProfileInfoManagementAlerts"/>
                 <div id="ProfileInfoSuccessAlerts"/>
             </Dialog>
-        </>
+        </div>
     );
 }

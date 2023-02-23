@@ -174,7 +174,7 @@ export const signOutUser = async () => {
 export const updateBio = async (newBio) => {
     const patchRequestConfig = {
         method: "PATCH",
-        body: newBio,
+        body: newBio === "" ? "empty" : newBio,
         headers: {
             'Content-type': `text/html;`,
             "Accept": "application/json",

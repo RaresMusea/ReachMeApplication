@@ -5,6 +5,7 @@ import {credentialsWereModified, textareaBio} from "../Components/Feed/Drawer/Pr
 import {displayFailAlert} from "./Feed/Navbar/Account Management/AccountManagementModule";
 import {modifiedAccountDetails} from "./Object/AccountInfoManagementObjects";
 import {buildError} from "./Sign Up/SignUpUtils";
+import {isEmptyString} from "./Text/TextModule";
 
 export const destroyModal = () => {
     document.getElementById('wrapper').remove();
@@ -26,8 +27,6 @@ export const renderSignOutModal = (config) => {
 }
 
 export const updateBioForUser = async () => {
-    console.log(loggedInAccount.bio);
-    console.log(textareaBio);
     if (loggedInAccount.bio === textareaBio.trim()) {
         const alertConfiguration = {
             message: "Your new bio cannot coincide with your old one!",
@@ -39,7 +38,15 @@ export const updateBioForUser = async () => {
         displayFailAlert(alertConfiguration);
         return;
     }
+    console.log("textAreaBio:" + textareaBio);
     await updateBio(textareaBio);
+}
+
+export const validateUserBio = () => {
+    if (isEmptyString(textareaBio)) {
+        return buildError("Your bio cannot be empty!");
+    }
+    return {};
 }
 
 export const checkForIdenticalRealNamesBeforeUpdate = () => {

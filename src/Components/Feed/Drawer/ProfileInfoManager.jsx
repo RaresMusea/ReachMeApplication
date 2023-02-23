@@ -29,12 +29,14 @@ export let canPerformIdentityUpdate = false;
 export let credentialsWereModified = false;
 modifiedAccountDetails.userRealName = loggedInAccount.userRealName;
 modifiedAccountDetails.username = loggedInAccount.userName;
+
 export default function ProfileInfoManager(props) {
 
     const [open, setOpen] = useState(false);
     const [reset, setReset] = useState(false);
     const [nameError, setNameError] = useState({});
     const [usernameError, setUsernameError] = useState({});
+    const [bioAdded, setBioAdded] = useState(loggedInAccount.bio !== "empty");
     const [formTouched, setFormTouched] = useState(false);
     textareaBio = loggedInAccount.bio;
 
@@ -74,7 +76,15 @@ export default function ProfileInfoManager(props) {
     }
 
     const updateBio = async () => {
+
         await updateBioForUser();
+        props.scheduleUpdate();
+        console.log("bio after update: " + textareaBio);
+        if (textareaBio === "") {
+            setBioAdded(false);
+            return;
+        }
+        setBioAdded(true);
     }
 
     const resetFields = () => {
@@ -178,7 +188,7 @@ export default function ProfileInfoManager(props) {
                                 adornmentPosition={'start'}
                                 getInputText={getInputValue}
                     />
-                    {loggedInAccount.bio ?
+                    {bioAdded ?
                         <TextArea textareaLabel={"Your account bio"}
                                   textareaPlaceholder={"Update your bio here"}
                                   textareaButtonText={"Update bio"}
@@ -192,10 +202,11 @@ export default function ProfileInfoManager(props) {
                         <TextArea textareaLabel={"Add a bio to your profile"}
                                   textareaPlaceholder={"Type your bio here"}
                                   textareaButtonText={"Add bio"}
-                                  value={loggedInAccount.bio}
+                                  value={""}
                                   reset={reset}
                                   turnOffReset={turnOffReset}
                                   getText={getTextAreaValue}
+                                  action={updateBio}
                         />
                     }
 

@@ -23,7 +23,8 @@ export default function TextArea(props) {
 
     return (
         <FormControl>
-            <FormLabel className='FormLabel'>{props.textareaLabel}</FormLabel>
+            <FormLabel
+                className='FormLabel'>{props.textareaLabel} </FormLabel>
             <Textarea
                 className='TextArea'
                 placeholder={props.textareaPlaceholder}

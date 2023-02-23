@@ -1,10 +1,15 @@
-.FormLabel {
+.FormLabel,
+.ErrorFormLabel {
   margin-top: .5em !important;
   font-family: "PT Sans", sans-serif !important;
   margin-left: .6em !important;
   font-size: 1em !important;
   font-weight: 500 !important;
   opacity: 75%;
+}
+
+.ErrorFormLabel {
+  color: red !important;
 }
 
 .TextArea {

@@ -1,9 +1,10 @@
 import '../../../Styles/Messaging/Header/MessagingHeader.scss';
 import {reachMeLogo} from "../../../Modules/Exporters/ImageExporter";
-import {Close, Tune} from "@mui/icons-material";
+import {ArrowBack, Tune} from "@mui/icons-material";
 import IconButton from "@mui/joy/IconButton";
 import {loggedInAccount} from "../../../Services/Feed Services/FeedDrawerService";
 import {Avatar} from "@mui/joy";
+import NewConversation from "../Conversation/NewConversation";
 
 export default function MessagingHeader(props) {
     return (
@@ -18,14 +19,15 @@ export default function MessagingHeader(props) {
                 <Avatar src={loggedInAccount.profilePhotoHref}
                         title={loggedInAccount.userRealName}
                         className="RightSideAvatar"/>
-                <IconButton title="Close"
-                            className="IconButton"
-                            onClick={props.close}>
-                    <Close className="RightSideHeaderIcon"/>
-                </IconButton>
+                <NewConversation enableSearch={props.enableSearch}/>
                 <IconButton title="More messaging options"
                             className="IconButton">
                     <Tune className="RightSideHeaderIcon"/>
+                </IconButton>
+                <IconButton title="Close"
+                            className="IconButton"
+                            onClick={props.close}>
+                    <ArrowBack className="RightSideHeaderIcon"/>
                 </IconButton>
             </div>
         </div>

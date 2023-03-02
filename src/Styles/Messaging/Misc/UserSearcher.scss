@@ -1,0 +1,52 @@
+.Searcher {
+  @apply p-2;
+  @apply bg-[#063954];
+  @apply text-white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+  opacity: 0;
+  transition: .5s ease-in-out;
+
+  form {
+    @apply h-[2em];
+    input {
+      @apply outline-0;
+      @apply w-[100%];
+      @apply bg-[#063954];
+      @apply font-extrabold;
+      font-family: 'PT Sans', sans-serif;
+    }
+  }
+
+  .ResultsText {
+    @apply text-center;
+    @apply font-bold;
+    @apply font-[1.2em];
+    @apply mt-1;
+  }
+
+  .SearchResults {
+    @apply mt-[.2em];
+    @apply flex;
+    @apply items-center;
+    @apply mb-[.3em];
+
+    .UserProfilePic {
+      vertical-align: middle;
+      @apply w-[7vmin];
+      @apply h-[7vmin];
+      @apply mr-[.3em];
+    }
+
+    .SearchResultNames {
+      @apply flex-col;
+      @apply ml-[1em];
+      @apply cursor-pointer;
+      @apply m-0;
+      font-family: 'PT Sans', sans-serif;
+
+      .First {
+        @apply font-extrabold;
+      }
+    }
+  }
+}

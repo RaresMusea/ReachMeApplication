@@ -38,13 +38,19 @@
       @apply h-[4.5vmin];
       @apply w-[4.5vmin];
       @apply ml-[1em];
-      @apply mr-[.4em];
+      @apply mr-[.5em];
+      transition: .2s ease-in-out;
+    }
+
+    .RightSideAvatar:hover, .RightSideAvatar:active {
+      @apply animate-pulse;
     }
 
     .IconButton {
       .RightSideHeaderIcon {
         @apply text-[#108e8e];
-        @apply text-[5vmin];
+        @apply w-[4.5vmin];
+        @apply h-[4.5vmin];
         @apply font-extrabold;
         margin-left: 0;
         margin-right: 0;

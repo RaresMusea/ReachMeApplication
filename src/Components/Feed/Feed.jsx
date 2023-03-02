@@ -7,12 +7,19 @@ import {currentlyLoggedInUser} from "../../Modules/Session/CurrentSessionModule"
 export default function Feed() {
 
     const [update, setUpdate] = useState(false);
+    const [titleNeedsUpdate, setTitleNeedsUpdate] = useState(false);
 
     useEffect(() => {
-        document.title = 'ReachMe - Feed';
+        document.title = `ReachMe - Feed`;
         getRequiredMetadata(currentlyLoggedInUser);
         console.log("this got called at startup");
-    }, []);
+
+        if (titleNeedsUpdate) {
+            document.title = `ReachMe - Feed`;
+            setTitleNeedsUpdate(false);
+        }
+
+    }, [titleNeedsUpdate]);
 
     useEffect(() => {
         if (update) {
@@ -20,15 +27,27 @@ export default function Feed() {
             setUpdate(false);
             console.log("he updated me!!!");
         }
-    }, [update]);
+
+        if (titleNeedsUpdate) {
+            document.title = `ReachMe - Feed`;
+            setTitleNeedsUpdate(false);
+        }
+
+    }, [update, titleNeedsUpdate]);
 
     const scheduleUpdate = () => {
         setUpdate(true);
     }
 
+    const resetPageTitleToFeedState = () => {
+        setTitleNeedsUpdate(true);
+    }
+
     return (
         <>
-            <Navbar scheduleUpdate={scheduleUpdate}/>
+            <Navbar
+                resetPageTitleToFeedState={resetPageTitleToFeedState}
+                scheduleUpdate={scheduleUpdate}/>
             <div id='SignOutModal'/>
             <h1>Hai noroc</h1>
         </>

@@ -1,0 +1,59 @@
+.MessagingHeaderWrapper {
+  @apply h-[8%];
+  @apply flex;
+  @apply justify-between;
+  @apply bg-[#ffffff];
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+  border-right: none;
+
+  .HeaderLeftSide {
+    @apply flex;
+    @apply cursor-pointer;
+    @apply justify-start;
+    @apply items-center;
+
+    .MessagingHeaderLogoImage {
+      @apply w-[2.6em];
+      @apply h-[2.6em];
+      @apply block;
+      @apply ml-[.3em];
+      @apply mr-[.2em];
+    }
+
+    .LogoText {
+      font-family: 'Rajdhani', sans-serif;
+      @apply text-[4.5vmin];
+      @apply text-[#108c8e];
+      @apply font-extrabold;
+
+    }
+  }
+
+  .HeaderRightSide {
+    @apply flex;
+    @apply items-center;
+    @apply justify-between;
+
+    .RightSideAvatar {
+      @apply h-[4.5vmin];
+      @apply w-[4.5vmin];
+      @apply ml-[1em];
+      @apply mr-[.4em];
+    }
+
+    .IconButton {
+      .RightSideHeaderIcon {
+        @apply text-[#108e8e];
+        @apply text-[5vmin];
+        @apply font-extrabold;
+        margin-left: 0;
+        margin-right: 0;
+        transition: .2s ease-in-out;
+      }
+
+      .RightSideHeaderIcon:active, .RightSideHeaderIcon:hover {
+        @apply animate-pulse;
+      }
+    }
+  }
+}

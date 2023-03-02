@@ -142,7 +142,9 @@
 .SuccessAlert,
 .ErrorAlert {
   @apply mt-[1em];
-  border-radius: 0 !important;
+  border-radius: 15px !important;
+  width: 70% !important;
+  margin: 0 auto !important;
 }
 
 .ErrorAlert {

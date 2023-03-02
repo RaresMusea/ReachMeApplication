@@ -61,7 +61,7 @@
     }
 
     .Icon:active, .Icon:hover {
-      @apply animate-pulse
+      @apply animate-pulse;
     }
   }
 }

@@ -1,5 +1,6 @@
 import searchIcon from '../../Media/Images/search.svg';
 import searchIconPressed from '../../Media/Images/searchIconPressed.svg';
+import messagingIcon from '../../Media/Images/messages.svg';
 
 export const resetPasswordDialogProps = {
     dialogTitle: 'Forgot password? We\'ve got your back.',
@@ -8,5 +9,6 @@ export const resetPasswordDialogProps = {
     actionName: `Reset password`,
 };
 
+export const defaultMessagingIcon = messagingIcon;
 export const defaultSearchIconName = searchIcon;
 export const searchIconEngaged = searchIconPressed;

@@ -2,6 +2,7 @@ import {Avatar} from "@mui/joy";
 import {defaultProfilePic} from "../../../Modules/Exporters/ImageExporter";
 import {loggedInAccount} from "../../../Services/Feed Services/FeedDrawerService";
 import '../../../Styles/Messaging/Misc/UserSearcher.scss';
+import {closeUserSearcher} from "../../../Modules/Messaging/MessagingModule";
 
 export default function UserSearcher() {
     return (
@@ -20,6 +21,9 @@ export default function UserSearcher() {
                         <div className="searchNameDetails">{loggedInAccount.userRealName}</div>
                     </div>
                 </div>
+                <button className="HideButton"
+                        onClick={closeUserSearcher}>Hide
+                </button>
             </div>
         </>
     )

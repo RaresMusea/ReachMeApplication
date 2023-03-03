@@ -5,6 +5,7 @@ import IconButton from "@mui/joy/IconButton";
 import {loggedInAccount} from "../../../Services/Feed Services/FeedDrawerService";
 import {Avatar} from "@mui/joy";
 import NewConversation from "../Conversation/NewConversation";
+import {renderLogoDependingOnScreenDimension} from "../../../Modules/Messaging/MessagingModule";
 
 export default function MessagingHeader(props) {
     return (
@@ -13,7 +14,7 @@ export default function MessagingHeader(props) {
                 <img className="MessagingHeaderLogoImage"
                      src={reachMeLogo}
                      alt="ReachMe application logo"/>
-                <h1 className="LogoText">ReachMe Messaging</h1>
+                <h1 className="LogoText">{renderLogoDependingOnScreenDimension()}</h1>
             </div>
             <div className="HeaderRightSide">
                 <Avatar src={loggedInAccount.profilePhotoHref}

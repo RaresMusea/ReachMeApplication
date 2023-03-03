@@ -11,6 +11,7 @@
     input {
       @apply outline-0;
       @apply w-[100%];
+      @apply text-center;
       @apply bg-[#063954];
       @apply font-extrabold;
       font-family: 'PT Sans', sans-serif;
@@ -25,6 +26,7 @@
   }
 
   .SearchResults {
+    @apply p-2;
     @apply mt-[.2em];
     @apply flex;
     @apply items-center;
@@ -49,4 +51,27 @@
       }
     }
   }
+
+  .SearchResults:active, .SearchResults:hover {
+    @apply bg-[#094561];
+  }
+
+  .HideButton {
+    @apply block;
+    margin: 0 auto;
+    background-color: #fed349;
+    @apply rounded-md;
+    @apply p-2;
+    @apply font-extrabold;
+    font-family: 'PT Sans', sans-serif;
+    @apply text-[#094561];
+    @apply w-[3em];
+    transition: .2s ease-in-out;
+  }
+
+  .HideButton:active, .HideButton:hover {
+    transform: translateY(-5px);
+  }
+
+
 }

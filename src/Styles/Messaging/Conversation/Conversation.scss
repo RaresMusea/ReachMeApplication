@@ -1,3 +1,52 @@
 .ConversationWrapper {
   flex: 2;
+  @apply text-white;
+
+  .ConversationHeader {
+    @apply overflow-hidden;
+    @apply bg-[#108e8e];
+    @apply h-[60px];
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+    @apply flex;
+    @apply items-center;
+    @apply justify-between;
+  }
+
+  .UserDetails {
+    @apply cursor-pointer;
+    @apply flex;
+    @apply items-center;
+    .ConversationAvatar {
+      @apply ml-[1em];
+      @apply mr-[.5em];
+      @apply w-[3em];
+      @apply h-[3em];
+      @apply block;
+    }
+
+    span {
+      @apply font-extrabold;
+      font-family: 'Rajdhani', sans-serif;
+      @apply text-[1.2em];
+    }
+  }
+
+  .ConversationHeaderIcons {
+    .ConversationHeaderIconButton {
+      transition: .3s ease-in;
+    }
+
+    .ConversationHeaderIconButton:active,
+    .ConversationHeaderIconButton:hover {
+      @apply animate-ping;
+    }
+  }
+
+  .ConversationContentWrapper {
+    @apply text-black;
+
+    .MessagesContainer {
+      @apply bg-[#dbdbdb];
+    }
+  }
 }

@@ -1,18 +1,17 @@
-export const parseDate = (date) => {
+export const parseDateAndTime = (date) => {
+    const timeString = `${date.getHours()}:${date.getMinutes()}`;
     if (isToday(date)) {
-        return `Today`;
+        return `Today at ${timeString}`;
     }
 
     if (wasYesterday(date)) {
-        return `Yesterday`;
+        return `Yesterday at ${timeString}`;
     }
 
     const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
     const formattedDate = date.toLocaleString("en-US", options);
-
     const tokens = formattedDate.split(", ");
-    console.log(tokens);
-    return `${tokens[0].substring(0, 3)}, ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}`
+    return `${tokens[0].substring(0, 3)}, ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}, ${timeString}`;
 }
 
 const isToday = (date) => {

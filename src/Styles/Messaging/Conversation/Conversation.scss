@@ -44,9 +44,91 @@
 
   .ConversationContentWrapper {
     @apply text-black;
+    height: 91%;
 
     .MessagesContainer {
+      height: calc(100% - 70px);
+      padding: 10px;
       @apply bg-[#dbdbdb];
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+
+      @media screen and (min-width: 1540px) {
+        height: calc(100% - 50px);
+      }
+    }
+
+    .ConversationFormWrapper {
+      @apply flex;
+      @apply justify-center;
+
+      textarea {
+        @apply outline-0;
+        @apply resize-none;
+        @apply mt-[1.3em];
+        @apply ml-[.3em];
+        @apply w-[90%];
+        height: 50px;
+        font-family: 'PT Sans', sans-serif;
+
+        @media screen and (min-width: 1540px) {
+          @apply mt-[1.4em];
+        }
+      }
+
+      .MessageInput::-webkit-scrollbar {
+        display: none;
+      }
+
+      .MessageSenderIconButton {
+        transition: .2s ease-in-out;
+      }
+
+      .MessageSenderIconButton:active {
+        @apply animate-pulse;
+      }
+
+      .SendIcon,
+      .AttachIcon,
+      .MoreOptionsIcon {
+        @apply text-[#108e8e];
+        @apply w-[1.2em];
+        @apply h-[1.2em];
+        transition: .2s ease-in-out;
+      }
+
+      .AttachIcon {
+        @apply text-[#edc444];
+      }
+
+      .MoreOptionsIcon {
+        @apply text-[#094561];
+      }
+
+      .SendIcon:active,
+      .AttachIcon:active {
+        @apply animate-pulse;
+      }
+    }
+  }
+
+  .ConversationContentWrapper::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1500px) {
+  .ConversationWrapper {
+    .ConversationFormWrapper {
+      textarea {
+        height: 70px;
+        @apply mt-[0em];
+      }
+
+      .SendIcon,
+      .AttachIcon,
+      .MoreOptionsIcon {
+        @apply mt-1;
+      }
     }
   }
 }

@@ -8,6 +8,7 @@ export default function UserSearcher() {
     return (
         <>
             <div className="Searcher">
+                <h2 className="Subtitle">Start a new conversation</h2>
                 <form>
                     <input type="text"
                            placeholder="Type the name or username of the user you want to start a conversation with"/>
@@ -26,6 +27,5 @@ export default function UserSearcher() {
                 </button>
             </div>
         </>
-    )
-        ;
+    );
 }

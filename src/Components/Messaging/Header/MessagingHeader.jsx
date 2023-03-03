@@ -1,6 +1,6 @@
 import '../../../Styles/Messaging/Header/MessagingHeader.scss';
 import {reachMeLogo} from "../../../Modules/Exporters/ImageExporter";
-import {ArrowBack, Tune} from "@mui/icons-material";
+import {Cancel, Tune} from "@mui/icons-material";
 import IconButton from "@mui/joy/IconButton";
 import {loggedInAccount} from "../../../Services/Feed Services/FeedDrawerService";
 import {Avatar} from "@mui/joy";
@@ -28,7 +28,7 @@ export default function MessagingHeader(props) {
                 <IconButton title="Close"
                             className="IconButton"
                             onClick={props.close}>
-                    <ArrowBack className="RightSideHeaderIcon"/>
+                    <Cancel className="RightSideHeaderIcon"/>
                 </IconButton>
             </div>
         </div>

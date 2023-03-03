@@ -1,0 +1,65 @@
+.ChatsWrapper {
+  @apply opacity-0;
+  @apply text-white;
+  @apply cursor-pointer;
+
+  .Subtitle {
+    @apply text-[1.4em];
+    @apply p-3;
+    @apply font-extrabold;
+    font-family: 'PT Sans', sans-serif;
+  }
+
+  .ConversationDetailsFlexWrapper {
+    @apply flex;
+    @apply justify-between;
+    @apply items-center;
+    transition: .2s ease-in-out;
+
+    .UserChats {
+      @apply p-3;
+      @apply mt-[.2em];
+      @apply flex;
+      @apply items-center;
+      @apply mb-[.3em];
+
+      .UserProfilePic {
+        vertical-align: middle;
+        @apply w-[7vmin];
+        @apply h-[7vmin];
+        @apply mr-[.4em];
+      }
+
+      .SearchResultNames {
+        @apply flex-col;
+        @apply ml-[1em];
+        @apply cursor-pointer;
+        @apply m-0;
+        font-family: 'PT Sans', sans-serif;
+
+        .searchNameDetails {
+          width: 70%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .First {
+          @apply font-extrabold;
+          @apply text-[1.1em];
+        }
+      }
+    }
+
+    .MessageDate {
+      @apply p-3;
+      font-family: 'PT Sans', sans-serif;
+      @apply font-bold;
+    }
+  }
+
+  .ConversationDetailsFlexWrapper:active,
+  .ConversationDetailsFlexWrapper:hover {
+    @apply bg-[#063954];
+  }
+}

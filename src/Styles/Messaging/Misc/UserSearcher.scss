@@ -1,3 +1,11 @@
+.Subtitle {
+  @apply text-[1.4em];
+  @apply cursor-pointer;
+  @apply p-3;
+  @apply font-extrabold;
+  font-family: 'PT Sans', sans-serif;
+}
+
 .Searcher {
   @apply p-2;
   @apply bg-[#063954];
@@ -11,10 +19,17 @@
     input {
       @apply outline-0;
       @apply w-[100%];
+      @apply overflow-hidden;
       @apply text-center;
       @apply bg-[#063954];
+      @apply mb-2;
       @apply font-extrabold;
+      transition: .2s ease-in-out;
       font-family: 'PT Sans', sans-serif;
+    }
+
+    input:focus {
+      border-bottom: 1px solid #108c8e;
     }
   }
 

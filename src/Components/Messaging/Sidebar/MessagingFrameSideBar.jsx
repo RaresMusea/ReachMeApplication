@@ -3,6 +3,7 @@ import MessagingHeader from "../Header/MessagingHeader";
 import UserSearcher from "../Misc/UserSearcher";
 import {useState} from "react";
 import {increaseTheOpacity} from "../../../Modules/Animation Control/Opacity";
+import Chats from "./Chats";
 
 export default function MessagingFrameSideBar(props) {
     const [searcherVisible, setSearcherVisible] = useState(false);
@@ -10,7 +11,9 @@ export default function MessagingFrameSideBar(props) {
     const enableSearch = () => {
         setSearcherVisible(true);
         setTimeout(() => {
-            increaseTheOpacity(document.querySelector('.Searcher'), 30)
+            const searcher = document.querySelector('.Searcher');
+            searcher.style.display = `block`;
+            increaseTheOpacity(searcher, 30)
         }, 100);
     }
 
@@ -23,6 +26,7 @@ export default function MessagingFrameSideBar(props) {
                     <UserSearcher/>
                     : null
                 }
+                <Chats/>
             </div>
         </>
     );

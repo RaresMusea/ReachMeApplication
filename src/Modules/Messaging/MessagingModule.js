@@ -1,4 +1,4 @@
-import {decreaseTheOpacity} from "../Animation Control/Opacity";
+import {decreaseTheOpacity, increaseTheOpacity} from "../Animation Control/Opacity";
 
 export const renderLogoDependingOnScreenDimension = () => {
     if (window.innerWidth > 1200)
@@ -12,7 +12,16 @@ export const renderLogoDependingOnScreenDimension = () => {
 
 export const closeUserSearcher = () => {
     const element = document.querySelector('.Searcher');
+    element.style.display = `none`;
     setTimeout(() => {
         decreaseTheOpacity(element)
+    }, 30);
+
+}
+
+export const fadeInChats = () => {
+    const chats = document.querySelector('.ChatsWrapper');
+    setTimeout(() => {
+        increaseTheOpacity(chats)
     }, 30);
 }

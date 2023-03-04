@@ -25,8 +25,9 @@
     }
 
     .MessageContent {
-      max-width: 80%;
-      @apply flex-col;
+      display: flex;
+      @apply cursor-pointer;
+      flex-direction: column;
       @apply gap-[.9em];
       transition: transform .2s ease-in-out;
 
@@ -35,10 +36,41 @@
         @apply font-medium;
         padding: 10px 20px;
         font-family: 'PT Sans', sans-serif;
+        border-radius: 0 15px 15px 15px;
+        max-width: max-content;
       }
 
       img {
         @apply w-[50%];
+        border-radius: 0 15px 15px 15px;
+        border: 8px solid white;
+      }
+    }
+
+    &.LoggedUsersMessage {
+      flex-direction: row-reverse;
+      @apply pl-0;
+      @apply pr-4;
+      .MessageContent {
+        align-items: flex-end;
+
+        p {
+          @apply bg-[#108e8e];
+          @apply font-medium;
+          @apply text-white;
+          border-radius: 15px 0 15px 15px;
+          max-width: max-content;
+        }
+
+        img {
+          border: 8px solid #108c8e;
+          border-radius: 15px 0 15px 15px;
+        }
+
+        img::selection {
+          background-color: transparent;
+        }
+
       }
     }
   }

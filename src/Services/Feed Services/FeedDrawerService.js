@@ -11,7 +11,10 @@ import {currentlyLoggedInUser} from "../../Modules/Session/CurrentSessionModule"
 import {getDownloadURL} from "firebase/storage";
 import {getAuth, signOut} from "firebase/auth";
 import {modifiedAccountDetails} from "../../Modules/Object/AccountInfoManagementObjects";
-import {removeProfilePictureHrefFromFirestore} from "../Firebase Service/Feed/FirebaseFeedService";
+import {
+    removeProfilePictureHrefFromFirestore,
+    updateProfilePictureHrefInFirestore
+} from "../Firebase Service/Feed/FirebaseFeedService";
 import {updateUserIdentityDataInFirestore} from "../Firebase Service/Authentication/FirebaseAuthService";
 
 export let update = false;
@@ -69,7 +72,7 @@ export const removeProfilePictureForUser = async () => {
             console.log(err);
 
         });
-    deletePictureFromFirebaseStorage(imageHref);
+    await deletePictureFromFirebaseStorage(imageHref);
 }
 
 const deletePictureFromFirebaseStorage = async (url) => {
@@ -111,6 +114,7 @@ const uploadLocalProfilePicture = async (payload) => {
                 console.log(downloadURL);
                 saveUploadedProfilePictureDataLocally(downloadURL);
                 loggedInAccount.profilePhotoHref = downloadURL;
+                updateProfilePictureHrefInFirestore(loggedInAccount.userFirebaseIdentifier, downloadURL);
             });
         }
     );

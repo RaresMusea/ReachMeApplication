@@ -6,3 +6,9 @@ export const removeProfilePictureHrefFromFirestore = async (userFirebaseIdentifi
         profilePhotoHref: "",
     });
 }
+
+export const updateProfilePictureHrefInFirestore = async (userFirebaseIdentifier, newHref) => {
+    await updateDoc(doc(firebaseFirestore, "userData", userFirebaseIdentifier), {
+        profilePhotoHref: newHref
+    });
+}

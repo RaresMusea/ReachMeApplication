@@ -1,5 +1,5 @@
 export const parseDateAndTime = (date) => {
-    const timeString = `${date.getHours()}:${date.getMinutes()}`;
+    const timeString = getTimeStringFromDate(date);
     if (isToday(date)) {
         return `Today at ${timeString}`;
     }
@@ -19,8 +19,29 @@ const isToday = (date) => {
     return date === today;
 }
 
+const getTimeStringFromDate = (date) => {
+    let output = date.getHours() + ":";
+
+    if (countDigits(date.getMinutes()) === 1) {
+        output += `0${date.getMinutes()}`;
+    } else {
+        output += `${date.getMinutes()}`;
+    }
+
+    return output;
+}
+
 const wasYesterday = (date) => {
     const today = new Date();
     return date.getDay() === today.getDay() - 1 && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+}
+
+const countDigits = (number) => {
+    let digits = 0;
+    while (number) {
+        digits++;
+        number /= 10;
+    }
+    return digits;
 }
 

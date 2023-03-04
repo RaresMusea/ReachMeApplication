@@ -1,0 +1,45 @@
+.Messages {
+  @apply pt-3;
+  @apply pl-4;
+  @apply h-[100%];
+  overflow-y: scroll;
+  @apply bg-[#dbdbdb];
+
+  .Message {
+    @apply flex;
+    @apply gap-[20px];
+    @apply mb-[1.3em];
+
+    .MessageDetails {
+      @apply flex-col;
+
+      .ConversationProfilePic {
+        @apply w-[2.5em];
+        @apply h-[2.5em];
+      }
+
+      .SendReceivedDate {
+        @apply text-gray-500;
+        @apply font-light;
+      }
+    }
+
+    .MessageContent {
+      max-width: 80%;
+      @apply flex-col;
+      @apply gap-[.9em];
+      transition: transform .2s ease-in-out;
+
+      p {
+        @apply bg-[white];
+        @apply font-medium;
+        padding: 10px 20px;
+        font-family: 'PT Sans', sans-serif;
+      }
+
+      img {
+        @apply w-[50%];
+      }
+    }
+  }
+}

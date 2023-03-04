@@ -44,7 +44,11 @@
 
   .ConversationContentWrapper {
     @apply text-black;
-    height: 91%;
+    height: 81%;
+
+    @media screen and (min-width: 1540px) {
+      height: 85%;
+    }
 
     .MessagesContainer {
       height: calc(100% - 70px);

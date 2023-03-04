@@ -25,3 +25,8 @@ export const fadeInChats = () => {
         increaseTheOpacity(chats)
     }, 30);
 }
+
+export const moveMessageToTheRight = () => {
+    const message = document.querySelector('.MessageContent');
+    message.style.transform = `translateX(${20}px)"`;
+}

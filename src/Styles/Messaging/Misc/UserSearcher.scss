@@ -92,6 +92,10 @@
     transform: translateY(-5px);
   }
 
+  #UserSearcherAlerts {
+    @apply rounded-l;
+    @apply mt-2;
+  }
 
 }
 

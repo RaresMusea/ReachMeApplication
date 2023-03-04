@@ -1,4 +1,5 @@
 import {decreaseTheOpacity, increaseTheOpacity} from "../Animation Control/Opacity";
+import {renderAlert} from "../Alerts/AlertUtil";
 
 export const renderLogoDependingOnScreenDimension = () => {
     if (window.innerWidth > 1200)
@@ -29,4 +30,18 @@ export const fadeInChats = () => {
 export const moveMessageToTheRight = () => {
     const message = document.querySelector('.MessageContent');
     message.style.transform = `translateX(${20}px)"`;
+}
+
+export const displayUserSearcherAlert = (message) => {
+    const alertConfig = {
+        severity: 'error',
+        class: 'UserSearcherFailAlert',
+        message: message,
+        targetId: '#UserSearcherAlerts',
+        alertType: 'error',
+        fadeOutTimeout: 3000,
+        removeTimeout: 3500,
+    };
+
+    renderAlert(alertConfig);
 }

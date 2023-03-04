@@ -70,6 +70,7 @@ export default function UserSearcher() {
                 <button className="HideButton"
                         onClick={handleClose}>Hide
                 </button>
+                <div id="UserSearcherAlerts"/>
             </div>
         </>
     );

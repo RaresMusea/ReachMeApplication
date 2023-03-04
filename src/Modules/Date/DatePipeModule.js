@@ -37,6 +37,10 @@ const wasYesterday = (date) => {
 }
 
 const countDigits = (number) => {
+    if (number === 0) {
+        return 1;
+    }
+
     let digits = 0;
     while (number) {
         digits++;

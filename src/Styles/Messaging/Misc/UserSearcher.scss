@@ -10,6 +10,9 @@
   @apply p-2;
   @apply bg-[#063954];
   @apply text-white;
+  @apply h-auto;
+  @apply w-[100%];
+  overflow: scroll;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
   opacity: 0;
   transition: .5s ease-in-out;
@@ -19,10 +22,10 @@
     input {
       @apply outline-0;
       @apply w-[100%];
+      margin: 0 auto;
       @apply overflow-hidden;
       @apply text-center;
       @apply bg-[#063954];
-      @apply mb-2;
       @apply font-extrabold;
       transition: .2s ease-in-out;
       font-family: 'PT Sans', sans-serif;
@@ -80,6 +83,7 @@
     @apply font-extrabold;
     font-family: 'PT Sans', sans-serif;
     @apply text-[#094561];
+    @apply mt-2;
     @apply w-[3em];
     transition: .2s ease-in-out;
   }
@@ -89,4 +93,8 @@
   }
 
 
+}
+
+.Searcher::-webkit-scrollbar {
+  display: none;
 }

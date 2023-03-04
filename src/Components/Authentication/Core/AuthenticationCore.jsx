@@ -17,7 +17,6 @@ import {resetPasswordViaEmail} from "../../../Services/Authentication Services/L
 
 export let emailForPassReset;
 export default function AuthenticationCore(props) {
-
     useEffect(() => {
         lottie.loadAnimation({
             container: document.querySelector('#LogoAnimation'),

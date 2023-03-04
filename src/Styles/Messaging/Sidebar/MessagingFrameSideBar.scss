@@ -1,5 +1,25 @@
 .SidebarWrapper {
+  @apply h-[100%];
+  @apply w-[100%];
+  scrollbar-gutter: stable both-edges;
+  overflow-y: scroll;
   background-color: #094561;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
   flex: 1;
+}
+
+.SidebarWrapper::-webkit-scrollbar {
+  //width: 3px;
+  display: none;
+}
+
+.SidebarWrapper::-webkit-scrollbar-track {
+  border-radius: 8px;
+  background-color: #95a5a6;
+  border: 1px solid #cacaca;
+}
+
+.SidebarWrapper::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: #2c3e50;
 }

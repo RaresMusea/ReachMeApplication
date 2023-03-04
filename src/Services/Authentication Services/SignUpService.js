@@ -1,6 +1,7 @@
 import {displaySignUpFailedAlert, displaySignUpSuccessAlert} from "../../Modules/Sign Up/SignUpUtils";
 import {signUpCredentials} from "../../Modules/Validation/SignUpValidation";
 import {getAuth, signOut} from "firebase/auth";
+import {storeRequiredUserDataToFirestore} from "../Firebase Service/Authentication/FirebaseAuthService";
 
 const postEndpoint = `http://localhost:8080/account`;
 const testConnectionEndpoint = `http://localhost:8080/connectionAvailable`;
@@ -61,7 +62,7 @@ export const accountWithSameCredentialsAlreadyExists = (username) => {
     return false;
 }
 
-export const saveUserAccountMetadata = (user) => {
+export const saveUserAccountMetadata = async (user) => {
     const payloadBody = {
         "userFirebaseIdentifier": user.uid,
         "userName": signUpCredentials.username,
@@ -73,7 +74,8 @@ export const saveUserAccountMetadata = (user) => {
     setRequestOptions(payloadBody);
     fetch(postEndpoint, postMethodRequestOpt)
         .then(response => response.json())
-        .then(() => {
+        .then((data) => {
+            storeRequiredUserDataToFirestore(data);
             displaySignUpSuccessAlert(`Account created successfully, ${signUpCredentials.fullName}! Enjoy the ReachMe app and
                     stay surrounded only by wonderful people!&nbsp;You will be automatically redirected to the Log In
                     page where you can enter your credentials and access your profile.`);

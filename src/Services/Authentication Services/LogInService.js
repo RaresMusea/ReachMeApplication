@@ -29,7 +29,6 @@ export const logInUser = async () => {
 
 const logInWithEmailAndPassword = async () => {
     authentication.signInWithEmailAndPassword(logInCredentials.name.userOrEmail, logInCredentials.pass)
-
         .then(userCredential => {
             const accountUid = userCredential.user.uid;
             console.log(accountUid);

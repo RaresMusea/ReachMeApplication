@@ -1,7 +1,7 @@
 import {validateEmailAddress, validateUsername} from "./AuthValidationBase";
 import {isObjectEmpty} from "../Object/ObjectModule";
 
-export const logInCredentials = {
+export let logInCredentials = {
     name: {
         "userOrEmail": ``,
         "type": ``

@@ -29,14 +29,14 @@ export default function AuthenticationCore(props) {
     const [userLogged, setUserLogged] = useState(false);
     const [passwordResetError, setPasswordResetError] = useState({});
     const [passwordModalForceClose, setPasswordModalForceClose] = useState(false);
-    let loginInfo = {};
+    const [loginInfo, setLoginInfo] = useState({});
 
     const switchAuthState = () => {
         setUserLogged(!userLogged);
     }
 
     const updateLoginCredentials = (credentials) => {
-        loginInfo = credentials;
+        setLoginInfo(credentials);
         console.log(loginInfo);
     }
 

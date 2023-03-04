@@ -1,6 +1,7 @@
 import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
+import {getFirestore} from 'firebase/firestore';
 
 //Firebase Configuration-Conexiunea catre server-ul firebase, va permite autentificarea, cat si stocarea de date din cadrul aplicatiei intr-o platforma Cloud de la Google.
 const firebaseConfig = {
@@ -18,6 +19,7 @@ const app = firebase.initializeApp(firebaseConfig);
 //Componentele de autentificare si, respectiv stocare pentru aplicatia web
 const authentication = firebase.auth();
 const storage = firebase.storage();
+export const firebaseFirestore = getFirestore();
 
 //Export explicit al acestor 2 componente catre alte module Javascript din cadrul proiectului
 export {storage, authentication};

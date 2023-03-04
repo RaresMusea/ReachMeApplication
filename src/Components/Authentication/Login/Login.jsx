@@ -12,13 +12,17 @@ import {validatePassword} from "../../../Modules/Validation/AuthValidationBase";
 import {logInUser} from "../../../Services/Authentication Services/LogInService";
 
 
-export default function Login() {
+export default function Login(props) {
     const [nameError, setNameError] = useState({});
     const [passwordError, setPasswordError] = useState({});
     let canLogIn = true;
 
     useEffect(() => {
         document.title = 'ReachMe - Log In';
+        logInCredentials.name.userOrEmail = props.loginCredentials.email;
+        logInCredentials.name.type = `email`;
+        logInCredentials.pass = props.loginCredentials.pass;
+        console.log(`I'm in the hook`);
     },);
 
     const getInputText = (event, className) => {

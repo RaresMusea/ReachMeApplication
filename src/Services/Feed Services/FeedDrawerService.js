@@ -11,6 +11,8 @@ import {currentlyLoggedInUser} from "../../Modules/Session/CurrentSessionModule"
 import {getDownloadURL} from "firebase/storage";
 import {getAuth, signOut} from "firebase/auth";
 import {modifiedAccountDetails} from "../../Modules/Object/AccountInfoManagementObjects";
+import {removeProfilePictureHrefFromFirestore} from "../Firebase Service/Feed/FirebaseFeedService";
+import {updateUserIdentityDataInFirestore} from "../Firebase Service/Authentication/FirebaseAuthService";
 
 export let update = false;
 export let loggedInAccount = {};
@@ -70,9 +72,9 @@ export const removeProfilePictureForUser = async () => {
     deletePictureFromFirebaseStorage(imageHref);
 }
 
-const deletePictureFromFirebaseStorage = (url) => {
+const deletePictureFromFirebaseStorage = async (url) => {
     const pictureReference = storage.refFromURL(url);
-
+    await removeProfilePictureHrefFromFirestore(loggedInAccount.userFirebaseIdentifier);
     pictureReference.delete()
         .then(() => console.log("Deletion from firebase successfully"))
         .catch(err => console.log(err));
@@ -229,6 +231,10 @@ export const updateUserIdentity = async () => {
                 target: "#ProfileInfoManagementAlerts",
                 style: "SuccessAlert",
             };
+            updateUserIdentityDataInFirestore(
+                loggedInAccount.userFirebaseIdentifier,
+                modifiedAccountDetails.userRealName,
+                modifiedAccountDetails.username);
             displaySuccessAlert(successAlertConfig);
 
         })

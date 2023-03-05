@@ -1,7 +1,7 @@
 .ConversationWrapper {
   flex: 2;
   @apply text-white;
-
+  @apply opacity-0;
   .ConversationHeader {
     @apply overflow-hidden;
     @apply bg-[#108e8e];

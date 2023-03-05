@@ -37,7 +37,7 @@ const wasYesterday = (date) => {
 }
 
 const countDigits = (number) => {
-    if (number === 0) {
+    if ((number >= 0 && number <= 9)) {
         return 1;
     }
 

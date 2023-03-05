@@ -2,7 +2,7 @@
   @apply h-[100%];
   @apply w-[100%];
   scrollbar-gutter: stable both-edges;
-  overflow-y: scroll;
+  overflow-x: hidden;
   background-color: #094561;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
   flex: 1;

@@ -14,6 +14,7 @@
     @apply flex;
     @apply justify-between;
     @apply items-center;
+    overflow-x: scroll;
     transition: .2s ease-in-out;
 
     .UserChats {
@@ -63,4 +64,10 @@
   .ConversationDetailsFlexWrapper:hover {
     @apply bg-[#063954];
   }
+
+  .ConversationDetailsFlexWrapper::-webkit-scrollbar {
+    display: none;
+  }
 }
+
+

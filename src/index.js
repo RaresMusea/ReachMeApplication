@@ -6,20 +6,23 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import AuthenticationCore from "./Components/Authentication/Core/AuthenticationCore";
 import {ConversationContextProvider} from "./Context/ConversationContext";
+import {OpenContextProvider} from "./Context/OpenContext";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <ConversationContextProvider>
-        <React.StrictMode>
-            <BrowserRouter>
-                <Routes>
-                    <Route index element={<App/>}/>
-                    <Route path={'/authentication'} element={<AuthenticationCore/>}/>
-                </Routes>
-                }
-            </BrowserRouter>
-        </React.StrictMode>
-    </ConversationContextProvider>
+    <OpenContextProvider>
+        <ConversationContextProvider>
+            <React.StrictMode>
+                <BrowserRouter>
+                    <Routes>
+                        <Route index element={<App/>}/>
+                        <Route path={'/authentication'} element={<AuthenticationCore/>}/>
+                    </Routes>
+                    }
+                </BrowserRouter>
+            </React.StrictMode>
+        </ConversationContextProvider>
+    </OpenContextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

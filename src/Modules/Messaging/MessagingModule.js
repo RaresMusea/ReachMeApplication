@@ -45,3 +45,8 @@ export const displayUserSearcherAlert = (message) => {
 
     renderAlert(alertConfig);
 }
+
+export const resetMessageInputValues = () => {
+    const textarea = document.querySelector('.MessageInput');
+    textarea.value = ``;
+}

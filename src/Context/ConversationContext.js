@@ -5,17 +5,17 @@ export const ConversationContext = createContext();
 
 export const ConversationContextProvider = ({children}) => {
     const initialState = {
-        conversationIdentifier: null,
+        conversationIdentifier: "null",
         user: {}
     };
 
-    const chatReducer = (state, action) => {
+    const conversationReducer = (state, action) => {
         switch (action.type) {
             case "CHANGE_USER": {
                 return {
                     user: action.payload,
                     conversationIdentifier: loggedInAccount.userFirebaseIdentifier > action.payload.userFirebaseIdentifier
-                        ? loggedInAccount.userRealName + `-` + action.payload.userFirebaseIdentifier
+                        ? loggedInAccount.userFirebaseIdentifier + `-` + action.payload.userFirebaseIdentifier
                         : action.payload.userFirebaseIdentifier + `-` + loggedInAccount.userFirebaseIdentifier,
                 };
             }
@@ -25,7 +25,7 @@ export const ConversationContextProvider = ({children}) => {
         }
     };
 
-    const [state, dispatch] = useReducer(chatReducer, initialState);
+    const [state, dispatch] = useReducer(conversationReducer, initialState);
     return (
         <ConversationContext.Provider value={{data: state, dispatch}}>
             {children}

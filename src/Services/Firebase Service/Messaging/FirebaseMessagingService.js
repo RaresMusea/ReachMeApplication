@@ -1,6 +1,8 @@
-import {doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc} from 'firebase/firestore';
+import {arrayUnion, doc, getDoc, onSnapshot, serverTimestamp, setDoc, Timestamp, updateDoc} from 'firebase/firestore';
 import {firebaseFirestore} from "../../../Modules/Firebase/FirebaseIntegration";
 import {displayUserSearcherAlert} from "../../../Modules/Messaging/MessagingModule";
+import {v4 as uuid} from 'uuid';
+import {loggedInAccount} from "../../Feed Services/FeedDrawerService";
 
 export const createConversationListForUser = async (userFirebaseIdentifier) => {
     await setDoc(doc(firebaseFirestore, "userConversations", userFirebaseIdentifier), {});
@@ -20,24 +22,31 @@ export const createConversationBetween = async (person1, person2) => {
 
     if (!conversation.exists()) {
         await setDoc(doc(firebaseFirestore, "conversationsCollection", conversationId), {messages: []});
-    }
 
-    await updateDoc(doc(firebaseFirestore, "userConversations", person1.userFirebaseIdentifier), {
+        await updateConversationDocBetween(person1, person2, conversationId);
+        await updateConversationDocBetween(person2, person1, conversationId);
+    }
+}
+
+const createConversationDocBetween = async (person1, person2, conversationId) => {
+    await setDoc(doc(firebaseFirestore, "userConversations", person1.userFirebaseIdentifier), {
         [conversationId + ".userDetails"]: {
-            identifier: person2.userFirebaseIdentifier,
+            userFirebaseIdentifier: person2.userFirebaseIdentifier,
             userName: person2.userName,
             userRealName: person2.userRealName,
             profilePhotoHref: person2.profilePhotoHref,
         },
         [conversationId + ".date"]: serverTimestamp()
     });
+}
 
-    await updateDoc(doc(firebaseFirestore, "userConversations", person2.userFirebaseIdentifier), {
+const updateConversationDocBetween = async (person1, person2, conversationId) => {
+    await updateDoc(doc(firebaseFirestore, "userConversations", person1.userFirebaseIdentifier), {
         [conversationId + ".userDetails"]: {
-            identifier: person1.userFirebaseIdentifier,
-            userName: person1.userName,
-            userRealName: person1.userRealName,
-            profilePhotoHref: person1.profilePhotoHref,
+            userFirebaseIdentifier: person2.userFirebaseIdentifier,
+            userName: person2.userName,
+            userRealName: person2.userRealName,
+            profilePhotoHref: person2.profilePhotoHref,
         },
         [conversationId + ".date"]: serverTimestamp()
     });
@@ -52,4 +61,40 @@ export const retrieveChatListInRealTimeForCurrentUser = (currentUserIdentifier) 
 
     chats();
     return chatList;
+}
+
+/*
+export const useMessages = () => {
+    let messages = ["ana"];
+    const {data} = useContext(ConversationContext);
+
+
+
+    return messages;
+}*/
+
+export const sendTextMessage = async (messageContent, conversationIdentifier, receiverIdentifier) => {
+    await updateDoc(doc(firebaseFirestore, "conversationsCollection", conversationIdentifier), {
+        messages: arrayUnion({
+            messageIdentifier: uuid(),
+            senderIdentifier: loggedInAccount.userFirebaseIdentifier,
+            content: messageContent,
+            date: Timestamp.now(),
+        })
+    });
+
+    //Update last message sent for both users engaged in that conversation
+    await updateLastMessageDetailsFor(conversationIdentifier, messageContent, loggedInAccount.userFirebaseIdentifier);
+    await updateLastMessageDetailsFor(conversationIdentifier, messageContent, receiverIdentifier);
+}
+
+const updateLastMessageDetailsFor = async (conversationIdentifier, lastMessage, userIdentifier) => {
+    console.log(conversationIdentifier + "\t" + lastMessage + "\t" + userIdentifier + "\n");
+
+    await updateDoc(doc(firebaseFirestore, "userConversations", userIdentifier), {
+        [conversationIdentifier + ".lastMessageInConversation"]: {
+            lastMessage
+        },
+        [conversationIdentifier + ".date"]: serverTimestamp()
+    });
 }

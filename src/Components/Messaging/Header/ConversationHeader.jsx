@@ -1,16 +1,20 @@
 import {Avatar} from "@mui/joy";
 import IconButton from "@mui/joy/IconButton";
-import {Call, MoreVert, VideoCall} from "@mui/icons-material";
+import {ArrowBackIos, Call, MoreVert, VideoCall} from "@mui/icons-material";
 import {useContext} from "react";
 import {ConversationContext} from "../../../Context/ConversationContext";
 
-export default function ConversationHeader() {
+export default function ConversationHeader(props) {
 
     const {data} = useContext(ConversationContext);
 
     return (
         <div className="ConversationHeader">
             <div className="UserDetails">
+                <IconButton title="Back to conversations list"
+                            onClick={props.closeConversation}>
+                    <ArrowBackIos className="IconButtonBack"/>
+                </IconButton>
                 <Avatar src={data.user?.profilePhotoHref}
                         title={`${data.user?.userRealName}'s profile picture`}
                         className="ConversationAvatar"/>

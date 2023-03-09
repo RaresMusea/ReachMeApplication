@@ -4,23 +4,26 @@ import ConversationContent from "./ConversationContent";
 import {useContext, useEffect} from "react";
 import {OpenContext} from "../../../Context/OpenContext";
 import {Slide} from "@mui/material";
-import {increaseTheOpacity} from "../../../Modules/Animation Control/Opacity";
 
 
 export default function Conversation() {
 
-    const {conversationOpened} = useContext(OpenContext);
+    const {conversationOpened, setConversationOpened} = useContext(OpenContext);
+    //const conversationWrapper = document.querySelector('.ConversationWrapper');
+    const closeConversation = () => {
+        document.querySelector('.searchNameDetails').style.width = `${100}%`;
+        setConversationOpened(false);
+    }
 
     useEffect(() => {
-        const conversationWrapper = document.querySelector('.ConversationWrapper');
-        increaseTheOpacity(conversationWrapper, 5);
+        //increaseTheOpacity(conversationWrapper, 5);
     }, []);
 
     return (
         <Slide direction="down" in={conversationOpened} mountOnEnter unmountOnExit>
             {
                 <div className="ConversationWrapper">
-                    <ConversationHeader/>
+                    <ConversationHeader closeConversation={closeConversation}/>
                     <ConversationContent/>
                 </div>
             }

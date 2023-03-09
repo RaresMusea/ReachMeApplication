@@ -1,5 +1,5 @@
 import '../../Styles/Navbar/Navbar.scss';
-import {defaultSearchIconName, searchIconEngaged} from "../../Modules/Object/ComponentProps";
+import {defaultNotificationIcon, defaultSearchIconName, searchIconEngaged} from "../../Modules/Object/ComponentProps";
 import {changeIconSource} from "../../Modules/Feed/Navbar/NavbarModule";
 import FeedDrawer from "../Feed/Drawer/FeedDrawer";
 import MessagingFrame from "../Messaging/MessagingFrame";
@@ -24,12 +24,12 @@ export default function Navbar(props) {
                              onClick={toggleSearch}
                              alt='Search Button Icon'
                              title='Search'/>
-                        <img src={defaultSearchIconName}
+                        <img src={defaultNotificationIcon}
                              className='Icon'
                              id='SearchIcon2'
                              onClick={toggleSearch}
-                             alt='Search Button Icon'
-                             title='Search'/>
+                             alt='Notifications Center'
+                             title='Notifications'/>
                         <MessagingFrame resetPageTitleToFeedState={props.resetPageTitleToFeedState}/>
                     </div>
                 </div>

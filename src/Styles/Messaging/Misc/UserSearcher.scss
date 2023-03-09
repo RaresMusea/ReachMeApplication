@@ -95,6 +95,10 @@
   #UserSearcherAlerts {
     @apply rounded-l;
     @apply mt-2;
+
+    .UserSearcherInfoAlert {
+      @apply mt-3;
+    }
   }
 
 }

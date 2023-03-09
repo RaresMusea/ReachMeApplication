@@ -4,11 +4,14 @@ import {displayUserSearcherAlert} from "../../../Modules/Messaging/MessagingModu
 import {v4 as uuid} from 'uuid';
 import {loggedInAccount} from "../../Feed Services/FeedDrawerService";
 
+export let conversationAlreadyExists = false;
+
 export const createConversationListForUser = async (userFirebaseIdentifier) => {
     await setDoc(doc(firebaseFirestore, "userConversations", userFirebaseIdentifier), {});
 }
 
 export const createConversationBetween = async (person1, person2) => {
+
     if (person1.userFirebaseIdentifier === person2.userFirebaseIdentifier) {
         displayUserSearcherAlert("You cannot initiate a conversation with yourself!");
         return;
@@ -19,10 +22,15 @@ export const createConversationBetween = async (person1, person2) => {
         : (person2.userFirebaseIdentifier + `-` + person1.userFirebaseIdentifier);
 
     const conversation = await getDoc(doc(firebaseFirestore, "conversationsCollection", conversationId));
+    conversationAlreadyExists = conversation.exists();
 
-    if (!conversation.exists()) {
+
+    if (!conversationAlreadyExists) {
         await setDoc(doc(firebaseFirestore, "conversationsCollection", conversationId), {messages: []});
-
+        await setDoc(doc(firebaseFirestore, "unreadMessages", conversationId), {
+            [person1.userFirebaseIdentifier]: 0,
+            [person2.userFirebaseIdentifier]: 0,
+        })
         await updateConversationDocBetween(person1, person2, conversationId);
         await updateConversationDocBetween(person2, person1, conversationId);
     }
@@ -74,6 +82,15 @@ export const useMessages = () => {
 }*/
 
 export const sendTextMessage = async (messageContent, conversationIdentifier, receiverIdentifier) => {
+
+    const receiverData = getDoc(doc(firebaseFirestore, "userData", receiverIdentifier))
+        .then(result => {
+            console.log(result);
+            let unread = result._document.data.value.mapValue.fields.unreadMessages.integerValue;
+            updateDoc(doc(firebaseFirestore, "userData", receiverIdentifier), {
+                unreadMessages: (unread + 1),
+            });
+        });
     await updateDoc(doc(firebaseFirestore, "conversationsCollection", conversationIdentifier), {
         messages: arrayUnion({
             messageIdentifier: uuid(),
@@ -82,6 +99,11 @@ export const sendTextMessage = async (messageContent, conversationIdentifier, re
             date: Timestamp.now(),
         })
     });
+
+    /*await updateDoc(doc(firebaseFirestore,"userData",receiverIdentifier),{
+        unreadMessages:FieldValue.increment(1),
+    });*/
+
 
     //Update last message sent for both users engaged in that conversation
     await updateLastMessageDetailsFor(conversationIdentifier, messageContent, loggedInAccount.userFirebaseIdentifier);
@@ -95,6 +117,7 @@ const updateLastMessageDetailsFor = async (conversationIdentifier, lastMessage, 
         [conversationIdentifier + ".lastMessageInConversation"]: {
             lastMessage
         },
-        [conversationIdentifier + ".date"]: serverTimestamp()
+        [conversationIdentifier + ".date"]: serverTimestamp(),
+        [conversationIdentifier + ".senderIdentifier"]: loggedInAccount.userFirebaseIdentifier
     });
 }

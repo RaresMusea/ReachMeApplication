@@ -46,6 +46,20 @@ export const displayUserSearcherAlert = (message) => {
     renderAlert(alertConfig);
 }
 
+export const displayUserSearcherInfoAlert = (message) => {
+    const alertConfig = {
+        severity: 'info',
+        class: 'UserSearcherInfoAlert',
+        message: message,
+        targetId: '#UserSearcherAlerts',
+        alertType: 'info',
+        fadeOutTimeout: 3000,
+        removeTimeout: 3500,
+    };
+
+    renderAlert(alertConfig);
+}
+
 export const resetMessageInputValues = () => {
     const textarea = document.querySelector('.MessageInput');
     textarea.value = ``;

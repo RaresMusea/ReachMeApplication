@@ -16,7 +16,7 @@ export const parseDateAndTime = (date) => {
 
 const isToday = (date) => {
     const today = new Date();
-    return date === today;
+    return date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
 }
 
 const getTimeStringFromDate = (date) => {

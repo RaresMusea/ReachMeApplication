@@ -1,15 +1,23 @@
 import {Avatar} from "@mui/joy";
 import '../../../Styles/Messaging/Misc/UserSearcher.scss';
-import {closeUserSearcher} from "../../../Modules/Messaging/MessagingModule";
-import {useEffect, useState} from "react";
+import {closeUserSearcher, displayUserSearcherInfoAlert} from "../../../Modules/Messaging/MessagingModule";
+import {useContext, useEffect, useState} from "react";
 import {foundUsers, searchForUsersByIdentity} from "../../../Services/Firebase Service/Messaging/UserSearcherService";
-import {createConversationBetween} from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
+import {
+    conversationAlreadyExists,
+    createConversationBetween
+} from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
 import {loggedInAccount} from "../../../Services/Feed Services/FeedDrawerService";
+import {OpenContext} from "../../../Context/OpenContext";
+import {ConversationContext} from "../../../Context/ConversationContext";
 
 export default function UserSearcher() {
 
     const [queryText, setQueryText] = useState("");
     const [suggestions, setSuggestions] = useState([]);
+    const {setConversationOpened} = useContext(OpenContext);
+    const {dispatch} = useContext(ConversationContext);
+
     let recipient = {};
 
     useEffect(() => {
@@ -29,8 +37,17 @@ export default function UserSearcher() {
         closeUserSearcher();
     }
 
-    const handleUserSelection = async () => {
+    const handleUserSelection = async (targetUser) => {
         await createConversationBetween(loggedInAccount, recipient);
+        if (conversationAlreadyExists) {
+            displayUserSearcherInfoAlert(`The conversation between you and ${targetUser.userRealName} already exists. 
+            You are being redirected to that conversation.`);
+            setConversationOpened(true);
+            dispatch({type: "CHANGE_USER", payload: targetUser});
+            setTimeout(() => {
+                handleClose()
+            }, 3000);
+        }
     }
 
     return (
@@ -57,7 +74,7 @@ export default function UserSearcher() {
                          key={account.userFirebaseIdentifier}
                          onClick={async () => {
                              recipient = account;
-                             await handleUserSelection();
+                             await handleUserSelection(recipient);
                          }}>
                         <Avatar src={account.profilePhotoHref}
                                 className="UserProfilePic"/>

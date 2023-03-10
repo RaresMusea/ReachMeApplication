@@ -7,12 +7,11 @@ export default function useVoiceRecorder() {
     const {formatTimer, toggleTimer, resetTimer} = useTimer();
     const [recordingRequested, setRecordingRequested] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
-    const [voiceMessageAvailable, setVoiceMessageAvailable] = useState(false);
     let [voiceMessageAudio, setVoiceMessageAudio] = useState(null);
     let [isPlaying, setIsPlaying] = useState(false);
     let [isListenable, setIsListenable] = useState(false);
+    const [voiceMessageText, setVoiceMessageText] = useState("");
     let audioChunks = [];
-    let voiceMessage = null;
 
     useEffect(() => {
         if (voiceMessageAudio) {
@@ -22,18 +21,6 @@ export default function useVoiceRecorder() {
             })
         }
     }, [voiceMessageAudio]);
-
-    useEffect(() => {
-        /*if(voiceMessageAudio === null || voiceMessageAudio === undefined){
-            return;
-        }*/
-        /*
-                if(!voiceMessageAudio.paused || !voiceMessageAudio.currentTime){
-                    setIsPlaying(false);
-                }*/
-
-    }, [voiceMessageAudio])
-
 
     const requestVoiceRecording = () => {
         setRecordingRequested(true);
@@ -76,15 +63,24 @@ export default function useVoiceRecorder() {
 
                 mediaRecorder.addEventListener("dataavailable", event => {
                     audioChunks.push(event.data);
-                })
+                });
 
                 mediaRecorder.addEventListener("stop", () => {
-                    const audioBlob = new Blob(audioChunks);
+                    const audioBlob = new Blob(audioChunks, {
+                        type: 'audio/ogg'
+                    });
+
                     const audioUrl = URL.createObjectURL(audioBlob);
-                    setVoiceMessageAudio(audioBlob);
-                    voiceMessage = new Audio(audioUrl);
                     setVoiceMessageAudio(new Audio(audioUrl));
-                    console.log(voiceMessage);
+                    const reader = new FileReader();
+                    let base64StringBlob;
+                    reader.readAsDataURL(audioBlob);
+
+                    reader.addEventListener("load", (ev) => {
+                        base64StringBlob = ev.target.result;
+                        setVoiceMessageText(base64StringBlob);
+                    });
+
                     audioChunks = [];
                 })
 
@@ -101,12 +97,10 @@ export default function useVoiceRecorder() {
 
         if (actualStatus) {
             voiceMessageAudio.play();
-            //setTimeout(()=>setIsPlaying(false),voiceMessageAudio.duration*1000);
         } else {
             voiceMessageAudio.pause();
         }
     }
-
 
     return {
         requestVoiceRecording,
@@ -115,10 +109,11 @@ export default function useVoiceRecorder() {
         recordingRequested,
         closeRecorder,
         formatTimer,
-        voiceMessageAvailable,
         voiceMessageAudio,
+        voiceMessageText,
         playPauseVoiceRecord,
         isPlaying,
-        isListenable
+        isListenable,
+        setIsPlaying
     };
 }

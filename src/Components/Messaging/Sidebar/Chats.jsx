@@ -17,9 +17,7 @@ export default function Chats() {
     const [chats, setChats] = useState([]);
     const {dispatch, data} = useContext(ConversationContext);
     const {setConversationOpened} = useContext(OpenContext);
-
     const [contextMenu, setContextMenu] = useState(null);
-
     const handleContextMenu = (event) => {
         event.preventDefault();
         setContextMenu(
@@ -101,9 +99,13 @@ export default function Chats() {
                                         <div
                                             className="searchNameDetails">
                                             {
-                                                conv[1].senderIdentifier === loggedInAccount.userFirebaseIdentifier
-                                                    ? `You: ${conv[1].lastMessageInConversation?.lastMessage}`
-                                                    : conv[1].lastMessageInConversation?.lastMessage
+                                                conv[1].lastMessageInConversation?.lastMessageType === 'text' ?
+                                                    (conv[1].senderIdentifier === loggedInAccount.userFirebaseIdentifier
+                                                        ? `You: ${conv[1].lastMessageInConversation?.lastMessage}`
+                                                        : conv[1].lastMessageInConversation?.lastMessage) :
+                                                    (conv[1].senderIdentifier === loggedInAccount.userFirebaseIdentifier
+                                                        ? `You sent a voice message.`
+                                                        : `${conv[1].userDetails?.userRealName} sent you a voice message.`)
                                             }
                                         </div>
                                     </div>

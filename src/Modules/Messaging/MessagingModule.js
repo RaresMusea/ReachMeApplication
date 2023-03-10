@@ -1,5 +1,8 @@
 import {decreaseTheOpacity, increaseTheOpacity} from "../Animation Control/Opacity";
 import {renderAlert} from "../Alerts/AlertUtil";
+import {v4 as uuid} from "uuid";
+import {loggedInAccount} from "../../Services/Feed Services/FeedDrawerService";
+import {Timestamp} from "firebase/firestore";
 
 export const renderLogoDependingOnScreenDimension = () => {
     if (window.innerWidth > 1200)
@@ -63,4 +66,15 @@ export const displayUserSearcherInfoAlert = (message) => {
 export const resetMessageInputValues = () => {
     const textarea = document.querySelector('.MessageInput');
     textarea.value = ``;
+}
+
+export const buildMessagePayload = (messageType, messageContent) => {
+    return {
+        messageType: messageType,
+        messageIdentifier: uuid(),
+        senderIdentifier: loggedInAccount.userFirebaseIdentifier,
+        content: messageContent,
+        date: Timestamp.now(),
+    }
+
 }

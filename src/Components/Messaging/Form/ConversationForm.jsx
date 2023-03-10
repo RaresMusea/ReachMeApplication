@@ -1,6 +1,7 @@
 import '../../../Styles/Messaging/Form/ConversationForm.scss';
 import IconButton from "@mui/joy/IconButton";
 import {
+    ArrowUpward,
     AttachFile,
     CloseSharp,
     MicNone,
@@ -12,7 +13,7 @@ import {
 } from "@mui/icons-material";
 import {useContext} from "react";
 import {ConversationContext} from "../../../Context/ConversationContext";
-import {sendTextMessage} from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
+import {sendMessage} from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
 import {resetMessageInputValues} from "../../../Modules/Messaging/MessagingModule";
 import {Slide} from "@mui/material";
 import useVoiceRecorder from "../../../Hooks/useVoiceRecorder";
@@ -27,21 +28,22 @@ export default function ConversationForm() {
         handleVoiceRecording,
         formatTimer,
         closeRecorder,
-        voiceMessageAudio,
         playPauseVoiceRecord,
         isListenable,
-        isPlaying
+        isPlaying,
+        voiceMessageAudio,
+        voiceMessageText,
+        setIsPlaying
     } = useVoiceRecorder();
 
     let textToSend = "";
-    let imageToSend = "";
 
     const handleTextChange = (e) => {
         textToSend = e.target.value;
     }
 
     const handleMessageSend = async () => {
-        await sendTextMessage(textToSend, data.conversationIdentifier, data.user.userFirebaseIdentifier);
+        await sendMessage("text", textToSend, data.conversationIdentifier, data.user.userFirebaseIdentifier);
         resetMessageInputValues();
     }
 
@@ -57,6 +59,15 @@ export default function ConversationForm() {
         }
     }
 
+    const handleVoiceMessageSending = async () => {
+        if (isPlaying) {
+            setIsPlaying(false);
+            voiceMessageAudio.pause();
+        }
+        closeRecorder();
+        await sendMessage("voice recording", voiceMessageText, data.conversationIdentifier, data.user.userFirebaseIdentifier);
+
+    }
 
     return (
         <>
@@ -136,6 +147,11 @@ export default function ConversationForm() {
                                                         <PlayArrow className="RecordMuiIcon"/> :
                                                         <Pause classes="RecordMuiIcon"/>
                                                 }
+                                            </IconButton>
+                                            <IconButton title="Send recorded voice message"
+                                                        className="RecordButton"
+                                                        onClick={handleVoiceMessageSending}>
+                                                <ArrowUpward className="RecordMuiIcon"/>
                                             </IconButton>
                                         </>
                                     }

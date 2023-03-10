@@ -5,6 +5,14 @@
   overflow-y: scroll;
   @apply bg-[#dbdbdb];
 
+  audio {
+    @apply mt-1;
+    @apply mr-0;
+    @apply ml-0;
+    @apply p-0;
+    height: 35px;
+  }
+
   .Message {
     @apply flex;
     @apply gap-[20px];
@@ -71,8 +79,14 @@
         img::selection {
           background-color: transparent;
         }
+      }
+
+      audio::-webkit-media-controls-panel {
+        background-color: #108c8e;
 
       }
+
+
     }
   }
 }

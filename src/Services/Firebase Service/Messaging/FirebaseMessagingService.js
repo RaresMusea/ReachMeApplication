@@ -1,7 +1,6 @@
-import {arrayUnion, doc, getDoc, onSnapshot, serverTimestamp, setDoc, Timestamp, updateDoc} from 'firebase/firestore';
+import {arrayUnion, doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc} from 'firebase/firestore';
 import {firebaseFirestore} from "../../../Modules/Firebase/FirebaseIntegration";
-import {displayUserSearcherAlert} from "../../../Modules/Messaging/MessagingModule";
-import {v4 as uuid} from 'uuid';
+import {buildMessagePayload, displayUserSearcherAlert} from "../../../Modules/Messaging/MessagingModule";
 import {loggedInAccount} from "../../Feed Services/FeedDrawerService";
 
 export let conversationAlreadyExists = false;
@@ -71,50 +70,26 @@ export const retrieveChatListInRealTimeForCurrentUser = (currentUserIdentifier) 
     return chatList;
 }
 
-/*
-export const useMessages = () => {
-    let messages = ["ana"];
-    const {data} = useContext(ConversationContext);
-
-
-
-    return messages;
-}*/
-
-export const sendTextMessage = async (messageContent, conversationIdentifier, receiverIdentifier) => {
-
-    const receiverData = getDoc(doc(firebaseFirestore, "userData", receiverIdentifier))
-        .then(result => {
-            console.log(result);
-            let unread = result._document.data.value.mapValue.fields.unreadMessages.integerValue;
-            updateDoc(doc(firebaseFirestore, "userData", receiverIdentifier), {
-                unreadMessages: (unread + 1),
-            });
-        });
+export const sendMessage = async (messageType, messageContent, conversationIdentifier, receiverIdentifier) => {
     await updateDoc(doc(firebaseFirestore, "conversationsCollection", conversationIdentifier), {
-        messages: arrayUnion({
-            messageIdentifier: uuid(),
-            senderIdentifier: loggedInAccount.userFirebaseIdentifier,
-            content: messageContent,
-            date: Timestamp.now(),
-        })
+        messages: arrayUnion(buildMessagePayload(messageType, messageContent))
     });
 
-    /*await updateDoc(doc(firebaseFirestore,"userData",receiverIdentifier),{
-        unreadMessages:FieldValue.increment(1),
-    });*/
-
-
     //Update last message sent for both users engaged in that conversation
-    await updateLastMessageDetailsFor(conversationIdentifier, messageContent, loggedInAccount.userFirebaseIdentifier);
-    await updateLastMessageDetailsFor(conversationIdentifier, messageContent, receiverIdentifier);
+    await updateLastMessageDetailsFor(conversationIdentifier,
+        messageType,
+        messageContent,
+        loggedInAccount.userFirebaseIdentifier,
+    );
+    await updateLastMessageDetailsFor(conversationIdentifier, messageType, messageContent, receiverIdentifier);
 }
 
-const updateLastMessageDetailsFor = async (conversationIdentifier, lastMessage, userIdentifier) => {
+const updateLastMessageDetailsFor = async (conversationIdentifier, lastMessageType, lastMessage, userIdentifier) => {
     console.log(conversationIdentifier + "\t" + lastMessage + "\t" + userIdentifier + "\n");
 
     await updateDoc(doc(firebaseFirestore, "userConversations", userIdentifier), {
         [conversationIdentifier + ".lastMessageInConversation"]: {
+            lastMessageType,
             lastMessage
         },
         [conversationIdentifier + ".date"]: serverTimestamp(),

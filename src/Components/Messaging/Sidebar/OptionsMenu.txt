@@ -1,0 +1,35 @@
+ <Menu
+                                    open={contextMenu !== null}
+                                    onClose={handleClose}
+                                    className="ContextualMenu"
+                                    anchorReference="anchorPosition"
+                                    anchorPosition={
+                                        contextMenu !== null
+                                            ? {top: contextMenu.mouseY, left: contextMenu.mouseX}
+                                            : undefined
+                                    }
+                                >
+                                    <h4 style={{textAlign: "center", fontWeight: "bold"}}>Chat
+                                        with {conv[1].userDetails?.userRealName} options</h4>
+                                    <Divider style={{marginBottom: '1.5em'}}/>
+                                    <MenuItem className="ChatMenuItem"
+                                              onClick={async () => {
+                                                  selectedConversation = conv;
+                                                  await deleteConversation();
+                                              }}
+                                              style={{
+                                                  display: 'flex',
+                                                  justifyContent: 'space-between'
+                                              }}>
+                                        <div>Delete conversation</div>
+                                        <Delete style={{
+                                            color: 'red',
+                                            marginLeft: '3em'
+                                        }}/>
+                                    </MenuItem>
+                                    <MenuItem className="ChatMenuItem"
+                                              style={{display: 'flex', justifyContent: 'space-between'}}>
+                                        <div>Archive</div>
+                                        <Archive/>
+                                    </MenuItem>
+                                </Menu>

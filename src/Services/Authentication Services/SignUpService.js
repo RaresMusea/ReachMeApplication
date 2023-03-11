@@ -2,6 +2,7 @@ import {displaySignUpFailedAlert, displaySignUpSuccessAlert} from "../../Modules
 import {signUpCredentials} from "../../Modules/Validation/SignUpValidation";
 import {getAuth, signOut} from "firebase/auth";
 import {storeRequiredUserDataToFirestore} from "../Firebase Service/Authentication/FirebaseAuthService";
+import {createMessageNotificationsCollection} from "../Firebase Service/Messaging/FirebaseMessagingService";
 
 const postEndpoint = `http://localhost:8080/account`;
 const testConnectionEndpoint = `http://localhost:8080/connectionAvailable`;
@@ -76,6 +77,7 @@ export const saveUserAccountMetadata = async (user) => {
         .then(response => response.json())
         .then((data) => {
             storeRequiredUserDataToFirestore(data);
+            createMessageNotificationsCollection(payloadBody.userFirebaseIdentifier);
             displaySignUpSuccessAlert(`Account created successfully, ${signUpCredentials.fullName}! Enjoy the ReachMe app and
                     stay surrounded only by wonderful people!&nbsp;You will be automatically redirected to the Log In
                     page where you can enter your credentials and access your profile.`);

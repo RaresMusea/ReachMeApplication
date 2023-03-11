@@ -70,7 +70,6 @@ export default function ConversationForm() {
         }
         closeRecorder();
         await sendMessage("voice recording", voiceMessageText, data.conversationIdentifier, data.user.userFirebaseIdentifier);
-
     }
 
     const parseClipboardData = async () => {
@@ -89,35 +88,57 @@ export default function ConversationForm() {
         }
     }
 
+    document.querySelectorAll(".FileSelect").forEach(inputElement => {
+        const dropZoneElement = inputElement.closest(".DropZone");
+        dropZoneElement.addEventListener("dragover", e => {
+            e.preventDefault();
+            console.log("circ");
+        });
+
+        dropZoneElement.addEventListener("drop", e => {
+            e.preventDefault();
+            if (e.dataTransfer.files.length) {
+                inputElement.files = e.dataTransfer.files;
+                setIsSharable(true);
+            }
+        });
+    });
+
     return (
         <>
             {!recordingRequested ?
-                <div className="ConversationFormWrapper">
+                <label htmlFor="FileSelector" className="DropZone">
+                    <div className="ConversationFormWrapper">
                 <textarea className="MessageInput"
                           placeholder="Message..."
                           onPaste={parseClipboardData}
                           onKeyDown={handleMessageSendFromKey}
                           onChange={handleTextChange}/>
-                    <IconButton title="Send message"
-                                className="MessageSenderIconButton"
-                                onClick={handleMessageSend}>
-                        <Send className="SendIcon"/>
-                    </IconButton>
-                    <IconButton title="Record audio"
-                                className="MessageSenderIconButton"
-                                onClick={requestVoiceRecording}
-                    >
-                        <MicNone className="SendIcon"/>
-                    </IconButton>
-                    <IconButton title="Attach media"
-                                className="MessageSenderIconButton">
-                        <AttachFile className="AttachIcon"/>
-                    </IconButton>
-                    <IconButton title="More"
-                                className="MessageSenderIconButton">
-                        <MoreHorizOutlined className="MoreOptionsIcon"/>
-                    </IconButton>
-                </div>
+                        <IconButton title="Send message"
+                                    className="MessageSenderIconButton"
+                                    onClick={handleMessageSend}>
+                            <Send className="SendIcon"/>
+                        </IconButton>
+                        <IconButton title="Record audio"
+                                    className="MessageSenderIconButton"
+                                    onClick={requestVoiceRecording}
+                        >
+                            <MicNone className="SendIcon"/>
+                        </IconButton>
+                        <IconButton title="Attach media"
+                                    className="MessageSenderIconButton">
+                            <AttachFile className="AttachIcon"/>
+                        </IconButton>
+                        <IconButton title="More"
+                                    className="MessageSenderIconButton">
+                            <MoreHorizOutlined className="MoreOptionsIcon"/>
+                        </IconButton>
+                        <input type="file"
+                               style={{display: "none"}}
+                               id="FileSelector"
+                               className="FileSelect"/>
+                    </div>
+                </label>
                 :
                 <Slide direction="left" in={recordingRequested} mountOnEnter unmountOnExit>
                     <div className="RecorderWrapper">

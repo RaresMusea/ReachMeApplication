@@ -76,5 +76,10 @@ export const buildMessagePayload = (messageType, messageContent) => {
         content: messageContent,
         date: Timestamp.now(),
     }
+}
 
+export const getConversationId = (loggedUser, targetUser) => {
+    return loggedUser.userFirebaseIdentifier > targetUser.userFirebaseIdentifier
+        ? `${loggedUser.userFirebaseIdentifier}-${targetUser.userFirebaseIdentifier}`
+        : `${targetUser.userFirebaseIdentifier}-${loggedUser.userFirebaseIdentifier}`;
 }

@@ -2,6 +2,7 @@ import {arrayUnion, doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc}
 import {firebaseFirestore} from "../../../Modules/Firebase/FirebaseIntegration";
 import {buildMessagePayload, displayUserSearcherAlert} from "../../../Modules/Messaging/MessagingModule";
 import {loggedInAccount} from "../../Feed Services/FeedDrawerService";
+import {v4 as uuid} from 'uuid';
 
 export let conversationAlreadyExists = false;
 
@@ -71,6 +72,7 @@ export const retrieveChatListInRealTimeForCurrentUser = (currentUserIdentifier) 
 }
 
 export const sendMessage = async (messageType, messageContent, conversationIdentifier, receiverIdentifier) => {
+    await clearMessageNotificationsForLoggedUser(conversationIdentifier);
     await updateDoc(doc(firebaseFirestore, "conversationsCollection", conversationIdentifier), {
         messages: arrayUnion(buildMessagePayload(messageType, messageContent))
     });
@@ -82,17 +84,57 @@ export const sendMessage = async (messageType, messageContent, conversationIdent
         loggedInAccount.userFirebaseIdentifier,
     );
     await updateLastMessageDetailsFor(conversationIdentifier, messageType, messageContent, receiverIdentifier);
+    await updateMessageNotificationsFor(receiverIdentifier, messageType, conversationIdentifier);
 }
 
 const updateLastMessageDetailsFor = async (conversationIdentifier, lastMessageType, lastMessage, userIdentifier) => {
-    console.log(conversationIdentifier + "\t" + lastMessage + "\t" + userIdentifier + "\n");
-
     await updateDoc(doc(firebaseFirestore, "userConversations", userIdentifier), {
         [conversationIdentifier + ".lastMessageInConversation"]: {
             lastMessageType,
-            lastMessage
+            lastMessage,
+            conversationIdentifier,
         },
         [conversationIdentifier + ".date"]: serverTimestamp(),
         [conversationIdentifier + ".senderIdentifier"]: loggedInAccount.userFirebaseIdentifier
     });
+}
+
+const updateMessageNotificationsFor = async (receiverIdentifier, messageType, conversationIdentifier) => {
+    /*await updateDoc(doc(firebaseFirestore, "messagesNotifications", receiverIdentifier), {
+        "notifications": {
+            [conversationIdentifier]:
+                arrayUnion({
+                    messageType,
+                    "notificationId": uuid(),
+                    "senderName": loggedInAccount.userRealName,
+                    "senderFirebaseIdentifier": loggedInAccount.userFirebaseIdentifier,
+                    "senderUserName": loggedInAccount.userName,
+                })
+        }
+    })*/
+
+    await updateDoc(doc(firebaseFirestore, "messagesNotifications", receiverIdentifier), {
+        [conversationIdentifier + ".notificationDetails"]: arrayUnion({
+            "notificationsId": uuid(),
+            "senderId": loggedInAccount.userFirebaseIdentifier,
+            "senderName": loggedInAccount.userRealName,
+            "senderUsername": loggedInAccount.userName,
+        })
+    });
+}
+
+export const clearMessageNotificationsForLoggedUser = async (conversationIdentifier) => {
+    const conversationRef = doc(firebaseFirestore, "messagesNotifications", loggedInAccount.userFirebaseIdentifier);
+    await updateDoc(conversationRef, {
+        [conversationIdentifier + ".notificationDetails"]: []
+    });
+
+    /*let removeCurrentUserId = updateDoc(doc(firebase{
+        [conversationIdentifier]: firebase.firestore.FieldValue.delete()
+    });*/
+
+}
+
+export const createMessageNotificationsCollection = async (userId) => {
+    await setDoc(doc(firebaseFirestore, "messagesNotifications", userId), {});
 }

@@ -11,16 +11,20 @@ import {
     Send,
     StopCircle
 } from "@mui/icons-material";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {ConversationContext} from "../../../Context/ConversationContext";
 import {sendMessage} from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
 import {resetMessageInputValues} from "../../../Modules/Messaging/MessagingModule";
 import {Slide} from "@mui/material";
 import useVoiceRecorder from "../../../Hooks/useVoiceRecorder";
+import ShareImageDialog from "../../Dialog/Messaging/ShareImageDialog";
+import {ResourceSharingContext} from "../../../Context/ResourceSharingContext";
 
 export default function ConversationForm() {
 
+    const [imageBlob, setImageBlob] = useState(null);
     const {data} = useContext(ConversationContext);
+    const {setIsSharable} = useContext(ResourceSharingContext);
     const {
         recordingRequested,
         isRecording,
@@ -69,12 +73,29 @@ export default function ConversationForm() {
 
     }
 
+    const parseClipboardData = async () => {
+        const clipboardItems = await navigator.clipboard.read().catch(console.log);
+
+        for (let clipboardItem of clipboardItems) {
+            for (let itemType of clipboardItem.types) {
+                if (itemType.startsWith("image/")) {
+                    console.log("CONTINE!");
+                    clipboardItem.getType(itemType).then((imageBlob) => {
+                        setImageBlob(imageBlob);
+                        setIsSharable(true);
+                    });
+                }
+            }
+        }
+    }
+
     return (
         <>
             {!recordingRequested ?
                 <div className="ConversationFormWrapper">
                 <textarea className="MessageInput"
                           placeholder="Message..."
+                          onPaste={parseClipboardData}
                           onKeyDown={handleMessageSendFromKey}
                           onChange={handleTextChange}/>
                     <IconButton title="Send message"
@@ -161,6 +182,7 @@ export default function ConversationForm() {
                     </div>
                 </Slide>
             }
+            <ShareImageDialog/>
         </>
     )
 }

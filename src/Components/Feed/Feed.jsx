@@ -1,13 +1,23 @@
-// eslint-disable-next-line no-unused-vars
 import React, {useEffect, useState} from "react";
 import Navbar from "../Navbar/Navbar";
 import {getRequiredMetadata} from "../../Services/Feed Services/FeedDrawerService";
 import {currentlyLoggedInUser} from "../../Modules/Session/CurrentSessionModule";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Feed() {
 
     const [update, setUpdate] = useState(false);
     const [titleNeedsUpdate, setTitleNeedsUpdate] = useState(false);
+    /* const {newMessagesCount} = useContext(MessageNotificationContext);*/
+
+    /* const notify=()=>toast(`Your have ${newMessagesCount} messages.`);*/
+
+    /*   useEffect(()=>{
+           console.log("circ");
+           if(newMessagesCount !== 0){
+               notify();
+           }
+       }, [newMessagesCount])*/
 
     useEffect(() => {
         document.title = `ReachMe - Feed`;
@@ -51,6 +61,7 @@ export default function Feed() {
                 scheduleUpdate={scheduleUpdate}/>
             <div id='SignOutModal'/>
             <h1>Hai noroc</h1>
+            {/*<ToastContainer/>*/}
         </>
     );
 }

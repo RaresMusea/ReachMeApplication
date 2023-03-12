@@ -1,0 +1,48 @@
+.DialogTitle {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.ImagePreview {
+  display: block !important;
+  margin: 0 auto !important;
+  width: 100%;
+  height: 100%;
+}
+
+.DescriptionWrapper {
+  margin-top: 1em !important;
+}
+
+.ButtonsArea {
+  @apply flex;
+  @apply items-center;
+  @apply justify-around;
+  @apply mb-3;
+
+  .Button {
+    @apply text-white;
+    @apply w-[30%];
+    @apply rounded-xl;
+    transition: .2s ease-in-out;
+  }
+
+  .ShareButton {
+    @apply bg-[#108e8e];
+    .Icon {
+      @apply ml-1;
+    }
+  }
+
+  .ShareButton:active,
+  .ShareButton:hover {
+    @apply bg-[#094561];
+  }
+
+  .CancelButton {
+    @apply bg-[#fed349];
+  }
+
+  .CancelButton:hover {
+    @apply bg-red-700;
+  }
+}

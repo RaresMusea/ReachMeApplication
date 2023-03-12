@@ -41,7 +41,7 @@ export default function Message(props) {
                 {
                     messageType === "voice recording" &&
                     <audio controls className={`Message ${messageStatus}`}>
-                        <source src={fromStringBase64EncodedAudioToLocalUrl(props.message.content)}/>
+                        <source src={fromStringBase64EncodedAudioToLocalUrl(props.message.additionalHref)}/>
                     </audio>
                 }
             </div>

@@ -4,9 +4,12 @@ export const ResourceSharingContext = createContext(undefined);
 
 export const ResourceSharingContextProvider = ({children}) => {
     const [isSharable, setIsSharable] = useState(false);
+    const [resource, setResource] = useState(null);
+    const [preview, setPreview] = useState(null);
 
     return (
-        <ResourceSharingContext.Provider value={{isSharable, setIsSharable}}>
+        <ResourceSharingContext.Provider
+            value={{isSharable, setIsSharable, resource, setResource, preview, setPreview}}>
             {children}
         </ResourceSharingContext.Provider>
     );

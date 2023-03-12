@@ -27,7 +27,7 @@ export const fadeInChats = () => {
     const chats = document.querySelector('.ChatsWrapper');
     setTimeout(() => {
         increaseTheOpacity(chats)
-    }, 30);
+    }, 60);
 }
 
 export const moveMessageToTheRight = () => {
@@ -68,8 +68,9 @@ export const resetMessageInputValues = () => {
     textarea.value = ``;
 }
 
-export const buildMessagePayload = (messageType, messageContent) => {
+export const buildMessagePayload = (messageType, messageContent, additionalHref) => {
     return {
+        additionalHref: additionalHref,
         messageType: messageType,
         messageIdentifier: uuid(),
         senderIdentifier: loggedInAccount.userFirebaseIdentifier,
@@ -82,4 +83,38 @@ export const getConversationId = (loggedUser, targetUser) => {
     return loggedUser.userFirebaseIdentifier > targetUser.userFirebaseIdentifier
         ? `${loggedUser.userFirebaseIdentifier}-${targetUser.userFirebaseIdentifier}`
         : `${targetUser.userFirebaseIdentifier}-${loggedUser.userFirebaseIdentifier}`;
+}
+
+export const determineChatLastMessage = (chat) => {
+    if (chat.lastMessageInConversation?.lastMessageType === `text`) {
+        if (chat.senderIdentifier === loggedInAccount.userFirebaseIdentifier) {
+            return `You: ${chat.lastMessageInConversation?.lastMessage}`
+        } else {
+            return chat.lastMessageInConversation?.lastMessage;
+        }
+    }
+    if (chat.lastMessageInConversation?.lastMessageType === "voice recording") {
+        if (chat.senderIdentifier === loggedInAccount.userFirebaseIdentifier) {
+            return 'You sent a voice message.';
+        } else {
+            return `${chat.userDetails?.userRealName} sent you a voice message.`;
+        }
+    }
+    if (chat.lastMessageInConversation?.lastMessageType === "photo") {
+        if (chat.senderIdentifier === loggedInAccount.userFirebaseIdentifier) {
+            return 'You sent a photo.';
+        } else {
+            return `${chat.userDetails?.userRealName} sent you a photo.`;
+        }
+    }
+
+    if (chat.lastMessageInConversation?.lastMessageType === "video") {
+        if (chat.senderIdentifier === loggedInAccount.userFirebaseIdentifier) {
+            return 'You sent a video.';
+        } else {
+            return `${chat.userDetails?.userRealName} sent you a video.`;
+        }
+    }
+
+    return ``;
 }

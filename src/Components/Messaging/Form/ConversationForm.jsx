@@ -11,7 +11,7 @@ import {
     Send,
     StopCircle
 } from "@mui/icons-material";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {ConversationContext} from "../../../Context/ConversationContext";
 import {sendMessage} from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
 import {resetMessageInputValues} from "../../../Modules/Messaging/MessagingModule";
@@ -19,12 +19,13 @@ import {Slide} from "@mui/material";
 import useVoiceRecorder from "../../../Hooks/useVoiceRecorder";
 import ShareImageDialog from "../../Dialog/Messaging/ShareImageDialog";
 import {ResourceSharingContext} from "../../../Context/ResourceSharingContext";
+import {OpenContext} from "../../../Context/OpenContext";
 
 export default function ConversationForm() {
 
-    const [imageBlob, setImageBlob] = useState(null);
     const {data} = useContext(ConversationContext);
-    const {setIsSharable} = useContext(ResourceSharingContext);
+    const {setIsSharable, setResource, setPreview} = useContext(ResourceSharingContext);
+    const {target} = useContext(OpenContext);
     const {
         recordingRequested,
         isRecording,
@@ -47,7 +48,7 @@ export default function ConversationForm() {
     }
 
     const handleMessageSend = async () => {
-        await sendMessage("text", textToSend, data.conversationIdentifier, data.user.userFirebaseIdentifier);
+        await sendMessage("text", textToSend, data.conversationIdentifier, data.user.userFirebaseIdentifier, null);
         resetMessageInputValues();
     }
 
@@ -69,7 +70,9 @@ export default function ConversationForm() {
             voiceMessageAudio.pause();
         }
         closeRecorder();
-        await sendMessage("voice recording", voiceMessageText, data.conversationIdentifier, data.user.userFirebaseIdentifier);
+        await sendMessage("voice recording", ``, data.conversationIdentifier,
+            data.user.userFirebaseIdentifier,
+            voiceMessageText);
     }
 
     const parseClipboardData = async () => {
@@ -78,9 +81,19 @@ export default function ConversationForm() {
         for (let clipboardItem of clipboardItems) {
             for (let itemType of clipboardItem.types) {
                 if (itemType.startsWith("image/")) {
-                    console.log("CONTINE!");
+
                     clipboardItem.getType(itemType).then((imageBlob) => {
-                        setImageBlob(imageBlob);
+                        const imageUrl = URL.createObjectURL(imageBlob);
+
+                        const reader = new FileReader();
+                        let base64StringBlob;
+                        reader.readAsDataURL(imageBlob);
+                        reader.addEventListener("load", (ev) => {
+                            base64StringBlob = ev.target.result;
+                            setResource(base64StringBlob);
+                        });
+
+                        setPreview(imageUrl);
                         setIsSharable(true);
                     });
                 }
@@ -99,6 +112,7 @@ export default function ConversationForm() {
             e.preventDefault();
             if (e.dataTransfer.files.length) {
                 inputElement.files = e.dataTransfer.files;
+                setResource(URL.createObjectURL(inputElement.files[0]));
                 setIsSharable(true);
             }
         });
@@ -203,7 +217,7 @@ export default function ConversationForm() {
                     </div>
                 </Slide>
             }
-            <ShareImageDialog/>
+            <ShareImageDialog receiver={target}/>
         </>
     )
 }

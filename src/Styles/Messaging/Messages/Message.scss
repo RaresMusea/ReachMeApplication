@@ -5,8 +5,22 @@
   overflow-y: scroll;
   @apply bg-[#dbdbdb];
 
+  .MessagesHeading {
+    @apply p-[.5em];
+    margin: 0 auto;
+    @apply mb-2;
+    @apply w-[50%];
+    @apply text-center;
+    @apply text-white;
+    @apply rounded-2xl;
+    font-family: 'PT Sans', sans-serif;
+    @apply font-medium;
+    @apply bg-[#2c3e50];
+  }
+
   audio {
     @apply mt-1;
+    @apply mb-[3em];
     @apply mr-0;
     @apply ml-0;
     @apply p-0;
@@ -81,12 +95,14 @@
         }
       }
 
-      audio::-webkit-media-controls-panel {
-        background-color: #108c8e;
-
+      audio {
+        margin: 0;
+        padding-right: 0;
       }
 
-
+      audio::-webkit-media-controls-panel {
+        background-color: #108c8e;
+      }
     }
   }
 }

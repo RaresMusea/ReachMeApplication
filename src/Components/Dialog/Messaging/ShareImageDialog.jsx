@@ -1,18 +1,26 @@
 import * as React from 'react';
 import {useContext} from 'react';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {ResourceSharingContext} from "../../../Context/ResourceSharingContext";
+import ImageInput from "../../Forms/Inputs/ImageInput";
+import {Cancel, Description, Share} from "@mui/icons-material";
+import '../../../Styles/Dialog/ShareImageDialog.scss';
+import IconButton from "@mui/joy/IconButton";
+import {Transition} from "../../Messaging/MessagingFrame";
 
+export default function ShareImageDialog(props) {
+    const {isSharable, setIsSharable, setResource, preview} = useContext(ResourceSharingContext);
+    let message = "";
 
-export default function ShareImageDialog() {
-    const {isSharable, setIsSharable} = useContext(ResourceSharingContext);
+    const getInputMessageText = (e) => {
+        message = e.target.value;
+        console.log(message);
+    }
 
     const handleClose = () => {
+        setResource(null);
         setIsSharable(false);
     };
 
@@ -21,20 +29,38 @@ export default function ShareImageDialog() {
             <Dialog
                 open={isSharable}
                 keepMounted
+                TransitionComponent={Transition}
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+                <DialogTitle className="DialogTitle">{`Share image with ${props.receiver}`}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                        Let Google help apps determine location. This means sending anonymous
-                        location data to Google, even when no apps are running.
-                    </DialogContentText>
+                    <img className="ImagePreview" src={preview} alt="ImageToSend" width={600} height={400}/>
+                    <div className="DescriptionWrapper">
+                        <ImageInput className='DescriptionInput'
+                                    type={2}
+                                    error={{}}
+                                    icon={Description}
+                                    inputValue={message}
+                                    placeholder={'Message'}
+                                    adornmentPosition={'start'}
+                                    getInputText={getInputMessageText}/>
+                    </div>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Disagree</Button>
-                    <Button onClick={handleClose}>Agree</Button>
-                </DialogActions>
+                <div className="ButtonsArea">
+                    <IconButton
+                        title="Share"
+                        className="Button ShareButton"
+                        onClick={handleClose}>
+                        Share
+                        <Share className="Icon"/>
+                    </IconButton>
+                    <IconButton className="Button CancelButton"
+                                onClick={handleClose}>
+                        Cancel
+                        <Cancel clasName="Icon"/>
+                    </IconButton>
+                </div>
             </Dialog>
         </div>
     );

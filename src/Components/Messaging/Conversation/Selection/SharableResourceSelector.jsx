@@ -7,11 +7,13 @@ import {List} from "@mui/joy";
 import PropTypes from "prop-types";
 import '../../../../Styles/Messaging/Conversation/Conversation.scss';
 import '../../../../Styles/Messaging/Conversation/SharableResourceSelector.scss';
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {Transition} from "../../MessagingFrame";
 import {
-    isImageProcessingSuccessful
+    isImageProcessingSuccessful,
+    isVideoProcessingSuccessful
 } from "../../../../Modules/Messaging/ResourceSharing/SharableResourceSelectorModule";
+import {ResourceSharingContext} from "../../../../Context/ResourceSharingContext";
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 
@@ -26,14 +28,26 @@ function SimpleDialog(props) {
         onClose(value);
     };
 
+    const onProcessingSuccessful = (resource) => {
+        handleClose();
+        props.updateResource(URL.createObjectURL(resource));
+        props.markAsSharable();
+    }
+
     const onImageSelection = (e) => {
         const files = e.target.files;
-        console.log(files);
         if (isImageProcessingSuccessful(files)) {
-
+            onProcessingSuccessful(files[0]);
         }
 
         document.querySelector('#PhotoPicker').files = null;
+    }
+
+    const onVideoSelection = (e) => {
+        const files = e.target.files;
+        if (isVideoProcessingSuccessful(files)) {
+            onProcessingSuccessful(files[0]);
+        }
     }
 
     return (
@@ -61,6 +75,7 @@ function SimpleDialog(props) {
                                name="PhotoPicker"
                                accept="video/mp4, video/x-m4v, video/*"
                                id="VideoPicker"
+                               onChange={onVideoSelection}
                                style={{display: 'none'}}/>
                         <VideoCameraFrontSharp/>
                     </label>
@@ -90,10 +105,19 @@ SimpleDialog.propTypes = {
 export default function SharableResourceSelector() {
     const [open, setOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState(emails[1]);
+    const {isSharable, setIsSharable, resource, setResource, preview, setPreview} = useContext(ResourceSharingContext)
 
     const handleClickOpen = () => {
         setOpen(true);
     };
+
+    const markAsSharable = () => {
+        setIsSharable(true);
+    }
+
+    const updateResource = (res) => {
+        setResource(res);
+    }
 
     const handleClose = (value) => {
         setOpen(false);
@@ -112,6 +136,8 @@ export default function SharableResourceSelector() {
                     selectedValue={selectedValue}
                     open={open}
                     onClose={handleClose}
+                    updateResource={updateResource}
+                    markAsSharable={markAsSharable}
                 />
             </div>
         </>

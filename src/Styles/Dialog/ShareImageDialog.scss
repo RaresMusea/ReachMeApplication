@@ -33,6 +33,12 @@
     }
   }
 
+  .CancelButton {
+    .Icon {
+      @apply ml-1;
+    }
+  }
+
   .ShareButton:active,
   .ShareButton:hover {
     @apply bg-[#094561];

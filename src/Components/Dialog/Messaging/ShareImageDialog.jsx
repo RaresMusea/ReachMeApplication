@@ -73,7 +73,7 @@ export default function ShareImageDialog(props) {
                     <IconButton className="Button CancelButton"
                                 onClick={handleClose}>
                         Cancel
-                        <Cancel clasName="Icon"/>
+                        <Cancel className="Icon"/>
                     </IconButton>
                 </div>
             </Dialog>

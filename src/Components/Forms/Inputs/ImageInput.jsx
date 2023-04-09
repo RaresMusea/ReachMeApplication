@@ -7,9 +7,10 @@ import '../../../Styles/Forms/Input/ImageInput.scss';
 import {ThemeProvider} from "@mui/material";
 import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
 import {styles, theme} from "../../../Modules/Themes/InputTheme";
+import useInputValue from "../../../Hooks/Forms/useInputValue";
 
 export default function ImageInput(props) {
-    const [inputValue, setInputValue] = useState(props.inputValue);
+    const {inputValue, setInputValue} = useInputValue(props.inputValue);
     const [focus, setFocus] = React.useState("action.active");
     const [error, setError] = useState(props.error);
 

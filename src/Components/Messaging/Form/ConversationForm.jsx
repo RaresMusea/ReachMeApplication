@@ -217,7 +217,10 @@ export default function ConversationForm() {
                     </div>
                 </Slide>
             }
-            <ShareImageDialog receiver={target}/>
+            <ShareImageDialog
+                data={data}
+                convId={data.conversationIdentifier}
+                receiver={target}/>
         </>
     )
 }

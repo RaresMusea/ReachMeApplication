@@ -9,9 +9,12 @@ import {Cancel, Description, Share} from "@mui/icons-material";
 import '../../../Styles/Dialog/ShareImageDialog.scss';
 import IconButton from "@mui/joy/IconButton";
 import {Transition} from "../../Messaging/MessagingFrame";
+import {sendMessage} from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
+import useInputValue from "../../../Hooks/Forms/useInputValue";
 
 export default function ShareImageDialog(props) {
-    const {isSharable, setIsSharable, setResource, preview} = useContext(ResourceSharingContext);
+    const {isSharable, setIsSharable, setResource, preview, resource} = useContext(ResourceSharingContext);
+    const {setInputValue} = useInputValue("");
     let message = "";
 
     const getInputMessageText = (e) => {
@@ -23,6 +26,18 @@ export default function ShareImageDialog(props) {
         setResource(null);
         setIsSharable(false);
     };
+
+    const handleImageMessageSending = async () => {
+        const messageContent = message ? message : ``;
+        setInputValue("");
+        setIsSharable(false);
+        await sendMessage("image",
+            messageContent,
+            props.convId,
+            props.data.user.userFirebaseIdentifier,
+            resource);
+        message = "";
+    }
 
     return (
         <div>
@@ -41,7 +56,6 @@ export default function ShareImageDialog(props) {
                                     type={2}
                                     error={{}}
                                     icon={Description}
-                                    inputValue={message}
                                     placeholder={'Message'}
                                     adornmentPosition={'start'}
                                     getInputText={getInputMessageText}/>
@@ -51,7 +65,7 @@ export default function ShareImageDialog(props) {
                     <IconButton
                         title="Share"
                         className="Button ShareButton"
-                        onClick={handleClose}>
+                        onClick={handleImageMessageSending}>
                         Share
                         <Share className="Icon"/>
                     </IconButton>

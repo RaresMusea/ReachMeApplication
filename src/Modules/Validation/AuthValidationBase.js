@@ -30,7 +30,7 @@ const isUsernameValid = (username) => {
 
 export const validateUsername = (username) => {
     if (isEmptyString(username)) {
-        return buildError("The username cannot be marked as empty!");
+        return buildError("The username/email cannot be marked as empty!");
     }
 
     if (containsWhitespaces(username)) {

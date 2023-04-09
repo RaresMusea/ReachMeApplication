@@ -82,6 +82,7 @@ export default function Chats() {
                                     className="searchUsernameDetails First">{`${conv[1].userDetails.userRealName}
                              (${conv[1].userDetails.userName})`}</div>
                                 <div
+                                    title={determineChatLastMessage(conv[1])}
                                     className="searchNameDetails">
                                     {
                                         determineChatLastMessage(conv[1])

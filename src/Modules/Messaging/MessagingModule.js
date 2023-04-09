@@ -100,7 +100,7 @@ export const determineChatLastMessage = (chat) => {
             return `${chat.userDetails?.userRealName} sent you a voice message.`;
         }
     }
-    if (chat.lastMessageInConversation?.lastMessageType === "photo") {
+    if (chat.lastMessageInConversation?.lastMessageType === "image") {
         if (chat.senderIdentifier === loggedInAccount.userFirebaseIdentifier) {
             return 'You sent a photo.';
         } else {

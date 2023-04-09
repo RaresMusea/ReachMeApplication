@@ -6,6 +6,7 @@ import {useContext, useState} from "react";
 import {ConversationContext} from "../../../Context/ConversationContext";
 import useScroll from "../../../Hooks/useScroll";
 import {fromStringBase64EncodedAudioToLocalUrl} from "../../../Modules/Messaging/Voice Recoder/VoiceRecorder";
+import {fromStringBase64EncodedImgToLocalUrl} from "../../../Modules/String64/String64ToBlobConverter";
 
 export default function Message(props) {
     const [showDate, setShowDate] = useState(false);
@@ -24,13 +25,13 @@ export default function Message(props) {
 
     return (
         <div className={`Message ${messageStatus}`}
-             ref={scrollRef}
-        >
+             ref={scrollRef}>
             <div className="MessageDetails">
                 <Avatar src={profileImageSrc}
                         className="ConversationProfilePic"
                         onClick={displayDateAndTimeOfTheMessage}/>
-                {showDate &&
+                {
+                    showDate &&
                     <span className="SendReceivedDate">{parseDateAndTime(props.message?.date.toDate())}</span>
                 }
             </div>
@@ -43,6 +44,14 @@ export default function Message(props) {
                     <audio controls className={`Message ${messageStatus}`}>
                         <source src={fromStringBase64EncodedAudioToLocalUrl(props.message.additionalHref)}/>
                     </audio>
+                }
+                {
+                    messageType === "image" &&
+                    <div className="ImageMessage">
+                        <img src={fromStringBase64EncodedImgToLocalUrl(props.message.additionalHref)}
+                             alt="Image message"/>
+                        <p>{props.message.content}</p>
+                    </div>
                 }
             </div>
         </div>

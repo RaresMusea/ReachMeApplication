@@ -1,0 +1,30 @@
+.DialogTitle {
+  font-family: 'Rajdhani', sans-serif !important;
+}
+
+.SelectionOptions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .SelectionElement {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  label {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+#Alerts {
+  .ErrorAlert {
+    width: 90% !important;
+    border-radius: 0;
+    margin-bottom: .5em !important;
+  }
+}

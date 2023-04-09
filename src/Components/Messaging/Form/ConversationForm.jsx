@@ -2,7 +2,6 @@ import '../../../Styles/Messaging/Form/ConversationForm.scss';
 import IconButton from "@mui/joy/IconButton";
 import {
     ArrowUpward,
-    AttachFile,
     CloseSharp,
     MicNone,
     MoreHorizOutlined,
@@ -20,6 +19,7 @@ import useVoiceRecorder from "../../../Hooks/useVoiceRecorder";
 import ShareImageDialog from "../../Dialog/Messaging/ShareImageDialog";
 import {ResourceSharingContext} from "../../../Context/ResourceSharingContext";
 import {OpenContext} from "../../../Context/OpenContext";
+import SharableResourceSelector from "../Conversation/Selection/SharableResourceSelector";
 
 export default function ConversationForm() {
 
@@ -101,27 +101,10 @@ export default function ConversationForm() {
         }
     }
 
-    document.querySelectorAll(".FileSelect").forEach(inputElement => {
-        const dropZoneElement = inputElement.closest(".DropZone");
-        dropZoneElement.addEventListener("dragover", e => {
-            e.preventDefault();
-            console.log("circ");
-        });
-
-        dropZoneElement.addEventListener("drop", e => {
-            e.preventDefault();
-            if (e.dataTransfer.files.length) {
-                inputElement.files = e.dataTransfer.files;
-                setResource(URL.createObjectURL(inputElement.files[0]));
-                setIsSharable(true);
-            }
-        });
-    });
-
     return (
         <>
             {!recordingRequested ?
-                <label htmlFor="FileSelector" className="DropZone">
+
                     <div className="ConversationFormWrapper">
                 <textarea className="MessageInput"
                           placeholder="Message..."
@@ -139,20 +122,16 @@ export default function ConversationForm() {
                         >
                             <MicNone className="SendIcon"/>
                         </IconButton>
-                        <IconButton title="Attach media"
+                        {/* <IconButton title="Attach media"
                                     className="MessageSenderIconButton">
                             <AttachFile className="AttachIcon"/>
-                        </IconButton>
+                        </IconButton>*/}
+                        <SharableResourceSelector receiver={data.user.userFirebaseIdentifier}/>
                         <IconButton title="More"
                                     className="MessageSenderIconButton">
                             <MoreHorizOutlined className="MoreOptionsIcon"/>
                         </IconButton>
-                        <input type="file"
-                               style={{display: "none"}}
-                               id="FileSelector"
-                               className="FileSelect"/>
                     </div>
-                </label>
                 :
                 <Slide direction="left" in={recordingRequested} mountOnEnter unmountOnExit>
                     <div className="RecorderWrapper">

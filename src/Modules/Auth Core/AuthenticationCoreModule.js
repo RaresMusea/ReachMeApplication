@@ -1,10 +1,9 @@
 import {renderAlert} from "../Alerts/AlertUtil";
-import {retrievedEmailAddress} from "../../Services/Authentication Services/LogInService";
 
 export const displayPasswordResetInfoAlert = (message) => {
     const alertConfig = {
         severity: 'info',
-        class: 'AlertError',
+        class: 'ErrorAlert',
         message: message,
         targetId: '#errors',
         alertType: 'error',

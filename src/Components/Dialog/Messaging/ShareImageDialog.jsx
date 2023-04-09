@@ -13,7 +13,7 @@ import {sendMessage} from "../../../Services/Firebase Service/Messaging/Firebase
 import useInputValue from "../../../Hooks/Forms/useInputValue";
 
 export default function ShareImageDialog(props) {
-    const {isSharable, setIsSharable, setResource, preview, resource} = useContext(ResourceSharingContext);
+    const {isSharable, setIsSharable, setResource, resource} = useContext(ResourceSharingContext);
     const {setInputValue} = useInputValue("");
     let message = "";
 
@@ -44,13 +44,14 @@ export default function ShareImageDialog(props) {
             <Dialog
                 open={isSharable}
                 keepMounted
+                maxWidth={'lg'}
                 TransitionComponent={Transition}
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
             >
                 <DialogTitle className="DialogTitle">{`Share image with ${props.receiver}`}</DialogTitle>
                 <DialogContent>
-                    <img className="ImagePreview" src={preview} alt="ImageToSend" width={600} height={400}/>
+                    <img className="ImagePreview" src={resource} alt="ImageToSend" width={600} height={400}/>
                     <div className="DescriptionWrapper">
                         <ImageInput className='DescriptionInput'
                                     type={2}

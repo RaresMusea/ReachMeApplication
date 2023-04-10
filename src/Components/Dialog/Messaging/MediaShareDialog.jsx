@@ -12,8 +12,16 @@ import {Transition} from "../../Messaging/MessagingFrame";
 import {sendMessage} from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
 import useInputValue from "../../../Hooks/Forms/useInputValue";
 
-export default function ShareImageDialog(props) {
-    const {isSharable, setIsSharable, setResource, resource} = useContext(ResourceSharingContext);
+export default function MediaShareDialog(props) {
+    const {
+        isSharable,
+        setIsSharable,
+        setResource,
+        resource,
+        type,
+        extra,
+        setExtra
+    } = useContext(ResourceSharingContext);
     const {setInputValue} = useInputValue("");
     let message = "";
 
@@ -24,7 +32,13 @@ export default function ShareImageDialog(props) {
 
     const handleClose = () => {
         setResource(null);
+
+        if (type === "video") {
+            document.querySelector(".VideoPreview").pause();
+        }
+        setExtra({});
         setIsSharable(false);
+
     };
 
     const handleImageMessageSending = async () => {
@@ -49,9 +63,27 @@ export default function ShareImageDialog(props) {
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle className="DialogTitle">{`Share image with ${props.receiver}`}</DialogTitle>
+                <DialogTitle className="DialogTitle">{`Share ${type} with ${props.receiver}`}</DialogTitle>
                 <DialogContent>
-                    <img className="ImagePreview" src={resource} alt="ImageToSend" width={600} height={400}/>
+                    {
+                        type === "image" &&
+                        <img className="ImagePreview" src={resource} alt="ImageToSend" width={600} height={400}/>
+                    }
+                    {
+                        type === "video" &&
+                        <video controls
+                               className="VideoPreview">
+                            <source src={resource}/>
+                        </video>
+                    }
+                    {
+                        type === "file/document" &&
+                        <>
+                            <img src={extra.source}
+                                 alt="File Type Icon"/>
+                            <span>{extra.fileName}</span>
+                        </>
+                    }
                     <div className="DescriptionWrapper">
                         <ImageInput className='DescriptionInput'
                                     type={2}

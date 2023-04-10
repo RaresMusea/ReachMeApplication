@@ -16,7 +16,7 @@ import {sendMessage} from "../../../Services/Firebase Service/Messaging/Firebase
 import {resetMessageInputValues} from "../../../Modules/Messaging/MessagingModule";
 import {Slide} from "@mui/material";
 import useVoiceRecorder from "../../../Hooks/useVoiceRecorder";
-import ShareImageDialog from "../../Dialog/Messaging/ShareImageDialog";
+import MediaShareDialog from "../../Dialog/Messaging/MediaShareDialog";
 import {ResourceSharingContext} from "../../../Context/ResourceSharingContext";
 import {OpenContext} from "../../../Context/OpenContext";
 import SharableResourceSelector from "../Conversation/Selection/SharableResourceSelector";
@@ -196,7 +196,7 @@ export default function ConversationForm() {
                     </div>
                 </Slide>
             }
-            <ShareImageDialog
+            <MediaShareDialog
                 data={data}
                 convId={data.conversationIdentifier}
                 receiver={target}/>

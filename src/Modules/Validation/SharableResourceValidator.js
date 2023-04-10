@@ -2,6 +2,9 @@ import {isEmptyString} from "../Text/TextModule";
 
 const acceptedPhotoFormats = ["jpg", "png", "svg", "gif", "jpeg", "webp"];
 const acceptedVideoFormats = ["mp4", "avi", "flv", "mpeg", "mov", "avchd", "mkv", "webm"];
+const acceptedFileOrDocumentFormats = ["docx", "doc", "rtf", "xlsx", "xls", "csv", "pdf", "txt",
+    "rar", "zip", "iso", "cpp", "c", "h", "cs", "html", "css",
+    "scss", "sass", "js", "jsx", "json", "ts", "tsx", "class", "java", "gradle", "maven", "xml", "xaml", "py"];
 
 export const isSelectedPhotoFormatValid = (photo) => {
     const photoName = photo.name;
@@ -41,3 +44,25 @@ export const areSelectedVideosFormatValid = (videosList) => {
     }
     return true;
 }
+
+export const isSelectedFileOrDocumentValid = (file) => {
+    const fileName = file.name;
+    const fileFormat = fileName.split(".")[1];
+
+    if (isEmptyString(fileFormat)) {
+        return false;
+    }
+
+    return acceptedFileOrDocumentFormats.includes(fileFormat);
+}
+
+export const areSelectedFileOrDocumentFormatsValid = (files) => {
+    for (let i = 0; i < files.length; i++) {
+        if (!isSelectedFileOrDocumentValid(files[i])) {
+            return false;
+        }
+    }
+
+    return true;
+}
+

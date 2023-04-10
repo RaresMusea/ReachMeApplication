@@ -10,6 +10,8 @@ import '../../../../Styles/Messaging/Conversation/SharableResourceSelector.scss'
 import {useContext, useState} from "react";
 import {Transition} from "../../MessagingFrame";
 import {
+    getFileIconBasedOnFile,
+    isFileOrDocumentProcessingSuccessful,
     isImageProcessingSuccessful,
     isVideoProcessingSuccessful
 } from "../../../../Modules/Messaging/ResourceSharing/SharableResourceSelectorModule";
@@ -34,10 +36,20 @@ function SimpleDialog(props) {
         props.markAsSharable();
     }
 
+    /*const onImageProcessingSuccessful=(imageList)=>{
+        handleClose();
+        if(imageList.length === 1){
+            props.markType("image");
+            props.updateResource(URL.createObjectURL(imageList[0]));
+            props.markAsSharable();
+        }*/
+
     const onImageSelection = (e) => {
         const files = e.target.files;
         if (isImageProcessingSuccessful(files)) {
+            props.markType(files.length === 1 ? "image" : "images");
             onProcessingSuccessful(files[0]);
+
         }
 
         document.querySelector('#PhotoPicker').files = null;
@@ -46,6 +58,19 @@ function SimpleDialog(props) {
     const onVideoSelection = (e) => {
         const files = e.target.files;
         if (isVideoProcessingSuccessful(files)) {
+            props.markType(files.length === 1 ? "video" : "videos");
+            onProcessingSuccessful(files[0]);
+        }
+    }
+
+    const onFileOrDocumentSelection = (e) => {
+        const files = e.target.files;
+        if (isFileOrDocumentProcessingSuccessful(files)) {
+            props.markType(files.length === 1 ? "file/document" : "files/documents");
+            props.configureExtra({
+                source: getFileIconBasedOnFile(files[0]),
+                fileName: files[0].name
+            });
             onProcessingSuccessful(files[0]);
         }
     }
@@ -70,7 +95,7 @@ function SimpleDialog(props) {
                     </label>
                 </ListItemButton>
                 <ListItemButton className="SelectionElement">
-                    <label htmlFor="PhotoPicker">Video
+                    <label htmlFor="VideoPicker">Video
                         <input type="file"
                                name="PhotoPicker"
                                accept="video/mp4, video/x-m4v, video/*"
@@ -81,10 +106,11 @@ function SimpleDialog(props) {
                     </label>
                 </ListItemButton>
                 <ListItemButton className="SelectionElement">
-                    <label htmlFor="DocumentPicker">Document
+                    <label htmlFor="DocumentPicker">File or document
                         <input type="file"
                                name="DocumentPicker"
                                id="DocumentPicker"
+                               onChange={onFileOrDocumentSelection}
                                style={{display: 'none'}}/>
                         <InsertDriveFile/>
                     </label>
@@ -105,7 +131,17 @@ SimpleDialog.propTypes = {
 export default function SharableResourceSelector() {
     const [open, setOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState(emails[1]);
-    const {isSharable, setIsSharable, resource, setResource, preview, setPreview} = useContext(ResourceSharingContext)
+    const {
+        isSharable,
+        setIsSharable,
+        resource,
+        setResource,
+        preview,
+        setPreview,
+        type,
+        setType,
+        setExtra
+    } = useContext(ResourceSharingContext)
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -113,6 +149,14 @@ export default function SharableResourceSelector() {
 
     const markAsSharable = () => {
         setIsSharable(true);
+    }
+
+    const configureExtra = (extra) => {
+        setExtra(extra);
+    }
+
+    const markType = (typeName) => {
+        setType(typeName);
     }
 
     const updateResource = (res) => {
@@ -138,6 +182,8 @@ export default function SharableResourceSelector() {
                     onClose={handleClose}
                     updateResource={updateResource}
                     markAsSharable={markAsSharable}
+                    markType={markType}
+                    configureExtra={configureExtra}
                 />
             </div>
         </>

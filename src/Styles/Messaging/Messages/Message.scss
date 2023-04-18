@@ -144,23 +144,81 @@
       @apply gap-[0.9em];
       background-color: white;
       border-radius: 0 15px 15px 15px;
+
+      .SourceImage {
+        @apply pt-2;
+        @apply pl-2;
+        @apply pr-2;
+        @apply pb-0;
+        @apply mb-0;
+        border-radius: 0 15px 15px 15px;
+      }
+
+      span {
+        @apply ml-[1em];
+        @apply mr-[1em];
+        @apply text-black;
+        @apply mb-2;
+        max-width: max-content;
+      }
     }
 
-    .SourceImage {
-      @apply pt-2;
-      @apply pl-2;
-      @apply pr-2;
-      @apply pb-0;
-      @apply mb-0;
+    .VideoMessage.LoggedUsersMessage {
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: column;
+      gap: 0;
+      height: 30%;
+      width: 35%;
+      @apply gap-[0.9em];
+      @apply bg-[#108e8e];
+      border-radius: 15px 0 15px 15px;
+
+      .VideoSource {
+        @apply pt-2;
+        @apply pl-2;
+        @apply pr-2;
+        @apply pb-0;
+        @apply mb-0;
+        border-radius: 15px 0 15px 15px;
+      }
+
+      span {
+        @apply ml-[1em];
+        @apply mr-[1em];
+        @apply text-white;
+        @apply mb-2;
+        max-width: max-content;
+      }
+    }
+
+    .VideoMessage {
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: column;
+      gap: 0;
+      height: 30%;
+      width: 35%;
+      @apply gap-[0.9em];
+      background-color: white;
       border-radius: 0 15px 15px 15px;
-    }
 
-    span {
-      @apply ml-[1em];
-      @apply mr-[1em];
-      @apply text-black;
-      @apply mb-2;
-      max-width: max-content;
+      .VideoSource {
+        @apply pt-2;
+        @apply pl-2;
+        @apply pr-2;
+        @apply pb-0;
+        @apply mb-0;
+        border-radius: 0 15px 15px 15px;
+      }
+
+      span {
+        @apply ml-[1em];
+        @apply mr-[1em];
+        @apply text-black;
+        @apply mb-2;
+        max-width: max-content;
+      }
     }
   }
 }

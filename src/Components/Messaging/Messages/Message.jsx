@@ -34,8 +34,7 @@ export default function Message(props) {
                     <span className="SendReceivedDate">{parseDateAndTime(props.message?.date.toDate())}</span>
                 }
             </div>
-            <div className="MessageContent"
-                 ref={scrollRef}>
+            <div className="MessageContent">
                 {messageType === "text" &&
                     <p>{props.message.content}</p>
                 }
@@ -59,7 +58,25 @@ export default function Message(props) {
                         alt="Image message"/>
                     {
                         props.message.content !== '' &&
-                        <span ref={scrollRef}>
+                        <span>
+                            {props.message.content}
+                        </span>
+                    }
+                </div>
+            }
+            {
+                messageType === 'video' &&
+                <div className={`VideoMessage ${messageStatus}`}
+                     style={{
+                         paddingBottom: (props.message.content !== '' ? '0' : '.5em'),
+                         marginBottom: (props.message.content !== '' ? '0' : '0')
+                     }}>
+                    <video controls
+                           src={props.message.additionalHref}
+                           className="VideoSource"/>
+                    {
+                        props.message.content !== '' &&
+                        <span>
                             {props.message.content}
                         </span>
                     }

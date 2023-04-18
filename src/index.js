@@ -8,21 +8,24 @@ import AuthenticationCore from "./Components/Authentication/Core/AuthenticationC
 import {ConversationContextProvider} from "./Context/ConversationContext";
 import {OpenContextProvider} from "./Context/OpenContext";
 import {ResourceSharingContextProvider} from "./Context/ResourceSharingContext";
+import {WindowSplitContextProvider} from "./Context/WindowSplitContext";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <OpenContextProvider>
         <ConversationContextProvider>
             <ResourceSharingContextProvider>
-                <React.StrictMode>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route index element={<App/>}/>
-                            <Route path={'/authentication'} element={<AuthenticationCore/>}/>
-                        </Routes>
-                        }
-                    </BrowserRouter>
-                </React.StrictMode>
+                <WindowSplitContextProvider>
+                    <React.StrictMode>
+                        <BrowserRouter>
+                            <Routes>
+                                <Route index element={<App/>}/>
+                                <Route path={'/authentication'} element={<AuthenticationCore/>}/>
+                            </Routes>
+                            }
+                        </BrowserRouter>
+                    </React.StrictMode>
+                </WindowSplitContextProvider>
             </ResourceSharingContextProvider>
         </ConversationContextProvider>
     </OpenContextProvider>

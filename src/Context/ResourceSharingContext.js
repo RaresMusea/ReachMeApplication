@@ -8,6 +8,8 @@ export const ResourceSharingContextProvider = ({children}) => {
     const [preview, setPreview] = useState(null);
     const [type, setType] = useState("");
     const [extra, setExtra] = useState({});
+    const [fileList, setFileList] = useState([]);
+
 
     return (
         <ResourceSharingContext.Provider
@@ -21,7 +23,9 @@ export const ResourceSharingContextProvider = ({children}) => {
                 type,
                 setType,
                 extra,
-                setExtra
+                setExtra,
+                fileList,
+                setFileList
             }}>
             {children}
         </ResourceSharingContext.Provider>

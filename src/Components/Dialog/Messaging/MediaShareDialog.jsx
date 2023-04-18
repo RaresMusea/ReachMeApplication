@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -9,8 +9,9 @@ import {Cancel, Description, Share} from "@mui/icons-material";
 import '../../../Styles/Dialog/ShareImageDialog.scss';
 import IconButton from "@mui/joy/IconButton";
 import {Transition} from "../../Messaging/MessagingFrame";
-import {sendMessage} from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
 import useInputValue from "../../../Hooks/Forms/useInputValue";
+import {sendPhotoMessage} from "../../../Services/Firebase Service/Messaging/FirebaseResourceSharingService";
+import {ConversationContext} from "../../../Context/ConversationContext";
 
 export default function MediaShareDialog(props) {
     const {
@@ -20,9 +21,12 @@ export default function MediaShareDialog(props) {
         resource,
         type,
         extra,
-        setExtra
+        setExtra,
+        fileList
     } = useContext(ResourceSharingContext);
     const {setInputValue} = useInputValue("");
+    const {data} = useContext(ConversationContext);
+    const [reset, setReset] = useState(false);
     let message = "";
 
     const getInputMessageText = (e) => {
@@ -31,18 +35,24 @@ export default function MediaShareDialog(props) {
     }
 
     const handleClose = () => {
+        setReset(true);
         setResource(null);
 
         if (type === "video") {
             document.querySelector(".VideoPreview").pause();
         }
         setExtra({});
+        setInputValue("");
+        message = '';
         setIsSharable(false);
-
     };
 
-    const handleImageMessageSending = async () => {
-        const messageContent = message ? message : ``;
+    const turnOffReset = () => {
+        setReset(false);
+    }
+
+    const handleMediaMessageSending = async () => {
+        /*const messageContent = message ? message : ``;
         setInputValue("");
         setIsSharable(false);
         await sendMessage("image",
@@ -50,7 +60,26 @@ export default function MediaShareDialog(props) {
             props.convId,
             props.data.user.userFirebaseIdentifier,
             resource);
-        message = "";
+        message = "";*/
+
+        switch (type) {
+            case 'image': {
+                fileList.length === 1 &&
+                await sendPhotoMessage(fileList[0],
+                    {
+                        "conversationId": data.conversationIdentifier,
+                        "receiver": data.user,
+                        "messageContent": message,
+                    });
+                handleClose();
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+
+
     }
 
     return (
@@ -89,6 +118,9 @@ export default function MediaShareDialog(props) {
                         <ImageInput className='DescriptionInput'
                                     type={2}
                                     error={{}}
+                                    reset={reset}
+                                    inputValue={''}
+                                    turnOffReset={turnOffReset}
                                     icon={Description}
                                     placeholder={'Message'}
                                     adornmentPosition={'start'}
@@ -99,7 +131,7 @@ export default function MediaShareDialog(props) {
                     <IconButton
                         title="Share"
                         className="Button ShareButton"
-                        onClick={handleImageMessageSending}>
+                        onClick={handleMediaMessageSending}>
                         Share
                         <Share className="Icon"/>
                     </IconButton>

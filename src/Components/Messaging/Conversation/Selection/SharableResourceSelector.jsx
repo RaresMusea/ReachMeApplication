@@ -49,7 +49,7 @@ function SimpleDialog(props) {
         if (isImageProcessingSuccessful(files)) {
             props.markType(files.length === 1 ? "image" : "images");
             onProcessingSuccessful(files[0]);
-
+            props.updateFileList(files);
         }
 
         document.querySelector('#PhotoPicker').files = null;
@@ -132,15 +132,11 @@ export default function SharableResourceSelector() {
     const [open, setOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState(emails[1]);
     const {
-        isSharable,
         setIsSharable,
-        resource,
         setResource,
-        preview,
-        setPreview,
-        type,
         setType,
-        setExtra
+        setExtra,
+        setFileList,
     } = useContext(ResourceSharingContext)
 
     const handleClickOpen = () => {
@@ -161,6 +157,10 @@ export default function SharableResourceSelector() {
 
     const updateResource = (res) => {
         setResource(res);
+    }
+
+    const updateFileList = (fileList) => {
+        setFileList(fileList);
     }
 
     const handleClose = (value) => {
@@ -184,6 +184,7 @@ export default function SharableResourceSelector() {
                     markAsSharable={markAsSharable}
                     markType={markType}
                     configureExtra={configureExtra}
+                    updateFileList={updateFileList}
                 />
             </div>
         </>

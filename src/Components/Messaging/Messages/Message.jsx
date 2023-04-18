@@ -6,7 +6,6 @@ import {useContext, useState} from "react";
 import {ConversationContext} from "../../../Context/ConversationContext";
 import useScroll from "../../../Hooks/useScroll";
 import {fromStringBase64EncodedAudioToLocalUrl} from "../../../Modules/Messaging/Voice Recoder/VoiceRecorder";
-import {fromStringBase64EncodedImgToLocalUrl} from "../../../Modules/String64/String64ToBlobConverter";
 
 export default function Message(props) {
     const [showDate, setShowDate] = useState(false);
@@ -45,15 +44,26 @@ export default function Message(props) {
                         <source src={fromStringBase64EncodedAudioToLocalUrl(props.message.additionalHref)}/>
                     </audio>
                 }
-                {
-                    messageType === "image" &&
-                    <div className="ImageMessage">
-                        <img src={fromStringBase64EncodedImgToLocalUrl(props.message.additionalHref)}
-                             alt="Image message"/>
-                        <p>{props.message.content}</p>
-                    </div>
-                }
             </div>
+            {
+                messageType === "photo" &&
+                <div className={`ImageMessage ${messageStatus}`}
+                     style={{
+                         paddingBottom: (props.message.content !== '' ? '0' : '.5em'),
+                         marginBottom: (props.message.content !== '' ? '0' : '0')
+                     }}>
+                    <img
+                        className="SourceImage"
+                        src={props.message.additionalHref}
+                        alt="Image message"/>
+                    {
+                        props.message.content !== '' &&
+                        <span>
+                            {props.message.content}
+                        </span>
+                    }
+                </div>
+            }
         </div>
     );
 }

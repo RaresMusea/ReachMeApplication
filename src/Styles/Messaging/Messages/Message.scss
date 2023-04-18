@@ -104,5 +104,63 @@
         background-color: #108c8e;
       }
     }
+
+    .ImageMessage.LoggedUsersMessage {
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: column;
+      gap: 0;
+      height: 30%;
+      width: 35%;
+      @apply gap-[0.9em];
+      background-color: #108c8e;
+      border-radius: 15px 0 15px 15px;
+
+      .SourceImage {
+        @apply pt-2;
+        @apply pl-2;
+        @apply pr-2;
+        @apply pb-0;
+        @apply mb-0;
+        border-radius: 15px 0 15px 15px;
+      }
+
+      span {
+        @apply ml-[1em];
+        @apply mr-[1em];
+        @apply text-white;
+        @apply mb-2;
+        max-width: max-content;
+      }
+    }
+
+    .ImageMessage {
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: column;
+      gap: 0;
+      height: 30%;
+      width: 35%;
+      @apply gap-[0.9em];
+      background-color: white;
+      border-radius: 0 15px 15px 15px;
+    }
+
+    .SourceImage {
+      @apply pt-2;
+      @apply pl-2;
+      @apply pr-2;
+      @apply pb-0;
+      @apply mb-0;
+      border-radius: 0 15px 15px 15px;
+    }
+
+    span {
+      @apply ml-[1em];
+      @apply mr-[1em];
+      @apply text-black;
+      @apply mb-2;
+      max-width: max-content;
+    }
   }
 }

@@ -21,6 +21,8 @@ import jpgFile from '../../../Media/Images/jpg-file.svg';
 import pngFile from '../../../Media/Images/png-format.svg';
 import svgFile from '../../../Media/Images/svg.svg';
 import mp4File from '../../../Media/Images/mp4-file.svg';
+import AlertBox from "../../../Components/AlertBox/AlertBox";
+import ReactDOM from "react-dom/client";
 
 
 const fileExtensionsIcons = {
@@ -154,4 +156,17 @@ export const getFileIconBasedOnFile = (file) => {
         return fileExtensionsIcons[fileExtension];
     }
     return unknownFileFormat;
+}
+
+export const displayUploadSnackBar = (message) => {
+    const div = document.createElement('div');
+    const snackBarContainer = document.getElementById('UploadSnackbar');
+    snackBarContainer.appendChild(div);
+    div.id = 'Progress';
+
+    const alertBox = <AlertBox isOpen={true}
+                               message={message}/>
+
+    const root = ReactDOM.createRoot(div);
+    root.render(alertBox);
 }

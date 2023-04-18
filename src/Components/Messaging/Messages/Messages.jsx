@@ -42,6 +42,7 @@ export default function Messages() {
                 {
                     messages.map(msg => (<Message key={msg.messageIdentifier} message={msg}/>))
                 }
+                <div id="UploadSnackbar"/>
             </div>
         </>
     );

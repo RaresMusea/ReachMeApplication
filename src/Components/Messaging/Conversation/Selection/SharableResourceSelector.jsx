@@ -37,6 +37,7 @@ function SimpleDialog(props) {
                 temp.push(URL.createObjectURL(res));
             }
             props.updateResource(temp);
+            console.log(temp);
         }
         props.markAsSharable();
     }
@@ -94,6 +95,7 @@ function SimpleDialog(props) {
                     <label htmlFor="VideoPicker">Video
                         <input type="file"
                                name="VideoPicker"
+                               multiple={true}
                                accept="video/mp4, video/x-m4v, video/*"
                                id="VideoPicker"
                                onChange={onVideoSelection}

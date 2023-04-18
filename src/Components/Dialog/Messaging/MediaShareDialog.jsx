@@ -17,19 +17,17 @@ import {
     sendVideo
 } from "../../../Services/Firebase Service/Messaging/FirebaseResourceSharingService";
 import {ConversationContext} from "../../../Context/ConversationContext";
-import ImageCarouselPreview from "../../Messaging/Misc/ImageCarouselPreview";
+import MultimediaCarouselPreview from "../../Messaging/Misc/MultimediaCarouselPreview";
 
 export default function MediaShareDialog(props) {
     const {
         isSharable,
         setIsSharable,
-        setResource,
         resource,
         type,
         extra,
         setExtra,
         fileList,
-        setFileList
     } = useContext(ResourceSharingContext);
     const {setInputValue} = useInputValue("");
     const {data} = useContext(ConversationContext);
@@ -113,7 +111,7 @@ export default function MediaShareDialog(props) {
                     }
                     {
                         type === "images" &&
-                        <ImageCarouselPreview/>
+                        <MultimediaCarouselPreview/>
                     }
                     {
                         type === "video" &&
@@ -121,6 +119,10 @@ export default function MediaShareDialog(props) {
                                className="VideoPreview"
                                src={resource}>
                         </video>
+                    }
+                    {
+                        type === 'videos' &&
+                        <MultimediaCarouselPreview/>
                     }
                     {
                         type === "file/document" &&

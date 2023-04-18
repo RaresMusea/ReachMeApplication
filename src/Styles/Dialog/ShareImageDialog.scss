@@ -15,6 +15,20 @@
   height: 50%;
 }
 
+.FileTypePreview {
+  width: 30%;
+  height: 10%;
+  margin: 0 auto;
+  @apply mb-3;
+}
+
+.FileName {
+  @apply block;
+  text-align: center !important;
+  font-family: 'PT Sans', sans-serif;
+  @apply font-bold;
+}
+
 .DescriptionWrapper {
   margin-top: 1em !important;
 }

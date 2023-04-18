@@ -80,8 +80,9 @@ export default function MediaShareDialog(props) {
                         type === "file/document" &&
                         <>
                             <img src={extra.source}
+                                 className="FileTypePreview"
                                  alt="File Type Icon"/>
-                            <span>{extra.fileName}</span>
+                            <span className="FileName">{extra.fileName}</span>
                         </>
                     }
                     <div className="DescriptionWrapper">

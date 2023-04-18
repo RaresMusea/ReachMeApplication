@@ -14,6 +14,14 @@ import docxFile from '../../../Media/Images/docx-file.svg';
 import docFile from '../../../Media/Images/doc-file.svg';
 import xlsxFile from '../../../Media/Images/xlsx-file.svg';
 import unknownFileFormat from '../../../Media/Images/document.svg';
+import zipFile from '../../../Media/Images/zip.svg';
+import rarFile from '../../../Media/Images/rar-file-format.svg';
+import isoFile from '../../../Media/Images/iso-svgrepo-com.svg';
+import jpgFile from '../../../Media/Images/jpg-file.svg';
+import pngFile from '../../../Media/Images/png-format.svg';
+import svgFile from '../../../Media/Images/svg.svg';
+import mp4File from '../../../Media/Images/mp4-file.svg';
+
 
 const fileExtensionsIcons = {
     "txt": txtFile,
@@ -21,6 +29,13 @@ const fileExtensionsIcons = {
     "doc": docFile,
     "docx": docxFile,
     "xlsx": xlsxFile,
+    "zip": zipFile,
+    "rar": rarFile,
+    "iso": isoFile,
+    "jpg": jpgFile,
+    "svg": svgFile,
+    "png": pngFile,
+    "mp4": mp4File,
 }
 
 const buildAlertConfiguration = (severitySpec, className, text, id, type, fadeOut, removalTimeout) => {
@@ -138,8 +153,5 @@ export const getFileIconBasedOnFile = (file) => {
     if (fileExtension in fileExtensionsIcons) {
         return fileExtensionsIcons[fileExtension];
     }
-
-    /*console.log(fileExtensionsIcons[fileExtension]);
-    console.log(fileExtension)*/
     return unknownFileFormat;
 }

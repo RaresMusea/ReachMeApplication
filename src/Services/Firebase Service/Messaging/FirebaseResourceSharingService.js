@@ -6,37 +6,38 @@ import {sendMessage} from "./FirebaseMessagingService";
 import {isEmptyString} from "../../../Modules/Text/TextModule";
 
 let uploadedPhotoUrl;
+const alertConfiguration = {
+    message: "Cannot process your request due to an internal server error." +
+        "More details: ",
+    severity: "error",
+    target: "#UploadSnackbar",
+    style: "ProfilePictureErrorAlert",
+};
 
-export const sendPhotoMessage = async (payload, messageConfiguration) => {
+const sendMediaMessage = async (payload, messageConfiguration, type, path) => {
     const fileName = payload.name;
 
     const uploadTask = storage.ref(`Conversations/${messageConfiguration.conversationId}`)
-        .child('Photos')
+        .child(path)
         .child(fileName)
         .put(payload);
 
     uploadTask.on('state_changed', (snapshot) => {
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            displayUploadSnackBar(`Sending photo to ${messageConfiguration.receiver.userRealName} - 
+            displayUploadSnackBar(`Sending ${type} to ${messageConfiguration.receiver.userRealName} - 
         ${Math.floor(progress)}% complete`);
 
             setTimeout(() => {
             }, 120);
         },
         (error) => {
-            const alertConfiguration = {
-                message: "Cannot process your request due to an internal server error." +
-                    "More details: " + error,
-                severity: "error",
-                target: "#ProfilePictureManagementAlerts",
-                style: "ProfilePictureErrorAlert",
-            };
+            alertConfiguration.message += error;
             displayFailAlert(alertConfiguration);
         },
         () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                 uploadedPhotoUrl = downloadURL;
-                sendMessage("photo",
+                sendMessage(type,
                     isEmptyString(messageConfiguration.messageContent) ? ''
                         : messageConfiguration.messageContent,
                     messageConfiguration.conversationId,
@@ -48,44 +49,37 @@ export const sendPhotoMessage = async (payload, messageConfiguration) => {
     );
 }
 
-export const sendMultiplePhotoMessages = async (payload, messageConfiguration) => {
-    displayUploadSnackBar(`Sending ${payload.length} images to ${messageConfiguration.receiver.userRealName}.
+const sendMultipleMediaMessages = async (payload, messageConfiguration, type, path) => {
+    displayUploadSnackBar(`Sending ${payload.length} ${type} to ${messageConfiguration.receiver.userRealName}.
      Overall progress: 0 out of ${payload.length} photos sent (0%)`);
-
     let uploadCount = 0;
 
     for (let file of payload) {
         let fileName = file.name;
 
         const uploadTask = storage.ref(`Conversations/${messageConfiguration.conversationId}`)
-            .child('Photos')
+            .child(path)
             .child(fileName)
             .put(file);
 
         uploadTask.on('state_changed', (snapshot) => {
             },
             (error) => {
-                const alertConfiguration = {
-                    message: "Cannot process your request due to an internal server error." +
-                        "More details: " + error,
-                    severity: "error",
-                    target: "#ProfilePictureManagementAlerts",
-                    style: "ProfilePictureErrorAlert",
-                };
+                alertConfiguration.message += error;
                 displayFailAlert(alertConfiguration);
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     uploadedPhotoUrl = downloadURL;
-                    sendMessage("photo",
+                    sendMessage(type,
                         uploadCount === 0 && !isEmptyString(messageConfiguration.messageContent) ?
                             messageConfiguration.messageContent : '',
                         messageConfiguration.conversationId,
                         messageConfiguration.receiver.userFirebaseIdentifier,
                         uploadedPhotoUrl
                     );
-                    displayUploadSnackBar(`Sending ${payload.length} images to ${messageConfiguration.receiver.userRealName}.
-     Overall progress: ${uploadCount + 1} out of ${payload.length} photos sent 
+                    displayUploadSnackBar(`Sending ${payload.length} ${type}s to ${messageConfiguration.receiver.userRealName}.
+     Overall progress: ${uploadCount + 1} out of ${payload.length} ${type}s sent 
      (${(uploadCount + 1) / payload.length * 100}%).`);
                     setTimeout(() => {
                     }, 120);
@@ -94,4 +88,24 @@ export const sendMultiplePhotoMessages = async (payload, messageConfiguration) =
             }
         );
     }
+}
+
+export const sendPhoto = async (payload, messageConfiguration) => {
+    await sendMediaMessage(payload, messageConfiguration, "photo", "Photos");
+}
+
+export const sendVideo = async (payload, messageConfiguration) => {
+    await sendMediaMessage(payload, messageConfiguration, "video", "Videos");
+}
+
+export const sendMultiplePhotos = async (payload, messageConfiguration) => {
+    await sendMultipleMediaMessages(payload, messageConfiguration, "photo", "Photos");
+}
+
+export const sendMultipleVideos = async (payload, messageConfiguration) => {
+    await sendMultipleMediaMessages(payload, messageConfiguration, "video", "Videos");
+}
+
+export const sendMultiplePhotoMessages = async (payload, messageConfiguration) => {
+
 }

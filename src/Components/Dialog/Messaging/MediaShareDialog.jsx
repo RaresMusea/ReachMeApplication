@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -11,8 +11,10 @@ import IconButton from "@mui/joy/IconButton";
 import {Transition} from "../../Messaging/MessagingFrame";
 import useInputValue from "../../../Hooks/Forms/useInputValue";
 import {
-    sendMultiplePhotoMessages,
-    sendPhotoMessage
+    sendMultiplePhotos,
+    sendMultipleVideos,
+    sendPhoto,
+    sendVideo
 } from "../../../Services/Firebase Service/Messaging/FirebaseResourceSharingService";
 import {ConversationContext} from "../../../Context/ConversationContext";
 import ImageCarouselPreview from "../../Messaging/Misc/ImageCarouselPreview";
@@ -26,7 +28,8 @@ export default function MediaShareDialog(props) {
         type,
         extra,
         setExtra,
-        fileList
+        fileList,
+        setFileList
     } = useContext(ResourceSharingContext);
     const {setInputValue} = useInputValue("");
     const {data} = useContext(ConversationContext);
@@ -38,10 +41,14 @@ export default function MediaShareDialog(props) {
         console.log(message);
     }
 
+    useEffect(() => {
+        if (type === "video") {
+            document.querySelector('.VideoPreview').src = resource;
+        }
+    }, [resource]);
+
     const handleClose = () => {
         setReset(true);
-        setResource([]);
-
         if (type === "video") {
             document.querySelector(".VideoPreview").pause();
         }
@@ -65,13 +72,19 @@ export default function MediaShareDialog(props) {
         switch (type) {
             case 'image': {
                 fileList.length === 1 &&
-                await sendPhotoMessage(fileList[0], messageConfiguration);
-                handleClose();
+                await sendPhoto(fileList[0], messageConfiguration);
                 break;
             }
             case 'images': {
-                await sendMultiplePhotoMessages(fileList, messageConfiguration);
-                handleClose();
+                await sendMultiplePhotos(fileList, messageConfiguration);
+                break;
+            }
+            case 'video': {
+                await sendVideo(fileList[0], messageConfiguration);
+                break;
+            }
+            case 'videos': {
+                await sendMultipleVideos(fileList, messageConfiguration);
                 break;
             }
             default: {
@@ -79,7 +92,7 @@ export default function MediaShareDialog(props) {
             }
         }
 
-
+        handleClose();
     }
 
     return (
@@ -105,8 +118,8 @@ export default function MediaShareDialog(props) {
                     {
                         type === "video" &&
                         <video controls
-                               className="VideoPreview">
-                            <source src={resource}/>
+                               className="VideoPreview"
+                               src={resource}>
                         </video>
                     }
                     {

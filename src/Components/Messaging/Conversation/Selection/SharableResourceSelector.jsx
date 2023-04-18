@@ -17,21 +17,18 @@ import {
 } from "../../../../Modules/Messaging/ResourceSharing/SharableResourceSelectorModule";
 import {ResourceSharingContext} from "../../../../Context/ResourceSharingContext";
 
-const emails = ['username@gmail.com', 'user02@gmail.com'];
-
 function SimpleDialog(props) {
     const {onClose, selectedValue} = props;
 
     const handleClose = () => {
         onClose(selectedValue);
-    };
-
-    const handleListItemClick = (value) => {
-        onClose(value);
+        props.updateResource([]);
+        props.updateFileList([]);
     };
 
     const onProcessingSuccessful = (resources) => {
         handleClose();
+        props.updateFileList(resources);
         if (resources.length === 1) {
             props.updateResource(URL.createObjectURL(resources[0]));
         } else {
@@ -44,20 +41,11 @@ function SimpleDialog(props) {
         props.markAsSharable();
     }
 
-    /*const onImageProcessingSuccessful=(imageList)=>{
-        handleClose();
-        if(imageList.length === 1){
-            props.markType("image");
-            props.updateResource(URL.createObjectURL(imageList[0]));
-            props.markAsSharable();
-        }*/
-
     const onImageSelection = (e) => {
         const files = e.target.files;
         if (isImageProcessingSuccessful(files)) {
             props.markType(files.length === 1 ? "image" : "images");
             onProcessingSuccessful(files);
-            props.updateFileList(files);
         }
 
         document.querySelector('#PhotoPicker').files = null;
@@ -67,7 +55,7 @@ function SimpleDialog(props) {
         const files = e.target.files;
         if (isVideoProcessingSuccessful(files)) {
             props.markType(files.length === 1 ? "video" : "videos");
-            onProcessingSuccessful(files[0]);
+            onProcessingSuccessful(files);
         }
     }
 
@@ -105,7 +93,7 @@ function SimpleDialog(props) {
                 <ListItemButton className="SelectionElement">
                     <label htmlFor="VideoPicker">Video
                         <input type="file"
-                               name="PhotoPicker"
+                               name="VideoPicker"
                                accept="video/mp4, video/x-m4v, video/*"
                                id="VideoPicker"
                                onChange={onVideoSelection}
@@ -138,11 +126,12 @@ SimpleDialog.propTypes = {
 
 export default function SharableResourceSelector() {
     const [open, setOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState(emails[1]);
+    const [selectedValue, setSelectedValue] = useState("");
     const {
         setIsSharable,
         setResource,
         setType,
+        resource,
         setExtra,
         setFileList,
     } = useContext(ResourceSharingContext)
@@ -150,6 +139,10 @@ export default function SharableResourceSelector() {
     const handleClickOpen = () => {
         setOpen(true);
     };
+
+    const getRes = () => {
+        return resource;
+    }
 
     const markAsSharable = () => {
         setIsSharable(true);
@@ -193,6 +186,7 @@ export default function SharableResourceSelector() {
                     markType={markType}
                     configureExtra={configureExtra}
                     updateFileList={updateFileList}
+                    getRes={getRes}
                 />
             </div>
         </>

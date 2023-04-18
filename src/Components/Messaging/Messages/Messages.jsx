@@ -13,6 +13,7 @@ export default function Messages() {
     const {data} = useContext(ConversationContext);
     const {target} = useContext(OpenContext);
     const [firstInConversation, setFirstInConversation] = useState("");
+    const [conversationStartDate, setConversationStartDate] = useState(null);
 
     useEffect(() => {
         const getConversations = () => {
@@ -20,8 +21,14 @@ export default function Messages() {
                 if (doc.exists()) {
                     setMessages(doc.data().messages);
                     const mess = doc.data().messages;
-                    setFirstInConversation(mess[0]?.senderIdentifier === loggedInAccount.userFirebaseIdentifier ?
-                        loggedInAccount.userRealName : target);
+                    if (mess.length === 0) {
+                        setFirstInConversation(loggedInAccount.userRealName);
+                        setConversationStartDate(parseDateAndTime(new Date()));
+                    } else {
+                        setFirstInConversation(mess[0]?.senderIdentifier === loggedInAccount.userFirebaseIdentifier ?
+                            loggedInAccount.userRealName : target);
+                        setConversationStartDate(parseDateAndTime(messages[0]?.date.toDate()));
+                    }
                 }
             });
 
@@ -37,9 +44,10 @@ export default function Messages() {
             <div className="Messages">
                 <div className="MessagesHeading">
                     {`${firstInConversation} started this conversation 
-                    ${messages[0]?.date ? parseDateAndTime(messages[0]?.date.toDate()) : ``}.`}
+                    ${conversationStartDate}.`}
                 </div>
                 {
+                    messages &&
                     messages.map(msg => (<Message key={msg.messageIdentifier} message={msg}/>))
                 }
                 <div id="UploadSnackbar"/>

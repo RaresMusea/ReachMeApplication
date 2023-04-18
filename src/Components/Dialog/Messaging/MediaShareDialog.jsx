@@ -10,8 +10,12 @@ import '../../../Styles/Dialog/ShareImageDialog.scss';
 import IconButton from "@mui/joy/IconButton";
 import {Transition} from "../../Messaging/MessagingFrame";
 import useInputValue from "../../../Hooks/Forms/useInputValue";
-import {sendPhotoMessage} from "../../../Services/Firebase Service/Messaging/FirebaseResourceSharingService";
+import {
+    sendMultiplePhotoMessages,
+    sendPhotoMessage
+} from "../../../Services/Firebase Service/Messaging/FirebaseResourceSharingService";
 import {ConversationContext} from "../../../Context/ConversationContext";
+import ImageCarouselPreview from "../../Messaging/Misc/ImageCarouselPreview";
 
 export default function MediaShareDialog(props) {
     const {
@@ -36,7 +40,7 @@ export default function MediaShareDialog(props) {
 
     const handleClose = () => {
         setReset(true);
-        setResource(null);
+        setResource([]);
 
         if (type === "video") {
             document.querySelector(".VideoPreview").pause();
@@ -52,25 +56,21 @@ export default function MediaShareDialog(props) {
     }
 
     const handleMediaMessageSending = async () => {
-        /*const messageContent = message ? message : ``;
-        setInputValue("");
-        setIsSharable(false);
-        await sendMessage("image",
-            messageContent,
-            props.convId,
-            props.data.user.userFirebaseIdentifier,
-            resource);
-        message = "";*/
+        const messageConfiguration = {
+            "conversationId": data.conversationIdentifier,
+            "receiver": data.user,
+            "messageContent": message,
+        };
 
         switch (type) {
             case 'image': {
                 fileList.length === 1 &&
-                await sendPhotoMessage(fileList[0],
-                    {
-                        "conversationId": data.conversationIdentifier,
-                        "receiver": data.user,
-                        "messageContent": message,
-                    });
+                await sendPhotoMessage(fileList[0], messageConfiguration);
+                handleClose();
+                break;
+            }
+            case 'images': {
+                await sendMultiplePhotoMessages(fileList, messageConfiguration);
                 handleClose();
                 break;
             }
@@ -97,6 +97,10 @@ export default function MediaShareDialog(props) {
                     {
                         type === "image" &&
                         <img className="ImagePreview" src={resource} alt="ImageToSend" width={600} height={400}/>
+                    }
+                    {
+                        type === "images" &&
+                        <ImageCarouselPreview/>
                     }
                     {
                         type === "video" &&

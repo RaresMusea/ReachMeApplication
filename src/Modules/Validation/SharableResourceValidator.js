@@ -17,7 +17,7 @@ export const isSelectedPhotoFormatValid = (photo) => {
 
 export const areSelectedPhotosFormatValid = (photosList) => {
     for (let i = 0; i < photosList.length; i++) {
-        if (!isSelectedVideoFormatValid(photosList[i])) {
+        if (!isSelectedPhotoFormatValid(photosList[i])) {
             return false;
         }
     }

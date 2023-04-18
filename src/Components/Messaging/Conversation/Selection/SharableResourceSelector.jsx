@@ -30,9 +30,17 @@ function SimpleDialog(props) {
         onClose(value);
     };
 
-    const onProcessingSuccessful = (resource) => {
+    const onProcessingSuccessful = (resources) => {
         handleClose();
-        props.updateResource(URL.createObjectURL(resource));
+        if (resources.length === 1) {
+            props.updateResource(URL.createObjectURL(resources[0]));
+        } else {
+            const temp = [];
+            for (let res of resources) {
+                temp.push(URL.createObjectURL(res));
+            }
+            props.updateResource(temp);
+        }
         props.markAsSharable();
     }
 
@@ -48,7 +56,7 @@ function SimpleDialog(props) {
         const files = e.target.files;
         if (isImageProcessingSuccessful(files)) {
             props.markType(files.length === 1 ? "image" : "images");
-            onProcessingSuccessful(files[0]);
+            onProcessingSuccessful(files);
             props.updateFileList(files);
         }
 

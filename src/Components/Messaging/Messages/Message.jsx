@@ -34,7 +34,8 @@ export default function Message(props) {
                     <span className="SendReceivedDate">{parseDateAndTime(props.message?.date.toDate())}</span>
                 }
             </div>
-            <div className="MessageContent">
+            <div className="MessageContent"
+                 ref={scrollRef}>
                 {messageType === "text" &&
                     <p>{props.message.content}</p>
                 }
@@ -58,7 +59,7 @@ export default function Message(props) {
                         alt="Image message"/>
                     {
                         props.message.content !== '' &&
-                        <span>
+                        <span ref={scrollRef}>
                             {props.message.content}
                         </span>
                     }

@@ -34,3 +34,8 @@ export const containsSymbols = (text) => {
         text.includes("&") ||
         text.includes("_");
 }
+
+export const startsWithVowel = (word) => {
+    const firstWord = word[0];
+    return firstWord === 'a' || firstWord === 'e' || firstWord === 'i' || firstWord === 'o' || firstWord === 'u';
+}

@@ -10,6 +10,7 @@ import {getFileIcon,} from "../../../Modules/Messaging/ResourceSharing/SharableR
 import IconButton from "@mui/joy/IconButton";
 import {Download} from "@mui/icons-material";
 import {getDownloadLink} from "../../../Modules/Common Functionality/CommonFunctionality";
+import Divider from "@mui/material/Divider";
 
 export default function Message(props) {
     const [showDate, setShowDate] = useState(false);
@@ -88,24 +89,35 @@ export default function Message(props) {
             }
             {
                 messageType.includes("file/") &&
-                <div className={`FileMessage ${messageStatus}`}
+                <div className={`FileMessageColumn ${messageStatus}`}
                      style={{
                          paddingBottom: (props.message.content !== '' ? '0' : '.5em'),
                          marginBottom: (props.message.content !== '' ? '0' : '0')
                      }}>
-                    <div className="FileMessageLeft">
-                        <img src={getFileIcon(props.message.messageType.split("/")[1])} alt="File Icon"
-                             className="FileIcon"/>
-                        <p>{props.message.sharedFile}</p>
+                    <div className="FileMessageRow">
+                        <div className="FileMessageLeft">
+                            <img src={getFileIcon(props.message.messageType.split("/")[1])} alt="File Icon"
+                                 className="FileIcon"/>
+                            <p>{props.message.sharedFile}</p>
+                        </div>
+                        <IconButton className="DownloadButton"
+                                    title="Download file"
+                                    onClick={() => {
+                                        //requestFileDownload(props.message.sharedFile, props.message.additionalHref);
+                                        getDownloadLink(props.message.sharedFile, props.message.additionalHref);
+                                    }}>
+                            <Download className="DownloadIcon"/>
+                        </IconButton>
                     </div>
-                    <IconButton className="DownloadButton"
-                                title="Download file"
-                                onClick={() => {
-                                    //requestFileDownload(props.message.sharedFile, props.message.additionalHref);
-                                    getDownloadLink(props.message.sharedFile, props.message.additionalHref);
-                                }}>
-                        <Download className="DownloadIcon"/>
-                    </IconButton>
+                    {
+                        props.message.content !== `` &&
+                        <div className="FileMessageContent">
+                            <Divider/>
+                            <p>
+                                {props.message.content}
+                            </p>
+                        </div>
+                    }
                 </div>
             }
         </div>

@@ -139,6 +139,7 @@
       display: flex;
       justify-content: flex-start;
       flex-direction: column;
+      transform: translateX(-15px);
       gap: 0;
       height: 30%;
       width: 35%;
@@ -199,6 +200,7 @@
       justify-content: flex-start;
       flex-direction: column;
       gap: 0;
+      transform: translateX(-15px);
       height: 30%;
       width: 35%;
       @apply gap-[0.9em];
@@ -223,11 +225,10 @@
       }
     }
 
-    .FileMessage.LoggedUsersMessage {
+    .FileMessageColumn.LoggedUsersMessage {
       display: flex;
+      flex-direction: column;
       @apply ml-[3em];
-      justify-content: space-between;
-      align-items: center;
       @apply w-auto;
       min-width: 25%;
       transform: translateX(15px);
@@ -236,34 +237,113 @@
       @apply text-white;
       border-radius: 15px 0 15px 15px;
 
-      .FileMessageLeft {
+      .FileMessageRow {
         display: flex;
-        @apply pl-2;
-        @apply pt-2;
-        flex-direction: row;
         align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
 
-        .FileIcon {
-          @apply w-[50px];
-          @apply h-[50px];
+        .FileMessageLeft {
+          display: flex;
+          @apply pl-2;
+          @apply pt-2;
+          flex-direction: row;
+          align-items: center;
+
+          .FileIcon {
+            @apply w-[50px];
+            @apply h-[50px];
+            @apply mr-3;
+          }
+        }
+
+        .DownloadButton {
+          display: flex;
+          align-items: center;
+          @apply pt-1;
+
+          .DownloadIcon {
+            @apply mt-1;
+            @apply mr-2;
+            font-size: 1.8em;
+            transition: .2s ease-in-out;
+          }
+
+          .DownloadIcon:hover {
+            color: #094561;
+          }
         }
       }
 
-      .DownloadButton {
-        display: flex;
-        align-items: center;
-        @apply pt-1;
+      .FileMessageContent {
+        @apply mt-3;
+        @apply ml-4;
+        @apply mr-4;
+        @apply mb-3;
 
-        .DownloadIcon {
+        p {
           @apply mt-1;
-          @apply mr-2;
-          font-size: 1.8em;
-          transition: .2s ease-in-out;
+        }
+      }
+    }
+
+    .FileMessageColumn {
+      display: flex;
+      flex-direction: column;
+      @apply w-auto;
+      min-width: 25%;
+      transform: translateX(-15px);
+      max-width: max-content;
+      @apply bg-white;
+      border-radius: 0 15px 15px 15px;
+
+      .FileMessageRow {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        @apply text-black;
+
+        .FileMessageLeft {
+          display: flex;
+          @apply pl-2;
+          @apply pt-2;
+          flex-direction: row;
+          align-items: center;
+
+          .FileIcon {
+            @apply w-[50px];
+            @apply h-[50px];
+            @apply mr-3;
+          }
         }
 
-        .DownloadIcon:hover {
+        .DownloadButton {
+          display: flex;
+          align-items: center;
+          @apply pt-1;
 
-          color: #094561;
+          .DownloadIcon {
+            @apply mt-1;
+            @apply mr-2;
+            font-size: 1.8em;
+            transition: .2s ease-in-out;
+          }
+
+          .DownloadIcon:hover {
+            color: #108c8e;
+          }
+        }
+      }
+
+      .FileMessageContent {
+        @apply mt-3;
+        @apply ml-4;
+        @apply mr-4;
+        @apply mb-3;
+
+        p {
+          @apply mt-1;
         }
       }
     }

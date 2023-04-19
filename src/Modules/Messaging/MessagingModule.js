@@ -3,6 +3,7 @@ import {renderAlert} from "../Alerts/AlertUtil";
 import {v4 as uuid} from "uuid";
 import {loggedInAccount} from "../../Services/Feed Services/FeedDrawerService";
 import {Timestamp} from "firebase/firestore";
+import {startsWithVowel} from "../Text/TextModule";
 
 export const renderLogoDependingOnScreenDimension = () => {
     if (window.innerWidth > 1200)
@@ -115,6 +116,14 @@ export const determineChatLastMessage = (chat) => {
         } else {
             return `${chat.userDetails?.userRealName} sent you a video.`;
         }
+    }
+
+    if (chat.lastMessageInConversation?.lastMessageType.includes("file/")) {
+        const extension = chat.lastMessageInConversation?.lastMessageType.split("/")[1];
+        if (chat.senderIdentifier === loggedInAccount.userFirebaseIdentifier) {
+            return `You sent ${startsWithVowel(extension) ? 'an' : 'a'} ${extension} file.`;
+        }
+        return `${chat.use?.userRealName} sent you ${startsWithVowel(extension) ? 'an' : 'a'} ${extension} file.`;
     }
 
     return ``;

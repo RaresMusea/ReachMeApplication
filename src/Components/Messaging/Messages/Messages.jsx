@@ -30,6 +30,7 @@ export default function Messages() {
                         setConversationStartDate(parseDateAndTime(messages[0]?.date.toDate()));
                     }
                 }
+
             });
 
             return () => {

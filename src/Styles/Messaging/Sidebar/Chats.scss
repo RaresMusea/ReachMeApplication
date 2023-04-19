@@ -3,6 +3,27 @@
   @apply text-white;
   @apply cursor-pointer;
 
+  .EmptyConversation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .EmptyConversationImage {
+      @apply w-[30%];
+      @apply h-[30%];
+      @apply mt-[5em];
+    }
+
+    h2 {
+      @apply text-[2em];
+    }
+
+    h3 {
+      @apply text-[1.5em];
+    }
+  }
+
   .Subtitle {
     @apply text-[1.4em];
     @apply p-4;

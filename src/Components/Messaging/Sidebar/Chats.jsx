@@ -13,6 +13,8 @@ import {
     clearMessageNotificationsForLoggedUser
 } from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
 import useMessageNotifications from "../../../Hooks/useMessageNotifications";
+import emptyConversationSvg from '../../../Media/Images/undraw_social_networking_re_i1ex.svg';
+import {MessageRounded} from "@mui/icons-material";
 
 export default function Chats() {
     const [chats, setChats] = useState([]);
@@ -64,52 +66,59 @@ export default function Chats() {
 
     return (
         <div className="ChatsWrapper">
-            <h2 className="Subtitle">Conversations</h2>
             {
-                chats.map((conv) => (
-                    <div className="ConversationDetailsFlexWrapper"
-                         key={uuid()}
-                         onClick={async () => {
-                             setTargetUser(conv[1].userDetails);
-                             await handleConversationOpen(conv[1].userDetails)
-                         }}>
-                        <div className="UserChats">
-                            <Avatar
-                                src={conv[1].userDetails.profilePhotoHref}
-                                className="UserProfilePic"/>
-                            <div className="SearchResultNames">
-                                <div
-                                    className="searchUsernameDetails First">{`${conv[1].userDetails.userRealName}
-                             (${conv[1].userDetails.userName})`}</div>
-                                <div
-                                    title={determineChatLastMessage(conv[1])}
-                                    className="searchNameDetails">
-                                    {
-                                        determineChatLastMessage(conv[1])
-                                    }
-
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            className="MessageDate">{conv[1].date ? parseDateAndTime(conv[1].date.toDate()) : ``}
-                            {/*{notifications[0][0]===conv[1]?.lastMessageInConversation?.conversationIdentifier && notifications[0][1]?.notificationDetails.length!==0 &&
-                                        <div className="Notification">
-                                            {notifications[0][1]?.notificationDetails.length}
-                                        </div>
-                                    }*/}
-                            {
-                                messageNotifications.map(notification => (
-                                    notification[0] === conv[1]?.lastMessageInConversation?.conversationIdentifier
-                                    && notification[1]['notificationDetails'].length !== 0 &&
-                                    <div
-                                        className="Notification">{notification[1]['notificationDetails'].length}</div>
-                                ))
-                            }
-                        </div>
+                chats.length === 0 ?
+                    <div className="EmptyConversation">
+                        <img src={emptyConversationSvg} alt="EmptyConversation" className="EmptyConversationImage"/>
+                        <h2>No conversations.</h2>
+                        <h3>In order to start a conversation, press the <MessageRounded/> button.</h3>
                     </div>
-                ))
+                    :
+                    <>
+                        <h2 className="Subtitle">Conversations</h2>
+                        {
+                            chats.map((conv) => (
+                                <div className="ConversationDetailsFlexWrapper"
+                                     key={uuid()}
+                                     onClick={async () => {
+                                         setTargetUser(conv[1].userDetails);
+                                         await handleConversationOpen(conv[1].userDetails)
+                                     }}>
+                                    <div className="UserChats">
+                                        <Avatar
+                                            src={conv[1].userDetails.profilePhotoHref}
+                                            className="UserProfilePic"/>
+                                        <div className="SearchResultNames">
+                                            <div
+                                                className="searchUsernameDetails First">{`${conv[1].userDetails.userRealName}
+                             (${conv[1].userDetails.userName})`}</div>
+                                            <div
+                                                title={determineChatLastMessage(conv[1])}
+                                                className="searchNameDetails">
+                                                {
+                                                    determineChatLastMessage(conv[1])
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="MessageDate">{conv[1].date ? parseDateAndTime(conv[1].date.toDate()) : ``}
+                                        {
+                                            messageNotifications.map(notification => (
+                                                notification[0] === conv[1]?.lastMessageInConversation?.conversationIdentifier
+                                                && notification[1]['notificationDetails'].length !== 0 &&
+                                                <div
+                                                    className="Notification">{notification[1]['notificationDetails'].length}</div>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </>
             }
+
         </div>
     );
 }

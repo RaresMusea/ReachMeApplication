@@ -124,6 +124,7 @@ function SimpleDialog(props) {
                     <label htmlFor="DocumentPicker">File or document
                         <input type="file"
                                name="DocumentPicker"
+                               multiple={true}
                                id="DocumentPicker"
                                onChange={onFileOrDocumentSelection}
                                style={{display: 'none'}}/>

@@ -296,13 +296,13 @@
       max-width: max-content;
       @apply bg-white;
       border-radius: 0 15px 15px 15px;
+      @apply text-black;
 
       .FileMessageRow {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        @apply text-black;
 
         .FileMessageLeft {
           display: flex;

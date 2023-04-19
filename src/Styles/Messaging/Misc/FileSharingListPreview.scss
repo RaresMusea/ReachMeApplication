@@ -1,0 +1,53 @@
+.FileSharingListWrapper {
+
+  .ListHeadingTitle {
+    @apply text-center;
+    @apply mb-3;
+    @apply text-[1em];
+  }
+
+  .List {
+    overflow-y: scroll;
+
+    .FileSharingListItemWrapper {
+      display: flex;
+      @apply cursor-pointer;
+      @apply p-1;
+      transition: .2s ease-in-out;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      @apply mb-3;
+
+      .LeftSide {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .ListItemIconImage {
+          @apply w-[50px];
+          @apply h-[50px];
+          @apply mr-2;
+        }
+      }
+
+      .RightSide {
+        @apply text-red-600;
+        @apply ml-2;
+        transition: .2s ease-in-out;
+      }
+
+      .RightSide:hover {
+        @apply text-[#094561];
+      }
+    }
+
+    .FileSharingListItemWrapper:hover {
+      background-color: #dbdbdb;
+    }
+  }
+
+  .List::-webkit-scrollbar {
+    display: none;
+  }
+}

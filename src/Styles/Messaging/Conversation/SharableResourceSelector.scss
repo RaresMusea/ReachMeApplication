@@ -2,6 +2,10 @@
   font-family: 'Rajdhani', sans-serif !important;
 }
 
+.InvisibleScroll::-webkit-scrollbar {
+  display: none;
+}
+
 .SelectionOptions {
   display: flex;
   align-items: center;

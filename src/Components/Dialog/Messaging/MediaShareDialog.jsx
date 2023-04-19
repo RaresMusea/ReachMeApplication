@@ -15,6 +15,7 @@ import MultimediaCarouselPreview from "../../Messaging/Misc/MultimediaCarouselPr
 import {
     handleMultimediaMessageSharing
 } from "../../../Modules/Messaging/ResourceSharing/SharableResourceSelectorModule";
+import FileSharingListPreview from "../../Messaging/Misc/FileSharingListPreview";
 
 export default function MediaShareDialog(props) {
     const {
@@ -29,6 +30,7 @@ export default function MediaShareDialog(props) {
     const {setInputValue} = useInputValue("");
     const {data} = useContext(ConversationContext);
     const [reset, setReset] = useState(false);
+    const [scroll, setScroll] = useState("scroll");
     let message = "";
 
     const getInputMessageText = (e) => {
@@ -40,6 +42,11 @@ export default function MediaShareDialog(props) {
         if (type === "video") {
             document.querySelector('.VideoPreview').src = resource;
         }
+
+        if (type === "files") {
+            setScroll("hidden");
+        }
+
     }, [resource]);
 
     const handleClose = () => {
@@ -81,7 +88,7 @@ export default function MediaShareDialog(props) {
                 <DialogTitle
                     className="DialogTitle">{`Share ${type.includes("file/") ? "file" : "" + type} 
                     with ${props.receiver}`}</DialogTitle>
-                <DialogContent>
+                <DialogContent className={scroll === "hidden" ? 'InvisibleScroll' : ''}>
                     {
                         type === "image" &&
                         <img className="ImagePreview" src={resource} alt="ImageToSend" width={600} height={400}/>
@@ -109,6 +116,10 @@ export default function MediaShareDialog(props) {
                                  alt="File Type Icon"/>
                             <span className="FileName">{extra.fileName}</span>
                         </>
+                    }
+                    {
+                        type === "files" &&
+                        <FileSharingListPreview/>
                     }
                     <div className="DescriptionWrapper">
                         <ImageInput className='DescriptionInput'

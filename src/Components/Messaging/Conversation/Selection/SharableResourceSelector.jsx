@@ -10,7 +10,9 @@ import '../../../../Styles/Messaging/Conversation/SharableResourceSelector.scss'
 import {useContext, useState} from "react";
 import {Transition} from "../../MessagingFrame";
 import {
-    getFileIconBasedOnFile,
+    getFileIconBasedOnFileExtension,
+    getFileIconsBasedOnFilesExtensions,
+    getFileNames,
     isFileOrDocumentProcessingSuccessful,
     isImageProcessingSuccessful,
     isVideoProcessingSuccessful
@@ -37,8 +39,26 @@ function SimpleDialog(props) {
                 temp.push(URL.createObjectURL(res));
             }
             props.updateResource(temp);
-            console.log(temp);
         }
+        props.markAsSharable();
+    }
+
+    const onFileOrDocumentProcessingSuccessful = (resources) => {
+        handleClose();
+        props.updateFileList(resources);
+
+        if (resources.length === 0) {
+            props.configureExtra({
+                source: getFileIconBasedOnFileExtension(resources[0]),
+                fileName: resources[0].name
+            });
+        } else {
+            props.configureExtra({
+                source: getFileIconsBasedOnFilesExtensions(resources),
+                fileName: getFileNames(resources),
+            })
+        }
+
         props.markAsSharable();
     }
 
@@ -63,12 +83,9 @@ function SimpleDialog(props) {
     const onFileOrDocumentSelection = (e) => {
         const files = e.target.files;
         if (isFileOrDocumentProcessingSuccessful(files)) {
-            props.markType(files.length === 1 ? "file/document" : "files/documents");
-            props.configureExtra({
-                source: getFileIconBasedOnFile(files[0]),
-                fileName: files[0].name
-            });
-            onProcessingSuccessful(files[0]);
+            props.markType(files.length === 1 ? "file" : "files");
+
+            onFileOrDocumentProcessingSuccessful(files);
         }
     }
 

@@ -27,7 +27,8 @@ export default function Messages() {
                     } else {
                         setFirstInConversation(mess[0]?.senderIdentifier === loggedInAccount.userFirebaseIdentifier ?
                             loggedInAccount.userRealName : target);
-                        setConversationStartDate(parseDateAndTime(messages[0]?.date.toDate()));
+                        console.log(messages[0]?.date.toDate());
+                        setConversationStartDate(parseDateAndTime(mess[0]?.date.toDate()));
                     }
                 }
 

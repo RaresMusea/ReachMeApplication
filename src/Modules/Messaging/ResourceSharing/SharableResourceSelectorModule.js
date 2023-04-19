@@ -148,7 +148,7 @@ export const displayResourceSharingAlert = (alertConfig) => {
     renderAlert(alertConfig);
 }
 
-export const getFileIconBasedOnFile = (file) => {
+export const getFileIconBasedOnFileExtension = (file) => {
     const fileName = file.name;
     const fileExtension = fileName.split(".")[1];
 
@@ -156,6 +156,24 @@ export const getFileIconBasedOnFile = (file) => {
         return fileExtensionsIcons[fileExtension];
     }
     return unknownFileFormat;
+}
+
+export const getFileIconsBasedOnFilesExtensions = (files) => {
+    const fileIcons = [];
+
+    for (let file of files) {
+        fileIcons.push(getFileIconBasedOnFileExtension(file));
+    }
+
+    return fileIcons;
+}
+
+export const getFileNames = (files) => {
+    const fileNames = [];
+    for (let file of files) {
+        fileNames.push(file.name);
+    }
+    return fileNames;
 }
 
 export const displayUploadSnackBar = (message) => {

@@ -1,4 +1,5 @@
 export const parseDateAndTime = (date) => {
+    console.log(date);
     const timeString = getTimeStringFromDate(date);
     if (isToday(date)) {
         return `Today at ${timeString}`;
@@ -44,7 +45,7 @@ const countDigits = (number) => {
     let digits = 0;
     while (number) {
         digits++;
-        number /= 10;
+        number = Math.round(number / 10);
     }
     return digits;
 }

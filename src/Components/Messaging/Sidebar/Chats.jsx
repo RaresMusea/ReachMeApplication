@@ -15,6 +15,7 @@ import {
 import useMessageNotifications from "../../../Hooks/useMessageNotifications";
 import emptyConversationSvg from '../../../Media/Images/undraw_social_networking_re_i1ex.svg';
 import {MessageRounded} from "@mui/icons-material";
+import {increaseTheOpacity} from "../../../Modules/Animation Control/Opacity";
 
 export default function Chats() {
     const [chats, setChats] = useState([]);
@@ -60,8 +61,14 @@ export default function Chats() {
                 await clearMessageNotificationsForLoggedUser(getConversationId(loggedInAccount, targetUser));
             })();
         }
+        if (chats.length === 0) {
+            setTimeout(() => {
+                    increaseTheOpacity(document.querySelector('.EmptyConversation'), 50);
+                }
+                , 500);
+        }
 
-    }, [targetUser, conversationOpened]);
+    }, [targetUser, conversationOpened, chats.length]);
 
 
     return (

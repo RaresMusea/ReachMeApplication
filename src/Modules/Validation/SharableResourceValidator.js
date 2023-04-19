@@ -3,7 +3,7 @@ import {isEmptyString} from "../Text/TextModule";
 const acceptedPhotoFormats = ["jpg", "png", "svg", "gif", "jpeg", "webp"];
 const acceptedVideoFormats = ["mp4", "avi", "flv", "mpeg", "mov", "avchd", "mkv", "webm"];
 const acceptedFileOrDocumentFormats = ["docx", "doc", "rtf", "xlsx", "xls", "csv", "pdf", "txt",
-    "rar", "zip", "iso", "cpp", "c", "h", "cs", "html", "css",
+    "rar", "zip", "iso", "cpp", "c", "h", "cs", "html", "css", "pptx", "ppt",
     "scss", "sass", "js", "jsx", "json", "ts", "tsx", "class", "java", "gradle", "maven", "xml", "xaml", "py"];
 
 export const isSelectedPhotoFormatValid = (photo) => {

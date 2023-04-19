@@ -21,8 +21,20 @@ import jpgFile from '../../../Media/Images/jpg-file.svg';
 import pngFile from '../../../Media/Images/png-format.svg';
 import svgFile from '../../../Media/Images/svg.svg';
 import mp4File from '../../../Media/Images/mp4-file.svg';
+import pptFile from '../../../Media/Images/file-ppt.svg';
+import pptxFile from '../../../Media/Images/pptx-file.svg';
 import AlertBox from "../../../Components/AlertBox/AlertBox";
+
+
 import ReactDOM from "react-dom/client";
+import {
+    sendFileOrDocument,
+    sendMultipleFiles,
+    sendMultiplePhotos,
+    sendMultipleVideos,
+    sendPhoto,
+    sendVideo
+} from "../../../Services/Firebase Service/Messaging/FirebaseResourceSharingService";
 
 
 const fileExtensionsIcons = {
@@ -38,6 +50,8 @@ const fileExtensionsIcons = {
     "svg": svgFile,
     "png": pngFile,
     "mp4": mp4File,
+    "ppt": pptFile,
+    "pptx": pptxFile,
 }
 
 const buildAlertConfiguration = (severitySpec, className, text, id, type, fadeOut, removalTimeout) => {
@@ -158,6 +172,14 @@ export const getFileIconBasedOnFileExtension = (file) => {
     return unknownFileFormat;
 }
 
+export const getFileIcon = (extension) => {
+    if (extension in fileExtensionsIcons) {
+        return fileExtensionsIcons[extension];
+    }
+
+    return unknownFileFormat;
+}
+
 export const getFileIconsBasedOnFilesExtensions = (files) => {
     const fileIcons = [];
 
@@ -187,4 +209,38 @@ export const displayUploadSnackBar = (message) => {
 
     const root = ReactDOM.createRoot(div);
     root.render(alertBox);
+}
+
+export const handleMultimediaMessageSharing = async (type, fileList, messageConfiguration) => {
+    switch (type) {
+        case 'image': {
+            fileList.length === 1 &&
+            await sendPhoto(fileList[0], messageConfiguration);
+            break;
+        }
+        case 'images': {
+            await sendMultiplePhotos(fileList, messageConfiguration);
+            break;
+        }
+        case 'video': {
+            await sendVideo(fileList[0], messageConfiguration);
+            break;
+        }
+        case 'videos': {
+            await sendMultipleVideos(fileList, messageConfiguration);
+            break;
+        }
+        case 'files': {
+            await sendMultipleFiles(fileList, messageConfiguration);
+            break;
+        }
+        default: {
+            await sendFileOrDocument(fileList[0], messageConfiguration, `file/${getFileExtension(fileList[0])}`);
+            break;
+        }
+    }
+}
+
+export const getFileExtension = (file) => {
+    return file.name.split('.')[1];
 }

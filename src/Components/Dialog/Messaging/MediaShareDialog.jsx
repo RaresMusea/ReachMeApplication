@@ -10,14 +10,11 @@ import '../../../Styles/Dialog/ShareImageDialog.scss';
 import IconButton from "@mui/joy/IconButton";
 import {Transition} from "../../Messaging/MessagingFrame";
 import useInputValue from "../../../Hooks/Forms/useInputValue";
-import {
-    sendMultiplePhotos,
-    sendMultipleVideos,
-    sendPhoto,
-    sendVideo
-} from "../../../Services/Firebase Service/Messaging/FirebaseResourceSharingService";
 import {ConversationContext} from "../../../Context/ConversationContext";
 import MultimediaCarouselPreview from "../../Messaging/Misc/MultimediaCarouselPreview";
+import {
+    handleMultimediaMessageSharing
+} from "../../../Modules/Messaging/ResourceSharing/SharableResourceSelectorModule";
 
 export default function MediaShareDialog(props) {
     const {
@@ -67,29 +64,7 @@ export default function MediaShareDialog(props) {
             "messageContent": message,
         };
 
-        switch (type) {
-            case 'image': {
-                fileList.length === 1 &&
-                await sendPhoto(fileList[0], messageConfiguration);
-                break;
-            }
-            case 'images': {
-                await sendMultiplePhotos(fileList, messageConfiguration);
-                break;
-            }
-            case 'video': {
-                await sendVideo(fileList[0], messageConfiguration);
-                break;
-            }
-            case 'videos': {
-                await sendMultipleVideos(fileList, messageConfiguration);
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-
+        await handleMultimediaMessageSharing(type, fileList, messageConfiguration);
         handleClose();
     }
 
@@ -103,7 +78,9 @@ export default function MediaShareDialog(props) {
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle className="DialogTitle">{`Share ${type} with ${props.receiver}`}</DialogTitle>
+                <DialogTitle
+                    className="DialogTitle">{`Share ${type.includes("file/") ? "file" : "" + type} 
+                    with ${props.receiver}`}</DialogTitle>
                 <DialogContent>
                     {
                         type === "image" &&
@@ -125,7 +102,7 @@ export default function MediaShareDialog(props) {
                         <MultimediaCarouselPreview/>
                     }
                     {
-                        type === "file/document" &&
+                        type.includes("file/") &&
                         <>
                             <img src={extra.source}
                                  className="FileTypePreview"

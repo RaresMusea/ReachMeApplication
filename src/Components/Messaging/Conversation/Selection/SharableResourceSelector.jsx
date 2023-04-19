@@ -10,6 +10,7 @@ import '../../../../Styles/Messaging/Conversation/SharableResourceSelector.scss'
 import {useContext, useState} from "react";
 import {Transition} from "../../MessagingFrame";
 import {
+    getFileExtension,
     getFileIconBasedOnFileExtension,
     getFileIconsBasedOnFilesExtensions,
     getFileNames,
@@ -83,8 +84,7 @@ function SimpleDialog(props) {
     const onFileOrDocumentSelection = (e) => {
         const files = e.target.files;
         if (isFileOrDocumentProcessingSuccessful(files)) {
-            props.markType(files.length === 1 ? "file" : "files");
-
+            props.markType(files.length === 1 ? `file/${getFileExtension(files[0])}` : "files");
             onFileOrDocumentProcessingSuccessful(files);
         }
     }

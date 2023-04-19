@@ -6,6 +6,10 @@ import {useContext, useState} from "react";
 import {ConversationContext} from "../../../Context/ConversationContext";
 import useScroll from "../../../Hooks/useScroll";
 import {fromStringBase64EncodedAudioToLocalUrl} from "../../../Modules/Messaging/Voice Recoder/VoiceRecorder";
+import {getFileIcon,} from "../../../Modules/Messaging/ResourceSharing/SharableResourceSelectorModule";
+import IconButton from "@mui/joy/IconButton";
+import {Download} from "@mui/icons-material";
+import {getDownloadLink} from "../../../Modules/Common Functionality/CommonFunctionality";
 
 export default function Message(props) {
     const [showDate, setShowDate] = useState(false);
@@ -80,6 +84,28 @@ export default function Message(props) {
                             {props.message.content}
                         </span>
                     }
+                </div>
+            }
+            {
+                messageType.includes("file/") &&
+                <div className={`FileMessage ${messageStatus}`}
+                     style={{
+                         paddingBottom: (props.message.content !== '' ? '0' : '.5em'),
+                         marginBottom: (props.message.content !== '' ? '0' : '0')
+                     }}>
+                    <div className="FileMessageLeft">
+                        <img src={getFileIcon(props.message.messageType.split("/")[1])} alt="File Icon"
+                             className="FileIcon"/>
+                        <p>{props.message.sharedFile}</p>
+                    </div>
+                    <IconButton className="DownloadButton"
+                                title="Download file"
+                                onClick={() => {
+                                    //requestFileDownload(props.message.sharedFile, props.message.additionalHref);
+                                    getDownloadLink(props.message.sharedFile, props.message.additionalHref);
+                                }}>
+                        <Download className="DownloadIcon"/>
+                    </IconButton>
                 </div>
             }
         </div>

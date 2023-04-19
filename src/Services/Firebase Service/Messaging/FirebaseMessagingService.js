@@ -71,10 +71,10 @@ export const retrieveChatListInRealTimeForCurrentUser = (currentUserIdentifier) 
     return chatList;
 }
 
-export const sendMessage = async (messageType, messageContent, conversationIdentifier, receiverIdentifier, additionalHref) => {
+export const sendMessage = async (messageType, messageContent, conversationIdentifier, receiverIdentifier, additionalHref, fileName = '') => {
     await clearMessageNotificationsForLoggedUser(conversationIdentifier);
     await updateDoc(doc(firebaseFirestore, "conversationsCollection", conversationIdentifier), {
-        messages: arrayUnion(buildMessagePayload(messageType, messageContent, additionalHref))
+        messages: arrayUnion(buildMessagePayload(messageType, messageContent, additionalHref, fileName))
     });
 
     //Update last message sent for both users engaged in that conversation

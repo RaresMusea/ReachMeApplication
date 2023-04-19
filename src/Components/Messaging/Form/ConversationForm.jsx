@@ -71,8 +71,7 @@ export default function ConversationForm() {
         }
         closeRecorder();
         await sendMessage("voice recording", ``, data.conversationIdentifier,
-            data.user.userFirebaseIdentifier,
-            voiceMessageText);
+            data.user.userFirebaseIdentifier, voiceMessageText);
     }
 
     const parseClipboardData = async () => {
@@ -105,33 +104,33 @@ export default function ConversationForm() {
         <>
             {!recordingRequested ?
 
-                    <div className="ConversationFormWrapper">
+                <div className="ConversationFormWrapper">
                 <textarea className="MessageInput"
                           placeholder="Message..."
                           onPaste={parseClipboardData}
                           onKeyDown={handleMessageSendFromKey}
                           onChange={handleTextChange}/>
-                        <IconButton title="Send message"
-                                    className="MessageSenderIconButton"
-                                    onClick={handleMessageSend}>
-                            <Send className="SendIcon"/>
-                        </IconButton>
-                        <IconButton title="Record audio"
-                                    className="MessageSenderIconButton"
-                                    onClick={requestVoiceRecording}
-                        >
-                            <MicNone className="SendIcon"/>
-                        </IconButton>
-                        {/* <IconButton title="Attach media"
+                    <IconButton title="Send message"
+                                className="MessageSenderIconButton"
+                                onClick={handleMessageSend}>
+                        <Send className="SendIcon"/>
+                    </IconButton>
+                    <IconButton title="Record audio"
+                                className="MessageSenderIconButton"
+                                onClick={requestVoiceRecording}
+                    >
+                        <MicNone className="SendIcon"/>
+                    </IconButton>
+                    {/* <IconButton title="Attach media"
                                     className="MessageSenderIconButton">
                             <AttachFile className="AttachIcon"/>
                         </IconButton>*/}
-                        <SharableResourceSelector receiver={data.user.userFirebaseIdentifier}/>
-                        <IconButton title="More"
-                                    className="MessageSenderIconButton">
-                            <MoreHorizOutlined className="MoreOptionsIcon"/>
-                        </IconButton>
-                    </div>
+                    <SharableResourceSelector receiver={data.user.userFirebaseIdentifier}/>
+                    <IconButton title="More"
+                                className="MessageSenderIconButton">
+                        <MoreHorizOutlined className="MoreOptionsIcon"/>
+                    </IconButton>
+                </div>
                 :
                 <Slide direction="left" in={recordingRequested} mountOnEnter unmountOnExit>
                     <div className="RecorderWrapper">

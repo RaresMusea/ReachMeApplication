@@ -16,6 +16,10 @@ const alertConfiguration = {
 
 const sendMediaMessage = async (payload, messageConfiguration, type, path) => {
     const fileName = payload.name;
+    let messageType = null;
+    if (type.includes("file/")) {
+        messageType = type.split("/")[1];
+    }
 
     const uploadTask = storage.ref(`Conversations/${messageConfiguration.conversationId}`)
         .child(path)
@@ -24,7 +28,8 @@ const sendMediaMessage = async (payload, messageConfiguration, type, path) => {
 
     uploadTask.on('state_changed', (snapshot) => {
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            displayUploadSnackBar(`Sending ${type} to ${messageConfiguration.receiver.userRealName} - 
+            displayUploadSnackBar(`Sending ${messageType === null ? type : messageType} 
+            to ${messageConfiguration.receiver.userRealName} - 
         ${Math.floor(progress)}% complete`);
 
             setTimeout(() => {
@@ -42,8 +47,9 @@ const sendMediaMessage = async (payload, messageConfiguration, type, path) => {
                         : messageConfiguration.messageContent,
                     messageConfiguration.conversationId,
                     messageConfiguration.receiver.userFirebaseIdentifier,
-                    uploadedPhotoUrl
-                )
+                    uploadedPhotoUrl,
+                    payload.name
+                );
             });
         }
     );
@@ -76,7 +82,8 @@ const sendMultipleMediaMessages = async (payload, messageConfiguration, type, pa
                             messageConfiguration.messageContent : '',
                         messageConfiguration.conversationId,
                         messageConfiguration.receiver.userFirebaseIdentifier,
-                        uploadedPhotoUrl
+                        uploadedPhotoUrl,
+                        payload.name
                     );
                     displayUploadSnackBar(`Sending ${payload.length} ${type}s to ${messageConfiguration.receiver.userRealName}.
      Overall progress: ${uploadCount + 1} out of ${payload.length} ${type}s sent 
@@ -98,6 +105,10 @@ export const sendVideo = async (payload, messageConfiguration) => {
     await sendMediaMessage(payload, messageConfiguration, "video", "Videos");
 }
 
+export const sendFileOrDocument = async (payload, messageConfiguration, type) => {
+    await sendMediaMessage(payload, messageConfiguration, type, "Files");
+}
+
 export const sendMultiplePhotos = async (payload, messageConfiguration) => {
     await sendMultipleMediaMessages(payload, messageConfiguration, "photo", "Photos");
 }
@@ -106,6 +117,7 @@ export const sendMultipleVideos = async (payload, messageConfiguration) => {
     await sendMultipleMediaMessages(payload, messageConfiguration, "video", "Videos");
 }
 
-export const sendMultiplePhotoMessages = async (payload, messageConfiguration) => {
-
+export const sendMultipleFiles = async (payload, messageConfiguration) => {
+    await sendMultipleMediaMessages(payload, messageConfiguration, "file", "Files");
 }
+

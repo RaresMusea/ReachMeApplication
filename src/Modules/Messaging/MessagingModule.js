@@ -68,13 +68,14 @@ export const resetMessageInputValues = () => {
     textarea.value = ``;
 }
 
-export const buildMessagePayload = (messageType, messageContent, additionalHref) => {
+export const buildMessagePayload = (messageType, messageContent, additionalHref, fileName = '') => {
     return {
         additionalHref: additionalHref,
         messageType: messageType,
         messageIdentifier: uuid(),
         senderIdentifier: loggedInAccount.userFirebaseIdentifier,
         content: messageContent,
+        sharedFile: fileName,
         date: Timestamp.now(),
     }
 }

@@ -6,8 +6,26 @@ import IconButton from "@mui/joy/IconButton";
 import { RemoveCircle } from "@mui/icons-material";
 
 export default function FileSharingListPreview() {
-  const { extra } = useContext(ResourceSharingContext);
+  const { extra, setExtra } = useContext(ResourceSharingContext);
   const { data } = useContext(ConversationContext);
+
+  const removeItem = (fileName) => {
+    const newSource = [];
+    const newFileName = [];
+
+    for (let i = 0; i < extra.fileName.length; i++) {
+      if (fileName === extra.fileName[i]) {
+        continue;
+      }
+      newSource.push(extra.source[i]);
+      newFileName.push(extra.fileName[i]);
+    }
+
+    setExtra({
+      source: newSource,
+      fileName: newFileName,
+    });
+  };
 
   return (
     <div className="FileSharingListWrapper">
@@ -19,7 +37,11 @@ export default function FileSharingListPreview() {
           <FileSharingListItem
             file={file}
             key={index}
+            extra={extra}
+            source={extra.source}
             icon={extra.source[index]}
+            setExtra={setExtra}
+            removeItem={removeItem}
           />
         ))}
       </div>
@@ -38,7 +60,13 @@ function FileSharingListItem(props) {
         />
         <p>{props.file}</p>
       </div>
-      <IconButton className="RightSide" title="Remove file">
+      <IconButton
+        className="RightSide"
+        title="Remove file"
+        onClick={() => {
+          props.removeItem(props.file);
+        }}
+      >
         <RemoveCircle />
       </IconButton>
     </div>

@@ -43,18 +43,29 @@ export default function MediaShareDialog(props) {
 
     if (type === "files") {
       setScroll("hidden");
+
+      if (extra.fileName.length === 0) {
+        handleClose();
+      }
     }
-  }, [resource]);
+  }, [resource, extra.fileName.length]);
 
   const handleClose = () => {
     setReset(true);
     if (type === "video") {
       document.querySelector(".VideoPreview").pause();
     }
-    setExtra({});
+
     setInputValue("");
     message = "";
     setIsSharable(false);
+
+    if (type === "files") {
+      setExtra({
+        source: [],
+        fileName: [],
+      });
+    }
   };
 
   const turnOffReset = () => {
@@ -98,7 +109,7 @@ export default function MediaShareDialog(props) {
           )}
           {type === "images" && <MultimediaCarouselPreview />}
           {type === "video" && (
-            <video controls className="VideoPreview" src={resource}></video>
+            <video controls className="VideoPreview" src={resource} />
           )}
           {type === "videos" && <MultimediaCarouselPreview />}
           {type.includes("file/") && (

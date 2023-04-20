@@ -1,57 +1,61 @@
-import * as React from 'react';
-import {useContext, useEffect} from 'react';
-import Dialog from '@mui/material/Dialog';
-import Slide from '@mui/material/Slide';
-import '../../Styles/Messaging/MessagingFrame.scss';
-import {defaultMessagingIcon} from "../../Modules/Object/ComponentProps";
+import * as React from "react";
+import { useContext, useEffect } from "react";
+import Dialog from "@mui/material/Dialog";
+import Slide from "@mui/material/Slide";
+import "../../Styles/Messaging/MessagingFrame.scss";
+import { defaultMessagingIcon } from "../../Modules/Object/ComponentProps";
 import MessagingFrameSideBar from "./Sidebar/MessagingFrameSideBar";
 import Conversation from "./Conversation/Conversation";
-import {OpenContext} from "../../Context/OpenContext";
+import { OpenContext } from "../../Context/OpenContext";
 
 export const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function MessagingFrame(props) {
-    const [open, setOpen] = React.useState(false);
-    const {conversationOpened, setConversationOpened} = useContext(OpenContext);
+  const [open, setOpen] = React.useState(false);
+  const { conversationOpened, setConversationOpened, closeMessaging } =
+    useContext(OpenContext);
 
-    useEffect(() => {
-        document.title = `ReachMe Messaging`
-    })
+  useEffect(() => {
+    document.title = `ReachMe Messaging`;
+  });
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-    const handleClose = () => {
-        props.resetPageTitleToFeedState();
-        setConversationOpened(false);
-        setOpen(false);
-    };
+  const handleClose = () => {
+    if (!closeMessaging) {
+      return;
+    }
+    props.resetPageTitleToFeedState();
+    setConversationOpened(false);
+    setOpen(false);
+  };
 
-    return (
-        <div>
-            <img src={defaultMessagingIcon}
-                 className='Icon'
-                 style={{marginRight: "1em"}}
-                 id='SearchIcon3'
-                 onClick={handleClickOpen}
-                 alt='Search Button Icon'
-                 title='Messages'/>
-            <Dialog
-                fullScreen
-                open={open}
-                onClose={handleClose}
-                TransitionComponent={Transition}
-            >
-                <div className="ReachMeMessagingWrapper">
-                    <MessagingFrameSideBar close={handleClose}/>
-                    {conversationOpened &&
-                        <Conversation/>
-                    }
-                </div>
-            </Dialog>
+  return (
+    <div>
+      <img
+        src={defaultMessagingIcon}
+        className="Icon"
+        style={{ marginRight: "1em" }}
+        id="SearchIcon3"
+        onClick={handleClickOpen}
+        alt="Search Button Icon"
+        title="Messages"
+      />
+      <Dialog
+        fullScreen
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
+        <div className="ReachMeMessagingWrapper">
+          <MessagingFrameSideBar close={handleClose} />
+          {conversationOpened && <Conversation />}
         </div>
-    );
+      </Dialog>
+    </div>
+  );
 }

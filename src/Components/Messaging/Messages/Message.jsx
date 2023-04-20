@@ -21,8 +21,12 @@ import {
 
 export default function Message(props) {
   const [showDate, setShowDate] = useState(false);
-  const { lightBoxToggled, lightBoxCurrentIndex, handleLightBoxOpen } =
-    useLightBox();
+  const {
+    lightBoxToggled,
+    lightBoxCurrentIndex,
+    handleLightBoxOpen,
+    onEscape,
+  } = useLightBox();
   const { photosAndVideos } = useContext(MediaContext);
   const { data } = useContext(ConversationContext);
   const scrollRef = useScroll(props.message);
@@ -78,6 +82,7 @@ export default function Message(props) {
             className="SourceImage"
             src={props.message.additionalHref}
             alt="Image message"
+            onKeyDown={onEscape}
             onClick={() => {
               handleLightBoxOpen(
                 getMediaResourceIndex(
@@ -92,6 +97,7 @@ export default function Message(props) {
       )}
       {messageType === "video" && (
         <div
+          onKeyDown={(e) => onEscape(e)}
           onClick={() => {
             handleLightBoxOpen(
               getMediaResourceIndex(

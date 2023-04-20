@@ -44,11 +44,13 @@ export default function MediaShareDialog(props) {
     if (type === "files") {
       setScroll("hidden");
 
-      if (extra.fileName.length === 0) {
-        handleClose();
+      if (extra) {
+        if (extra.fileName.length === 0) {
+          handleClose();
+        }
       }
     }
-  }, [resource, extra.fileName.length]);
+  }, [resource, extra]);
 
   const handleClose = () => {
     setReset(true);

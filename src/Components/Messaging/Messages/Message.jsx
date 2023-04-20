@@ -88,7 +88,7 @@ export default function Message(props) {
           {props.message.content !== "" && <span>{props.message.content}</span>}
         </div>
       )}
-      {messageType.includes("file/") && (
+      {(messageType.includes("file/") || messageType === "file") && (
         <div
           className={`FileMessageColumn ${messageStatus}`}
           style={{

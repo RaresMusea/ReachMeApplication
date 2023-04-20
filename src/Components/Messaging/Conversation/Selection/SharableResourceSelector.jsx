@@ -51,17 +51,22 @@ function SimpleDialog(props) {
 
   const onFileOrDocumentProcessingSuccessful = (resources) => {
     handleClose();
-    props.updateFileList(resources);
 
-    if (resources.length === 0) {
+    if (resources.length === 1) {
       props.configureExtra({
         source: getFileIconBasedOnFileExtension(resources[0]),
         fileName: resources[0].name,
       });
+      props.updateFileList(resources[0]);
     } else {
+      const uniqueResources = [...new Set(resources)];
+      props.updateFileList(uniqueResources);
+      let fileIcons = getFileIconsBasedOnFilesExtensions(uniqueResources);
+      let fileNames = getFileNames(uniqueResources);
+
       props.configureExtra({
-        source: getFileIconsBasedOnFilesExtensions(resources),
-        fileName: getFileNames(resources),
+        source: fileIcons,
+        fileName: fileNames,
       });
     }
 

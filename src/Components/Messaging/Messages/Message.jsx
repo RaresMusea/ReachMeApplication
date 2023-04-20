@@ -11,9 +11,19 @@ import IconButton from "@mui/joy/IconButton";
 import { Download } from "@mui/icons-material";
 import { getDownloadLink } from "../../../Modules/Common Functionality/CommonFunctionality";
 import Divider from "@mui/material/Divider";
+import FsLightbox from "fslightbox-react";
+import useLightBox from "../../../Hooks/useLightBox";
+import { MediaContext } from "../../../Context/MediaContext";
+import {
+  getMediaOnly,
+  getMediaResourceIndex,
+} from "../../../Modules/LightBox/LightBoxModule";
 
 export default function Message(props) {
   const [showDate, setShowDate] = useState(false);
+  const { lightBoxToggled, lightBoxCurrentIndex, handleLightBoxOpen } =
+    useLightBox();
+  const { photosAndVideos } = useContext(MediaContext);
   const { data } = useContext(ConversationContext);
   const scrollRef = useScroll(props.message);
   const messageStatus =
@@ -68,12 +78,28 @@ export default function Message(props) {
             className="SourceImage"
             src={props.message.additionalHref}
             alt="Image message"
+            onClick={() => {
+              handleLightBoxOpen(
+                getMediaResourceIndex(
+                  photosAndVideos,
+                  props.message.additionalHref
+                )
+              );
+            }}
           />
           {props.message.content !== "" && <span>{props.message.content}</span>}
         </div>
       )}
       {messageType === "video" && (
         <div
+          onClick={() => {
+            handleLightBoxOpen(
+              getMediaResourceIndex(
+                photosAndVideos,
+                props.message.additionalHref
+              )
+            );
+          }}
           className={`VideoMessage ${messageStatus}`}
           style={{
             paddingBottom: props.message.content !== "" ? "0" : ".5em",
@@ -127,6 +153,11 @@ export default function Message(props) {
           )}
         </div>
       )}
+      <FsLightbox
+        toggler={lightBoxToggled}
+        sources={getMediaOnly(photosAndVideos)}
+        slide={lightBoxCurrentIndex}
+      />
     </div>
   );
 }

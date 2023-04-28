@@ -23,6 +23,7 @@ export default function MessagingFrame(props) {
 
   const handleClickOpen = () => {
     setOpen(true);
+    localStorage.setItem("lastMessagesComponentOpening", Date.now());
   };
 
   const handleClose = () => {

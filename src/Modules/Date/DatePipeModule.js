@@ -1,5 +1,4 @@
 export const parseDateAndTime = (date) => {
-  console.log(date);
   const timeString = getTimeStringFromDate(date);
   if (isToday(date)) {
     return `Today at ${timeString}`;
@@ -64,14 +63,12 @@ export const compareDates = (firstDate, secondDate) => {
   if (!isDateNullOrUndefined(firstDate) && !isDateNullOrUndefined(secondDate)) {
     return -1;
   }
-  const firstTime = new Date(firstDate).getTime();
-  const secondTime = new Date(secondDate).getTime();
 
-  if (firstTime > secondTime) {
+  if (firstDate > secondDate) {
     return 1;
   }
 
-  if (firstTime < secondTime) {
+  if (firstDate < secondDate) {
     return -1;
   }
 

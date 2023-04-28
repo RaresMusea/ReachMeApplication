@@ -22,7 +22,7 @@ import { increaseTheOpacity } from "../../../Modules/Animation Control/Opacity";
 export default function Chats() {
   const [chats, setChats] = useState([]);
   const { messageNotifications } = useMessageNotifications();
-  const { dispatch } = useContext(ConversationContext);
+  const { dispatch, data } = useContext(ConversationContext);
   const { conversationOpened, setConversationOpened, setTarget } =
     useContext(OpenContext);
   const [targetUser, setTargetUser] = useState({});
@@ -57,15 +57,6 @@ export default function Chats() {
     fadeInChats();
   }, []);
 
-  const handleConversationOpen = async (target) => {
-    document.querySelector(".searchNameDetails").style.width = `${70}%`;
-    setTarget(target.userRealName);
-    setConversationOpened(true);
-    dispatch({ type: "CHANGE_USER", payload: target });
-    const convId = getConversationId(loggedInAccount, target);
-    await clearMessageNotificationsForLoggedUser(convId);
-  };
-
   useEffect(() => {
     if (conversationOpened) {
       (async () => {
@@ -80,6 +71,21 @@ export default function Chats() {
       }, 500);
     }
   }, [targetUser, conversationOpened, chats.length]);
+
+  const handleConversationOpen = async (target) => {
+    if (conversationOpened) {
+      setConversationOpened(false);
+    }
+    dispatch({ type: "CHANGE_USER", payload: target });
+    localStorage.setItem(
+      "currentOngoingConversation",
+      data.conversationIdentifier
+    );
+    document.querySelector(".searchNameDetails").style.width = `${70}%`;
+    setTarget(target.userRealName);
+    await clearMessageNotificationsForLoggedUser(data.conversationIdentifier);
+    setConversationOpened(true);
+  };
 
   return (
     <div className="ChatsWrapper">

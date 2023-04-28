@@ -13,8 +13,8 @@ import { MediaContextProvider } from "./Context/MediaContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <OpenContextProvider>
-    <ConversationContextProvider>
+  <ConversationContextProvider>
+    <OpenContextProvider>
       <ResourceSharingContextProvider>
         <MediaContextProvider>
           <WindowSplitContextProvider>
@@ -33,8 +33,8 @@ root.render(
           </WindowSplitContextProvider>
         </MediaContextProvider>
       </ResourceSharingContextProvider>
-    </ConversationContextProvider>
-  </OpenContextProvider>
+    </OpenContextProvider>
+  </ConversationContextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

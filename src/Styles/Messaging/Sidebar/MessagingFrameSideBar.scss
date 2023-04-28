@@ -6,10 +6,10 @@
   background-color: #094561;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
   flex: 1;
+  transition: .3s ease-in-out;
 }
 
 .SidebarWrapper::-webkit-scrollbar {
-  //width: 3px;
   display: none;
 }
 

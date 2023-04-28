@@ -48,7 +48,6 @@ export default function Messages() {
               setConversationStartDate(
                 parseDateAndTime(mess[0]?.date.toDate())
               );
-
               loadMedia(mess);
             }
           }

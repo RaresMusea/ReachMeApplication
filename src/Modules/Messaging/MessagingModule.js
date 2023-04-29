@@ -138,3 +138,19 @@ export const determineChatLastMessage = (chat) => {
 
   return ``;
 };
+
+export const extractUserIdentifiersFromChatsDoc = (chatsDoc) => {
+  const userIdentifiers = [];
+  chatsDoc.forEach((entry) => {
+    userIdentifiers.push(entry[1].userDetails.userFirebaseIdentifier);
+  });
+
+  return userIdentifiers;
+};
+
+export const reloadProfilePictures = (doc, profilePictures) => {
+  doc.forEach((entry, index) => {
+    entry[1].userDetails.profilePhotoHref = profilePictures[index];
+    console.log(entry[1].userDetails);
+  });
+};

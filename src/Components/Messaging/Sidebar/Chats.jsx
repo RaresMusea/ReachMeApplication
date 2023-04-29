@@ -39,9 +39,9 @@ export default function Chats() {
           const chatData = Object.entries(doc.data()).sort(
             (a, b) => b[1].date - a[1].date
           );
-          setTimeout(() => {
-            setChats(chatData);
-          }, 200);
+          setChats(chatData);
+          setTimeout(() => {}, 200);
+          console.log(chats);
         }
       );
 
@@ -110,7 +110,6 @@ export default function Chats() {
               className="ConversationDetailsFlexWrapper"
               key={uuid()}
               onClick={async () => {
-                setTargetUser(conv[1].userDetails);
                 await handleConversationOpen(conv[1].userDetails);
               }}
             >
@@ -132,15 +131,12 @@ export default function Chats() {
               </div>
               <div className="MessageDate">
                 {conv[1].date ? parseDateAndTime(conv[1].date.toDate()) : ``}
-                {messageNotifications.map(
+                {messageNotifications?.map(
                   (notification) =>
-                    notification[0] ===
+                    notification.convId ===
                       conv[1]?.lastMessageInConversation
-                        ?.conversationIdentifier &&
-                    notification[1]["notificationDetails"].length !== 0 && (
-                      <div className="Notification">
-                        {notification[1]["notificationDetails"].length}
-                      </div>
+                        ?.conversationIdentifier && (
+                      <div className="Notification">{notification.length}</div>
                     )
                 )}
               </div>

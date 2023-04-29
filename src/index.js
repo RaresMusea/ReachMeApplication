@@ -10,31 +10,34 @@ import { OpenContextProvider } from "./Context/OpenContext";
 import { ResourceSharingContextProvider } from "./Context/ResourceSharingContext";
 import { WindowSplitContextProvider } from "./Context/WindowSplitContext";
 import { MediaContextProvider } from "./Context/MediaContext";
+import { NotificationListenerContextProvider } from "./Context/NotificationListenerContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <ConversationContextProvider>
-    <OpenContextProvider>
-      <ResourceSharingContextProvider>
-        <MediaContextProvider>
-          <WindowSplitContextProvider>
-            <React.StrictMode>
-              <BrowserRouter>
-                <Routes>
-                  <Route index element={<App />} />
-                  <Route
-                    path={"/authentication"}
-                    element={<AuthenticationCore />}
-                  />
-                </Routes>
-                }
-              </BrowserRouter>
-            </React.StrictMode>
-          </WindowSplitContextProvider>
-        </MediaContextProvider>
-      </ResourceSharingContextProvider>
-    </OpenContextProvider>
-  </ConversationContextProvider>
+  <NotificationListenerContextProvider>
+    <ConversationContextProvider>
+      <OpenContextProvider>
+        <ResourceSharingContextProvider>
+          <MediaContextProvider>
+            <WindowSplitContextProvider>
+              <React.StrictMode>
+                <BrowserRouter>
+                  <Routes>
+                    <Route index element={<App />} />
+                    <Route
+                      path={"/authentication"}
+                      element={<AuthenticationCore />}
+                    />
+                  </Routes>
+                  }
+                </BrowserRouter>
+              </React.StrictMode>
+            </WindowSplitContextProvider>
+          </MediaContextProvider>
+        </ResourceSharingContextProvider>
+      </OpenContextProvider>
+    </ConversationContextProvider>
+  </NotificationListenerContextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

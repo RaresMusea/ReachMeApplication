@@ -1,7 +1,9 @@
 import {
   arrayUnion,
+  collection,
   doc,
   getDoc,
+  getDocs,
   onSnapshot,
   serverTimestamp,
   setDoc,
@@ -47,10 +49,6 @@ export const createConversationBetween = async (person1, person2) => {
       doc(firebaseFirestore, "conversationsCollection", conversationId),
       { messages: [] }
     );
-    await setDoc(doc(firebaseFirestore, "unreadMessages", conversationId), {
-      [person1.userFirebaseIdentifier]: 0,
-      [person2.userFirebaseIdentifier]: 0,
-    });
     await updateConversationDocBetween(person1, person2, conversationId);
     await updateConversationDocBetween(person2, person1, conversationId);
   }
@@ -212,4 +210,58 @@ export const clearMessageNotificationsForLoggedUser = async (
 
 export const createMessageNotificationsCollection = async (userId) => {
   await setDoc(doc(firebaseFirestore, "messagesNotifications", userId), {});
+};
+
+const filterDocsForImageUpload = async (profilePicture, userId) => {
+  const userConversations = await getDocs(
+    collection(firebaseFirestore, "userConversations")
+  );
+
+  const updatesList = [];
+
+  userConversations.forEach((conversation) => {
+    let currentData = Object.entries(conversation.data());
+    if (currentData.length !== 0) {
+      const currentId = conversation.id;
+      const conversationId =
+        currentData[0][0] === undefined ? "" : currentData[0][0];
+      for (const elem of currentData) {
+        if (
+          elem[1].userDetails !== undefined &&
+          elem[1].userDetails.userFirebaseIdentifier === userId
+        ) {
+          if (conversationId !== "") {
+            elem[1].userDetails.profilePhotoHref = profilePicture;
+            updatesList.push({
+              payload: elem[1].userDetails,
+              currentId: currentId,
+              conversationId: elem[0],
+            });
+          }
+        }
+      }
+    }
+  });
+
+  return updatesList;
+};
+
+export const updateImageInConversations = async (profilePicture, userId) => {
+  const filteredDocs = await filterDocsForImageUpload(profilePicture, userId);
+  console.log(filteredDocs[0]);
+  console.log(filteredDocs[1]);
+
+  await Promise.all(
+    filteredDocs.map(async (document) => {
+      const payload = document.payload;
+      const id = document.currentId;
+      const conversationId = document.conversationId;
+
+      const docRef = doc(firebaseFirestore, "userConversations", id);
+      await updateDoc(docRef, {
+        [conversationId + ".userDetails" + ".profilePhotoHref"]:
+          payload.profilePhotoHref,
+      });
+    })
+  );
 };

@@ -20,9 +20,14 @@ import MediaShareDialog from "../../Dialog/Messaging/MediaShareDialog";
 import { ResourceSharingContext } from "../../../Context/ResourceSharingContext";
 import { OpenContext } from "../../../Context/OpenContext";
 import SharableResourceSelector from "../Conversation/Selection/SharableResourceSelector";
+import { NotificationListenerContext } from "../../../Context/NotificationListenerContext";
 
 export default function ConversationForm() {
   const { data } = useContext(ConversationContext);
+  const { setNotificationListenerAvailability, setReceiver } = useContext(
+    NotificationListenerContext
+  );
+
   const { setIsSharable, setResource, setPreview } = useContext(
     ResourceSharingContext
   );
@@ -57,6 +62,8 @@ export default function ConversationForm() {
       data.user.userFirebaseIdentifier,
       null
     );
+    setReceiver(data.user.userFirebaseIdentifier);
+    setNotificationListenerAvailability(true);
   };
 
   const handleMessageSendFromKey = async (e) => {
@@ -64,8 +71,6 @@ export default function ConversationForm() {
       e.preventDefault();
       await handleMessageSend();
     }
-
-    /*textToSend += "<br/>";*/
   };
 
   const handleVoiceMessageSending = async () => {

@@ -1,23 +1,21 @@
 import "../../../Styles/Messaging/Messages/Message.scss";
-import { Avatar } from "@mui/joy";
-import { loggedInAccount } from "../../../Services/Feed Services/FeedDrawerService";
-import { parseDateAndTime } from "../../../Modules/Date/DatePipeModule";
-import { useContext, useState } from "react";
-import { ConversationContext } from "../../../Context/ConversationContext";
+import {Avatar, Menu} from "@mui/joy";
+import {loggedInAccount} from "../../../Services/Feed Services/FeedDrawerService";
+import {parseDateAndTime} from "../../../Modules/Date/DatePipeModule";
+import {useContext, useState} from "react";
+import {ConversationContext} from "../../../Context/ConversationContext";
 import useScroll from "../../../Hooks/useScroll";
-import { fromStringBase64EncodedAudioToLocalUrl } from "../../../Modules/Messaging/Voice Recoder/VoiceRecorder";
-import { getFileIcon } from "../../../Modules/Messaging/ResourceSharing/SharableResourceSelectorModule";
+import {fromStringBase64EncodedAudioToLocalUrl} from "../../../Modules/Messaging/Voice Recoder/VoiceRecorder";
+import {getFileIcon} from "../../../Modules/Messaging/ResourceSharing/SharableResourceSelectorModule";
 import IconButton from "@mui/joy/IconButton";
-import { Download } from "@mui/icons-material";
-import { getDownloadLink } from "../../../Modules/Common Functionality/CommonFunctionality";
+import {Download} from "@mui/icons-material";
+import {getDownloadLink} from "../../../Modules/Common Functionality/CommonFunctionality";
 import Divider from "@mui/material/Divider";
 import FsLightbox from "fslightbox-react";
 import useLightBox from "../../../Hooks/useLightBox";
-import { MediaContext } from "../../../Context/MediaContext";
-import {
-  getMediaOnly,
-  getMediaResourceIndex,
-} from "../../../Modules/LightBox/LightBoxModule";
+import {MediaContext} from "../../../Context/MediaContext";
+import {getMediaOnly, getMediaResourceIndex,} from "../../../Modules/LightBox/LightBoxModule";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function Message(props) {
   const [showDate, setShowDate] = useState(false);
@@ -44,45 +42,77 @@ export default function Message(props) {
     setShowDate(!showDate);
   };
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <div className={`Message ${messageStatus}`} ref={scrollRef}>
-      <div className="MessageDetails">
-        <Avatar
-          src={profileImageSrc}
-          className="ConversationProfilePic"
-          onClick={displayDateAndTimeOfTheMessage}
-        />
-        {showDate && (
-          <span className="SendReceivedDate">
-            {parseDateAndTime(props.message?.date.toDate())}
-          </span>
-        )}
-      </div>
-      <div className="MessageContent">
-        {messageType === "text" && <p>{props.message.content}</p>}
-        {messageType === "voice recording" && (
-          <audio controls className={`Message ${messageStatus}`}>
-            <source
-              src={fromStringBase64EncodedAudioToLocalUrl(
-                props.message.additionalHref
-              )}
+    <>
+      <div
+        className={`Message ${messageStatus}`}
+        ref={scrollRef}
+        onClick={handleClick}
+      >
+        <div className="MessageDetails">
+          <Avatar
+            src={profileImageSrc}
+            className="ConversationProfilePic"
+            onClick={displayDateAndTimeOfTheMessage}
+          />
+          {showDate && (
+            <span className="SendReceivedDate">
+              {parseDateAndTime(props.message?.date.toDate())}
+            </span>
+          )}
+        </div>
+        <div className="MessageContent">
+          {messageType === "text" && <p>{props.message.content}</p>}
+          {messageType === "voice recording" && (
+            <audio controls className={`Message ${messageStatus}`}>
+              <source
+                src={fromStringBase64EncodedAudioToLocalUrl(
+                  props.message.additionalHref
+                )}
+              />
+            </audio>
+          )}
+        </div>
+        {messageType === "photo" && (
+          <div
+            className={`ImageMessage ${messageStatus}`}
+            style={{
+              paddingBottom: props.message.content !== "" ? "0" : ".5em",
+              marginBottom: props.message.content !== "" ? "0" : "0",
+            }}
+          >
+            <img
+              className="SourceImage"
+              src={props.message.additionalHref}
+              alt="Image message"
+              onKeyDown={onEscape}
+              onClick={() => {
+                handleLightBoxOpen(
+                  getMediaResourceIndex(
+                    photosAndVideos,
+                    props.message.additionalHref
+                  )
+                );
+              }}
             />
-          </audio>
+            {props.message.content !== "" && (
+              <span>{props.message.content}</span>
+            )}
+          </div>
         )}
-      </div>
-      {messageType === "photo" && (
-        <div
-          className={`ImageMessage ${messageStatus}`}
-          style={{
-            paddingBottom: props.message.content !== "" ? "0" : ".5em",
-            marginBottom: props.message.content !== "" ? "0" : "0",
-          }}
-        >
-          <img
-            className="SourceImage"
-            src={props.message.additionalHref}
-            alt="Image message"
-            onKeyDown={onEscape}
+        {messageType === "video" && (
+          <div
+            onKeyDown={(e) => onEscape(e)}
             onClick={() => {
               handleLightBoxOpen(
                 getMediaResourceIndex(
@@ -91,79 +121,86 @@ export default function Message(props) {
                 )
               );
             }}
-          />
-          {props.message.content !== "" && <span>{props.message.content}</span>}
-        </div>
-      )}
-      {messageType === "video" && (
-        <div
-          onKeyDown={(e) => onEscape(e)}
-          onClick={() => {
-            handleLightBoxOpen(
-              getMediaResourceIndex(
-                photosAndVideos,
-                props.message.additionalHref
-              )
-            );
-          }}
-          className={`VideoMessage ${messageStatus}`}
-          style={{
-            paddingBottom: props.message.content !== "" ? "0" : ".5em",
-            marginBottom: props.message.content !== "" ? "0" : "0",
-          }}
-        >
-          <video
-            controls
-            src={props.message.additionalHref}
-            className="VideoSource"
-          />
-          {props.message.content !== "" && <span>{props.message.content}</span>}
-        </div>
-      )}
-      {(messageType.includes("file/") || messageType === "file") && (
-        <div
-          className={`FileMessageColumn ${messageStatus}`}
-          style={{
-            paddingBottom: props.message.content !== "" ? "0" : ".5em",
-            marginBottom: props.message.content !== "" ? "0" : "0",
-          }}
-        >
-          <div className="FileMessageRow">
-            <div className="FileMessageLeft">
-              <img
-                src={getFileIcon(props.message.messageType.split("/")[1])}
-                alt="File Icon"
-                className="FileIcon"
-              />
-              <p>{props.message.sharedFile}</p>
-            </div>
-            <IconButton
-              className="DownloadButton"
-              title="Download file"
-              onClick={() => {
-                //requestFileDownload(props.message.sharedFile, props.message.additionalHref);
-                getDownloadLink(
-                  props.message.sharedFile,
-                  props.message.additionalHref
-                );
-              }}
-            >
-              <Download className="DownloadIcon" />
-            </IconButton>
+            className={`VideoMessage ${messageStatus}`}
+            style={{
+              paddingBottom: props.message.content !== "" ? "0" : ".5em",
+              marginBottom: props.message.content !== "" ? "0" : "0",
+            }}
+          >
+            <video
+              controls
+              src={props.message.additionalHref}
+              className="VideoSource"
+            />
+            {props.message.content !== "" && (
+              <span>{props.message.content}</span>
+            )}
           </div>
-          {props.message.content !== `` && (
-            <div className="FileMessageContent">
-              <Divider />
-              <p>{props.message.content}</p>
+        )}
+        {(messageType.includes("file/") || messageType === "file") && (
+          <div
+            className={`FileMessageColumn ${messageStatus}`}
+            style={{
+              paddingBottom: props.message.content !== "" ? "0" : ".5em",
+              marginBottom: props.message.content !== "" ? "0" : "0",
+            }}
+          >
+            <div className="FileMessageRow">
+              <div className="FileMessageLeft">
+                <img
+                  src={getFileIcon(props.message.messageType.split("/")[1])}
+                  alt="File Icon"
+                  className="FileIcon"
+                />
+                <p>{props.message.sharedFile}</p>
+              </div>
+              <IconButton
+                className="DownloadButton"
+                title="Download file"
+                onClick={() => {
+                  //requestFileDownload(props.message.sharedFile, props.message.additionalHref);
+                  getDownloadLink(
+                    props.message.sharedFile,
+                    props.message.additionalHref
+                  );
+                }}
+              >
+                <Download className="DownloadIcon" />
+              </IconButton>
             </div>
-          )}
-        </div>
-      )}
-      <FsLightbox
-        toggler={lightBoxToggled}
-        sources={getMediaOnly(photosAndVideos)}
-        slide={lightBoxCurrentIndex}
-      />
-    </div>
+            {props.message.content !== `` && (
+              <div className="FileMessageContent">
+                <Divider />
+                <p>{props.message.content}</p>
+              </div>
+            )}
+          </div>
+        )}
+        <FsLightbox
+          toggler={lightBoxToggled}
+          sources={getMediaOnly(photosAndVideos)}
+          slide={lightBoxCurrentIndex}
+        />
+        <Menu
+          id="demo-positioned-menu"
+          aria-labelledby="demo-positioned-button"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+        >
+          <MenuItem onClick={handleClose}>Profile</MenuItem>
+          <MenuItem onClick={handleClose}>My account</MenuItem>
+          <MenuItem onClick={handleClose}>Logout</MenuItem>
+        </Menu>
+      </div>
+    </>
   );
 }

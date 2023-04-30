@@ -1,27 +1,24 @@
 import "../../../Styles/Messaging/Sidebar/Chats.scss";
-import { useContext, useEffect, useState } from "react";
+import {useContext, useEffect, useState} from "react";
+import {determineChatLastMessage, fadeInChats,} from "../../../Modules/Messaging/MessagingModule";
+import {Avatar} from "@mui/joy";
+import {loggedInAccount} from "../../../Services/Feed Services/FeedDrawerService";
+import {parseDateAndTime} from "../../../Modules/Date/DatePipeModule";
+import {doc, onSnapshot} from "firebase/firestore";
+import {firebaseFirestore} from "../../../Modules/Firebase/FirebaseIntegration";
+import {ConversationContext} from "../../../Context/ConversationContext";
+import {OpenContext} from "../../../Context/OpenContext";
+import {v4 as uuid} from "uuid";
 import {
-  determineChatLastMessage,
-  fadeInChats,
-  getConversationId,
-} from "../../../Modules/Messaging/MessagingModule";
-import { Avatar } from "@mui/joy";
-import { loggedInAccount } from "../../../Services/Feed Services/FeedDrawerService";
-import { parseDateAndTime } from "../../../Modules/Date/DatePipeModule";
-import { doc, onSnapshot } from "firebase/firestore";
-import { firebaseFirestore } from "../../../Modules/Firebase/FirebaseIntegration";
-import { ConversationContext } from "../../../Context/ConversationContext";
-import { OpenContext } from "../../../Context/OpenContext";
-import { v4 as uuid } from "uuid";
-import { clearMessageNotificationsForLoggedUser } from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
-import useMessageNotifications from "../../../Hooks/useMessageNotifications";
+  clearMessageNotificationsForLoggedUser
+} from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
 import emptyConversationSvg from "../../../Media/Images/undraw_social_networking_re_i1ex.svg";
-import { MessageRounded } from "@mui/icons-material";
-import { increaseTheOpacity } from "../../../Modules/Animation Control/Opacity";
+import {MessageRounded} from "@mui/icons-material";
+import {increaseTheOpacity} from "../../../Modules/Animation Control/Opacity";
 
 export default function Chats() {
   const [chats, setChats] = useState([]);
-  const { messageNotifications } = useMessageNotifications();
+  //const { messageNotifications } = useMessageNotifications();
   const { dispatch, data } = useContext(ConversationContext);
   const { conversationOpened, setConversationOpened, setTarget } =
     useContext(OpenContext);
@@ -41,7 +38,6 @@ export default function Chats() {
           );
           setChats(chatData);
           setTimeout(() => {}, 200);
-          console.log(chats);
         }
       );
 
@@ -58,13 +54,6 @@ export default function Chats() {
   }, []);
 
   useEffect(() => {
-    if (conversationOpened) {
-      (async () => {
-        await clearMessageNotificationsForLoggedUser(
-          getConversationId(loggedInAccount, targetUser)
-        );
-      })();
-    }
     if (chats.length === 0) {
       setTimeout(() => {
         increaseTheOpacity(document.querySelector(".EmptyConversation"), 50);
@@ -131,14 +120,17 @@ export default function Chats() {
               </div>
               <div className="MessageDate">
                 {conv[1].date ? parseDateAndTime(conv[1].date.toDate()) : ``}
-                {messageNotifications?.map(
+                {/* {messageNotifications.map(
                   (notification) =>
-                    notification.convId ===
+                    notification.conversationId ===
                       conv[1]?.lastMessageInConversation
-                        ?.conversationIdentifier && (
-                      <div className="Notification">{notification.length}</div>
+                        ?.conversationIdentifier &&
+                    notification.length !== 0 && (
+                      <div className="Notification">
+                        {notification["notificationDetails"].length}
+                      </div>
                     )
-                )}
+                )}*/}
               </div>
             </div>
           ))}

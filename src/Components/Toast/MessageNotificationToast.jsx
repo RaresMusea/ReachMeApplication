@@ -1,29 +1,24 @@
-import { useContext, useEffect } from "react";
-import { defaultProfilePic } from "../../Modules/Exporters/ImageExporter";
+import {useEffect, useState} from "react";
+import {defaultProfilePic} from "../../Modules/Exporters/ImageExporter";
 
 import "../../Styles/Toast/MessageNotificationToast.scss";
-import { ConversationContext } from "../../Context/ConversationContext";
+import {getUserPhoto, toastProfilePicture,} from "../../Services/Toast Service/ToastService";
 
 export default function MessageNotificationToast(props) {
-  const { data } = useContext(ConversationContext);
-  const picture =
-    data.user.profilePhotoHref !== undefined
-      ? data.user.profilePhotoHref
-      : defaultProfilePic;
-
+  const [photoRef, setPhotoRef] = useState(defaultProfilePic);
   useEffect(() => {
-    console.log(picture);
-  });
-
+    getUserPhoto(props.senderId).catch(console.error);
+    setPhotoRef(toastProfilePicture);
+  }, []);
   return (
     <div className="ToastWrapper">
       <div className="ToastRowOne">
         <img
-          src={data.user.profilePhotoHref}
+          src={photoRef}
           className="ReceiverProfilePictureRounded"
           alt="Receiver Profile Picture Rounded"
         />
-        <h3>{`${props.sender} sent you a message`}</h3>
+        <h3>{`Your have ${props.count} unread messages from ${props.sender}.`}</h3>
       </div>
       <div className="ToastRowTwo">
         <button>Dismiss</button>

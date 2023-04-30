@@ -1,0 +1,34 @@
+.NotificationManagerTitle{
+  font-family: 'Rajdhani', sans-serif!important;
+  @apply text-center;
+  @apply text-[#108e8e];
+  @apply text-[1.5em];
+  @apply font-bold;
+  @apply mt-1;
+  @apply mb-3;
+  @apply cursor-pointer;
+}
+
+.NotificationTranslation{
+  transform:translateY(5px);
+}
+
+.NotificationIcon{
+  .Badge{
+    background-color: red;
+    opacity:0;
+    transition:.2s ease-in-out;
+    border-radius:100%;
+    position:relative;
+    top:-36px;
+    left:25px;
+    width:15px;
+    height:15px;
+    text-align: center;
+    color:white;
+
+    p{
+      font-size:10px;
+    }
+  }
+}

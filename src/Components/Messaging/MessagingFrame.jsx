@@ -1,25 +1,29 @@
 import * as React from "react";
-import { useContext, useEffect } from "react";
+import {useContext} from "react";
 import Dialog from "@mui/material/Dialog";
 import Slide from "@mui/material/Slide";
 import "../../Styles/Messaging/MessagingFrame.scss";
-import { defaultMessagingIcon } from "../../Modules/Object/ComponentProps";
+import {defaultMessagingIcon} from "../../Modules/Object/ComponentProps";
 import MessagingFrameSideBar from "./Sidebar/MessagingFrameSideBar";
 import Conversation from "./Conversation/Conversation";
-import { OpenContext } from "../../Context/OpenContext";
+import {OpenContext} from "../../Context/OpenContext";
 
 export const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function MessagingFrame(props) {
+export default function MessagingFrame() {
   const [open, setOpen] = React.useState(false);
   const { conversationOpened, setConversationOpened, closeMessaging } =
     useContext(OpenContext);
 
-  useEffect(() => {
-    document.title = `ReachMe Messaging`;
-  });
+  /*  useEffect(() => {
+    if (open) {
+      document.title = `ReachMe Messaging`;
+    } else {
+      document.title = `ReachMe - Feed`;
+    }
+  }, [open]);*/
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,7 +34,7 @@ export default function MessagingFrame(props) {
     if (!closeMessaging) {
       return;
     }
-    props.resetPageTitleToFeedState();
+    //props.resetPageTitleToFeedState();
     setConversationOpened(false);
     setOpen(false);
   };

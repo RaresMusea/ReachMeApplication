@@ -10,23 +10,21 @@ import {
   Send,
   StopCircle,
 } from "@mui/icons-material";
-import { useContext } from "react";
-import { ConversationContext } from "../../../Context/ConversationContext";
-import { sendMessage } from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
-import { resetMessageInputValues } from "../../../Modules/Messaging/MessagingModule";
-import { Slide } from "@mui/material";
+import {useContext} from "react";
+import {ConversationContext} from "../../../Context/ConversationContext";
+import {sendMessage} from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
+import {resetMessageInputValues} from "../../../Modules/Messaging/MessagingModule";
+import {Slide} from "@mui/material";
 import useVoiceRecorder from "../../../Hooks/useVoiceRecorder";
 import MediaShareDialog from "../../Dialog/Messaging/MediaShareDialog";
-import { ResourceSharingContext } from "../../../Context/ResourceSharingContext";
-import { OpenContext } from "../../../Context/OpenContext";
+import {ResourceSharingContext} from "../../../Context/ResourceSharingContext";
+import {OpenContext} from "../../../Context/OpenContext";
 import SharableResourceSelector from "../Conversation/Selection/SharableResourceSelector";
-import { NotificationListenerContext } from "../../../Context/NotificationListenerContext";
+import {NotificationContext} from "../../../Context/NotificationContext";
 
 export default function ConversationForm() {
   const { data } = useContext(ConversationContext);
-  const { setNotificationListenerAvailability, setReceiver } = useContext(
-    NotificationListenerContext
-  );
+  const { updateNotificationsList } = useContext(NotificationContext);
 
   const { setIsSharable, setResource, setPreview } = useContext(
     ResourceSharingContext
@@ -62,8 +60,8 @@ export default function ConversationForm() {
       data.user.userFirebaseIdentifier,
       null
     );
-    setReceiver(data.user.userFirebaseIdentifier);
-    setNotificationListenerAvailability(true);
+
+    updateNotificationsList(data.conversationIdentifier);
   };
 
   const handleMessageSendFromKey = async (e) => {

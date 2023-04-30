@@ -1,4 +1,5 @@
-import { createContext, useEffect, useState } from "react";
+/*
+import { createContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { doc, onSnapshot } from "firebase/firestore";
 import { firebaseFirestore } from "../Modules/Firebase/FirebaseIntegration";
@@ -11,7 +12,7 @@ export const NotificationsContextProvider = ({ children }) => {
   const [currentNotification, setCurrentNotification] = useState("");
   const [messageNotifications, setMessageNotifications] = useState([]);
   const [notificationsCount, setNotificationsCount] = useState(0);
-
+  const effectRan = useRef(false);
   const notify = () => toast(currentNotification);
 
   useEffect(() => {
@@ -44,9 +45,15 @@ export const NotificationsContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log("circ");
-    if (notificationsCount !== 0) {
-      notify();
+    if (effectRan.current === false) {
+      const displayNotification = () => {
+        if (notificationsCount !== 0) {
+          notify();
+        }
+      };
+
+      displayNotification();
+      return () => (effectRan.current = true);
     }
   }, [notificationsCount]);
 
@@ -80,3 +87,4 @@ export const NotificationsContextProvider = ({ children }) => {
     </NotificationsContext.Provider>
   );
 };
+*/

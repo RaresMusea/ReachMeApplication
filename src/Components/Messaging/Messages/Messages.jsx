@@ -1,18 +1,15 @@
 import Message from "./Message";
 import "../../../Styles/Messaging/Messages/Message.scss";
-import { useContext, useEffect, useState } from "react";
-import { ConversationContext } from "../../../Context/ConversationContext";
-import { doc, onSnapshot } from "firebase/firestore";
-import { firebaseFirestore } from "../../../Modules/Firebase/FirebaseIntegration";
-import { loggedInAccount } from "../../../Services/Feed Services/FeedDrawerService";
-import { parseDateAndTime } from "../../../Modules/Date/DatePipeModule";
-import { OpenContext } from "../../../Context/OpenContext";
-import { MediaContext } from "../../../Context/MediaContext";
-import {
-  buildFileResourceAttributes,
-  buildMediaResourceAttributes,
-} from "../../../Modules/LightBox/LightBoxModule";
-import { getFileIcon } from "../../../Modules/Messaging/ResourceSharing/SharableResourceSelectorModule";
+import {useContext, useEffect, useState} from "react";
+import {ConversationContext} from "../../../Context/ConversationContext";
+import {doc, onSnapshot} from "firebase/firestore";
+import {firebaseFirestore} from "../../../Modules/Firebase/FirebaseIntegration";
+import {loggedInAccount} from "../../../Services/Feed Services/FeedDrawerService";
+import {parseDateAndTime} from "../../../Modules/Date/DatePipeModule";
+import {OpenContext} from "../../../Context/OpenContext";
+import {MediaContext} from "../../../Context/MediaContext";
+import {buildFileResourceAttributes, buildMediaResourceAttributes,} from "../../../Modules/LightBox/LightBoxModule";
+import {getFileIcon} from "../../../Modules/Messaging/ResourceSharing/SharableResourceSelectorModule";
 
 export default function Messages() {
   const [messages, setMessages] = useState([]);
@@ -35,6 +32,7 @@ export default function Messages() {
           if (doc.exists()) {
             setMessages(doc.data().messages);
             const mess = doc.data().messages;
+            console.log(mess);
             if (mess.length === 0) {
               setFirstInConversation(loggedInAccount.userRealName);
               setConversationStartDate(parseDateAndTime(new Date()));
@@ -108,7 +106,6 @@ export default function Messages() {
     setVideos(videos);
     setFiles(files);
     setPhotosAndVideos(photosAndVideos);
-    console.log(photosAndVideos);
   };
 
   return (

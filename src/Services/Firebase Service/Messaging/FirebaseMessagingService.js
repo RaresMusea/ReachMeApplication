@@ -9,13 +9,10 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { firebaseFirestore } from "../../../Modules/Firebase/FirebaseIntegration";
-import {
-  buildMessagePayload,
-  displayUserSearcherAlert,
-} from "../../../Modules/Messaging/MessagingModule";
-import { loggedInAccount } from "../../Feed Services/FeedDrawerService";
-import { v4 as uuid } from "uuid";
+import {firebaseFirestore} from "../../../Modules/Firebase/FirebaseIntegration";
+import {buildMessagePayload, displayUserSearcherAlert,} from "../../../Modules/Messaging/MessagingModule";
+import {loggedInAccount} from "../../Feed Services/FeedDrawerService";
+import {v4 as uuid} from "uuid";
 
 export let conversationAlreadyExists = false;
 
@@ -186,6 +183,7 @@ const updateMessageNotificationsFor = async (
       [conversationIdentifier + ".notificationDetails"]: arrayUnion({
         notificationsId: uuid(),
         messageType,
+        receiverId:receiverIdentifier,
         senderId: loggedInAccount.userFirebaseIdentifier,
         senderName: loggedInAccount.userRealName,
         senderUsername: loggedInAccount.userName,

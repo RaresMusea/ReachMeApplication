@@ -7,3 +7,7 @@ export const getDownloadLink = (fileName, url) => {
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
 }
+
+export const sortReceivedNotifications = (array) => {
+    array.sort((a, b) => b.notificationDate - a.notificationDate);
+}

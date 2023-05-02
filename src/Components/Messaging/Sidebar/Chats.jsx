@@ -1,6 +1,10 @@
 import "../../../Styles/Messaging/Sidebar/Chats.scss";
 import {useContext, useEffect, useState} from "react";
-import {determineChatLastMessage, fadeInChats,} from "../../../Modules/Messaging/MessagingModule";
+import {
+    determineChatLastMessage,
+    fadeInChats,
+    getMissedNotificationsForChat,
+} from "../../../Modules/Messaging/MessagingModule";
 import {Avatar} from "@mui/joy";
 import {loggedInAccount} from "../../../Services/Feed Services/FeedDrawerService";
 import {parseDateAndTime} from "../../../Modules/Date/DatePipeModule";
@@ -11,11 +15,13 @@ import {v4 as uuid} from "uuid";
 import emptyConversationSvg from "../../../Media/Images/undraw_social_networking_re_i1ex.svg";
 import {MessageRounded} from "@mui/icons-material";
 import {increaseTheOpacity} from "../../../Modules/Animation Control/Opacity";
+import {NotificationContext} from "../../../Context/NotificationContext";
 
 export default function Chats() {
     const [chats, setChats] = useState([]);
     const {conversationOpened, targetUser, handleConversationOpen} =
         useContext(OpenContext);
+    const {messageNotifications} = useContext(NotificationContext);
 
 
     useEffect(() => {
@@ -55,7 +61,6 @@ export default function Chats() {
             }, 500);
         }
     }, [targetUser, conversationOpened, chats.length]);
-
 
 
     return (
@@ -102,6 +107,14 @@ export default function Chats() {
                             </div>
                             <div className="MessageDate">
                                 {conv[1].date ? parseDateAndTime(conv[1].date.toDate()) : ``}
+                                {
+                                    getMissedNotificationsForChat(messageNotifications,
+                                        conv[1]?.lastMessageInConversation.conversationIdentifier)!==0 &&
+                                    <div className="MessageNotification">
+                                        {getMissedNotificationsForChat(messageNotifications,
+                                            conv[1]?.lastMessageInConversation.conversationIdentifier)}
+                                    </div>
+                                }
                             </div>
                         </div>
                     ))}

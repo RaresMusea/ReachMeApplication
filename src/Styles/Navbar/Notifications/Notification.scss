@@ -1,14 +1,14 @@
 .Notification {
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  transition:.2s ease-in-out;
-  cursor:pointer;
+  transition: .2s ease-in-out;
+  cursor: pointer;
   @apply p-2;
 
   .LeftNotificationFlex {
-    display:flex;
+    display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -20,46 +20,57 @@
       @apply h-[50px];
     }
 
-    .NotificationText{
-      font-family:'PT Sans',sans-serif;
-      @apply ml-[1em];
-      @apply font-bold;
+    .NotificationTextColumn {
+      display: flex;
+      flex-direction: column;
+      font-family: 'PT Sans', sans-serif;
+
+      .NotificationText {
+        @apply ml-[1em];
+        @apply font-bold;
+      }
+
+      .NotificationDate {
+        @apply font-normal;
+        @apply ml-[1em]
+      }
     }
   }
 
-  .RightNotificationFlex{
-    display:flex;
+  .RightNotificationFlex {
+    display: flex;
     justify-content: space-between;
     font-family: 'PT Sans', sans-serif;
 
-    button{
+    button {
       @apply text-white;
       @apply p-[.5em];
       @apply outline-0;
       @apply rounded-md;
-      transition:.2s ease-in-out;
+      transition: .2s ease-in-out;
     }
-    .GoToButton{
+
+    .GoToButton {
       @apply mr-3;
       @apply bg-[#094561];
 
     }
 
-    .DismissButton{
+    .DismissButton {
       @apply mr-2;
       @apply bg-[#f46f46];
     }
 
-    .GoToButton:hover{
+    .GoToButton:hover {
       @apply bg-[#108e8e];
     }
 
-    .DismissButton:hover{
+    .DismissButton:hover {
       @apply bg-[#eeb854];
     }
   }
 }
 
-.Notification:hover{
+.Notification:hover {
   background-color: #dbdbdb;
 }

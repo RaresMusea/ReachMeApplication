@@ -5,6 +5,7 @@ import {
 } from "../../../Services/Firebase Service/Messaging/FirebaseMessagingService";
 import {OpenContext} from "../../../Context/OpenContext";
 import {Avatar} from "@mui/joy";
+import {parseDateAndTime} from "../../../Modules/Date/DatePipeModule";
 
 
 export default function Notification(props) {
@@ -38,8 +39,14 @@ export default function Notification(props) {
             <div className="LeftNotificationFlex">
                 <Avatar src={target.profilePhotoHref}
                      className="NotificationImage"/>
+                <div className="NotificationTextColumn">
                 <p className="NotificationText">You
-                    have {props.content.numberOfUnreadMessages} unread {dynamicNoun} from {props.content.sender}.</p>
+                    have {props.content.numberOfUnreadMessages} unread {dynamicNoun} from {props.content.sender}.
+                </p>
+                    <p className="NotificationDate">
+                        {parseDateAndTime(new Date(props.content.notificationDate))}
+                    </p>
+                </div>
             </div>
             <div className="RightNotificationFlex">
                 <button className={"GoToButton"}

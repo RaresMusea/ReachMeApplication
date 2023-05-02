@@ -60,7 +60,7 @@ export default function NotificationManager() {
                 onClose={handleClose}
                 PaperProps={{
                     style: {
-                        width: 850,
+                        width:850,
                     },
                     elevation: 0,
                     sx: {

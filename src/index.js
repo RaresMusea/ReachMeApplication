@@ -14,28 +14,28 @@ import {NotificationContextProvider,} from "./Context/NotificationContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <OpenContextProvider>
-    <NotificationContextProvider>
-      <ConversationContextProvider>
-        <ResourceSharingContextProvider>
-          <MediaContextProvider>
-            <WindowSplitContextProvider>
-              <BrowserRouter>
-                <Routes>
-                  <Route index element={<App />} />
-                  <Route
-                    path={"/authentication"}
-                    element={<AuthenticationCore />}
-                  />
-                </Routes>
-                }
-              </BrowserRouter>
-            </WindowSplitContextProvider>
-          </MediaContextProvider>
-        </ResourceSharingContextProvider>
-      </ConversationContextProvider>
-    </NotificationContextProvider>
-  </OpenContextProvider>
+    <ConversationContextProvider>
+        <OpenContextProvider>
+            <NotificationContextProvider>
+                <ResourceSharingContextProvider>
+                    <MediaContextProvider>
+                        <WindowSplitContextProvider>
+                            <BrowserRouter>
+                                <Routes>
+                                    <Route index element={<App/>}/>
+                                    <Route
+                                        path={"/authentication"}
+                                        element={<AuthenticationCore/>}
+                                    />
+                                </Routes>
+                                }
+                            </BrowserRouter>
+                        </WindowSplitContextProvider>
+                    </MediaContextProvider>
+                </ResourceSharingContextProvider>
+            </NotificationContextProvider>
+        </OpenContextProvider>
+    </ConversationContextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,23 +1,20 @@
 import * as React from "react";
 import {useContext, useEffect} from "react";
 import Menu from "@mui/material/Menu";
-import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import {defaultNotificationIcon} from "../../../Modules/Object/ComponentProps";
-import "../../../Styles/Navbar/NotificationManager.scss";
-import {onSnapshot} from "firebase/firestore";
-import {notificationsRef,} from "../../../Modules/Firebase/FirebaseIntegration";
-import {loggedInAccount} from "../../../Services/Feed Services/FeedDrawerService";
+import "../../../Styles/Navbar/Notifications/NotificationManager.scss";
 import {increaseTheOpacity,} from "../../../Modules/Animation Control/Opacity";
 import {NotificationContext} from "../../../Context/NotificationContext";
+import Notification from "./Notification";
 
 export default function NotificationManager() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
-    let validatedNotifications = [];
-    const {messageNotifications, setMessageNotifications} =
+    const {messageNotifications} =
         useContext(NotificationContext);
-    const handleClick = (event) => {
+
+    const handleClick = async (event) => {
         setAnchorEl(event.currentTarget);
     };
 
@@ -25,100 +22,10 @@ export default function NotificationManager() {
         setAnchorEl(null);
     };
 
-    /*const validateNotifications = (notificationsArray) => {
-        if (notificationsArray.length === 0) {
-            return [];
-        }
-        const result = [];
-        for (let notification of notificationsArray) {
-            console.log("Notifications: ");
-            console.log(notification);
-            if (notification[0] === "null") {
-                continue;
-            }
-            if (notification[0].includes(loggedInAccount.userFirebaseIdentifier)) {
-                if (notification[1]["notificationDetails"].length !== 0) {
-                    for (
-                        let i = 0;
-                        i < notification[1]["notificationDetails"].length;
-                        i++
-                    ) {
-                    }
-                    result.push({
-                        notificationDetails: notification[1]["notificationDetails"],
-                        conversationId: notification[0],
-                    });
-                }
-            }
-        }
-        return result;
-    };*/
-
     useEffect(() => {
-        let notif = {};
-        const unsubscribe = onSnapshot(notificationsRef, (snapshot) => {
-            snapshot.docs.map((doc) => {
-                notif = doc.data();
-                if (
-                    Object.keys(notif).length !== 0 &&
-                    Object.keys(notif)[0].includes(loggedInAccount.userFirebaseIdentifier)
-                ) {
-                    Object.entries(notif).forEach((entry) => {
-                        if (entry[1].notificationDetails.length !== 0) {
-                            if (validatedNotifications.length !== 0) {
-                                validatedNotifications.forEach((validatedNotification) => {
-                                    if (
-                                        validatedNotification.senderId ===
-                                        entry[1].notificationDetails[0].senderId
-                                    ) {
-                                        validatedNotification.numberOfUnreadMessages++;
-                                    } else {
-                                        validatedNotifications.push({
-                                            sender: entry[1].notificationDetails[0].senderName,
-                                            senderId: entry[1].notificationDetails[0].senderId,
-                                            conversationId: Object.keys(notif)[0],
-                                            numberOfUnreadMessages:
-                                            entry[1].notificationDetails.length,
-                                        });
-                                    }
-                                });
-                            } else {
-                                validatedNotifications.push({
-                                    sender: entry[1].notificationDetails[0].senderName,
-                                    senderId: entry[1].notificationDetails[0].senderId,
-                                    receiverId:entry[1].notificationDetails[0].receiverId,
-                                    conversationId: Object.keys(notif)[0],
-                                    numberOfUnreadMessages: entry[1].notificationDetails.length,
-                                });
-                            }
-                        }
-                    });
-                }
-            });
-
-            //setNotificationsCount(validateNotifications.length);
-            let result=[];
-            validatedNotifications.forEach(validatedMsg=>{
-                if(validatedMsg.receiverId.includes(loggedInAccount.userFirebaseIdentifier)) {
-                    result.push(validatedMsg);
-                }
-            });
-            setMessageNotifications(result);
-            result=[];
-            validatedNotifications=[];
-        });
-
-        return () => {
-            unsubscribe();
-        };
-    }, []);
-
-    useEffect(() => {
-        console.log(messageNotifications);
-        if (messageNotifications !== undefined) {
-            if (messageNotifications.length !== 0) {
-                increaseTheOpacity(document.querySelector(".Badge"));
-            }
+        if (messageNotifications.length !== 0) {
+            //new Audio(notificationSound).play().then(console.error);
+            increaseTheOpacity(document.querySelector(".Badge"));
         }
     }, [messageNotifications]);
 
@@ -151,7 +58,6 @@ export default function NotificationManager() {
                 open={open}
                 className="NotificationMenu"
                 onClose={handleClose}
-                onClick={handleClose}
                 PaperProps={{
                     style: {
                         width: 850,
@@ -184,33 +90,24 @@ export default function NotificationManager() {
                 transformOrigin={{horizontal: "right", vertical: "top"}}
                 anchorOrigin={{horizontal: "right", vertical: "bottom"}}
             >
-                {/* <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Add another account
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>*/}
                 <h1 className="NotificationManagerTitle">Notification Manager</h1>
-                <Divider/>
+                {
+                    messageNotifications.length === 0 ?
+                        <div className="NoNotifications">You don't have any notifications.</div>
+                        :
+                        <div className="NotificationsOn">
+                            {
+                                messageNotifications.map(notification =>
+                                    <>
+                                        <Notification
+                                            key={notification.sender}
+                                            handleClose={handleClose}
+                                            content={notification}
+                                        /></>
+                                )
+                            }
+                        </div>
+                }
             </Menu>
         </React.Fragment>
     );

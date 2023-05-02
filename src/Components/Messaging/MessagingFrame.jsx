@@ -9,58 +9,57 @@ import Conversation from "./Conversation/Conversation";
 import {OpenContext} from "../../Context/OpenContext";
 
 export const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+    return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function MessagingFrame() {
-  const [open, setOpen] = React.useState(false);
-  const { conversationOpened, setConversationOpened, closeMessaging } =
-    useContext(OpenContext);
+    const {conversationOpened, setConversationOpened, closeMessaging, messagingOpened, setMessagingOpened} =
+        useContext(OpenContext);
 
-  /*  useEffect(() => {
-    if (open) {
-      document.title = `ReachMe Messaging`;
-    } else {
-      document.title = `ReachMe - Feed`;
-    }
-  }, [open]);*/
+    /*  useEffect(() => {
+      if (open) {
+        document.title = `ReachMe Messaging`;
+      } else {
+        document.title = `ReachMe - Feed`;
+      }
+    }, [open]);*/
 
-  const handleClickOpen = () => {
-    setOpen(true);
-    localStorage.setItem("lastMessagesComponentOpening", Date.now());
-  };
+    const handleClickOpen = () => {
+        setMessagingOpened(true);
+        localStorage.setItem("lastMessagesComponentOpening", Date.now());
+    };
 
-  const handleClose = () => {
-    if (!closeMessaging) {
-      return;
-    }
-    //props.resetPageTitleToFeedState();
-    setConversationOpened(false);
-    setOpen(false);
-  };
+    const handleClose = () => {
+        if (!closeMessaging) {
+            return;
+        }
+        //props.resetPageTitleToFeedState();
+        setConversationOpened(false);
+        setMessagingOpened(false);
+    };
 
-  return (
-    <div>
-      <img
-        src={defaultMessagingIcon}
-        className="Icon"
-        style={{ marginRight: "1em" }}
-        id="SearchIcon3"
-        onClick={handleClickOpen}
-        alt="Search Button Icon"
-        title="Messages"
-      />
-      <Dialog
-        fullScreen
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Transition}
-      >
-        <div className="ReachMeMessagingWrapper">
-          <MessagingFrameSideBar close={handleClose} />
-          {conversationOpened && <Conversation />}
+    return (
+        <div>
+            <img
+                src={defaultMessagingIcon}
+                className="Icon"
+                style={{marginRight: "1em"}}
+                id="SearchIcon3"
+                onClick={handleClickOpen}
+                alt="Search Button Icon"
+                title="Messages"
+            />
+            <Dialog
+                fullScreen
+                open={messagingOpened}
+                onClose={handleClose}
+                TransitionComponent={Transition}
+            >
+                <div className="ReachMeMessagingWrapper">
+                    <MessagingFrameSideBar close={handleClose}/>
+                    {conversationOpened && <Conversation/>}
+                </div>
+            </Dialog>
         </div>
-      </Dialog>
-    </div>
-  );
+    );
 }

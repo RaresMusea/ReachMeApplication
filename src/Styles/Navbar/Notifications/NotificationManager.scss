@@ -1,3 +1,11 @@
+.NotificationMenu{
+  overflow:scroll;
+  height:auto;
+}
+.NotificationMenu::-webkit-scrollbar{
+  display: none!important;
+}
+
 .NotificationManagerTitle{
   font-family: 'Rajdhani', sans-serif!important;
   @apply text-center;
@@ -5,7 +13,7 @@
   @apply text-[1.5em];
   @apply font-bold;
   @apply mt-1;
-  @apply mb-3;
+  @apply mb-1;
   @apply cursor-pointer;
 }
 
@@ -31,4 +39,17 @@
       font-size:10px;
     }
   }
+}
+.NoNotifications{
+  @apply text-center;
+  font-family: 'PT Sans', sans-serif;
+  @apply font-bold;
+}
+
+.NotificationsOn{
+  overflow-y: scroll;
+}
+
+.NotificationsOn::-webkit-scrollbar{
+  display: none;
 }

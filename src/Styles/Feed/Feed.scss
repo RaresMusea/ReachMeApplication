@@ -3,3 +3,64 @@
   padding:0;
   box-sizing:border-box;
 }
+
+.FeedWrapper{
+  display:flex;
+  justify-content: space-between;
+  @apply mt-5;
+
+  .LeftSide{
+    flex:4;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    @apply mt-8;
+  }
+  .RightSide{
+    flex:2;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    @apply mt-8;
+
+    .NewUsersWrapper{
+      @apply w-[80%];
+      border: 2px solid #dbdbdb;
+      box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+      align-items:center;
+      @apply bg-[#fff];
+      @apply p-2;
+      @apply rounded-md;
+
+      h3{
+        font-family:'Rajdhani',sans-serif;
+        @apply text-[1.3em];
+        @apply text-center;
+        @apply text-[#108e8e];
+        @apply font-bold;
+        @apply mt-1;
+        @apply mb-2;
+        @apply cursor-pointer;
+      }
+
+      .NewUser{
+        @apply mb-[1em];
+        @apply ml-2;
+        @apply cursor-pointer;
+
+        .NewUserLeftSide{
+          display:flex;
+          flex-direction:row;
+          align-items:center;
+          gap:1em;
+          .NameDetailsColumn{
+            .UserRealName{
+              font-family:'PT Sans', sans-serif;
+              @apply font-bold;
+            }
+        }
+        }
+      }
+    }
+  }
+}

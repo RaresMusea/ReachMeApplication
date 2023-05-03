@@ -11,9 +11,11 @@ import {ResourceSharingContextProvider} from "./Context/ResourceSharingContext";
 import {WindowSplitContextProvider} from "./Context/WindowSplitContext";
 import {MediaContextProvider} from "./Context/MediaContext";
 import {NotificationContextProvider,} from "./Context/NotificationContext";
+import {StateManagementContextProvider} from "./Context/StateManagementContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+    <StateManagementContextProvider>
     <ConversationContextProvider>
         <OpenContextProvider>
             <NotificationContextProvider>
@@ -28,7 +30,6 @@ root.render(
                                         element={<AuthenticationCore/>}
                                     />
                                 </Routes>
-                                }
                             </BrowserRouter>
                         </WindowSplitContextProvider>
                     </MediaContextProvider>
@@ -36,6 +37,7 @@ root.render(
             </NotificationContextProvider>
         </OpenContextProvider>
     </ConversationContextProvider>
+    </StateManagementContextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

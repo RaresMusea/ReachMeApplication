@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {lazy, useContext, useEffect, useState} from "react";
 import Navbar from "../Navbar/Navbar";
 import {getRequiredMetadata, loggedInAccount,} from "../../Services/Feed Services/FeedDrawerService";
 import {currentlyLoggedInUser} from "../../Modules/Session/CurrentSessionModule";
@@ -7,6 +7,10 @@ import {ToastContainer} from "react-toastify";
 import {onSnapshot} from "firebase/firestore";
 import {notificationsRef} from "../../Modules/Firebase/FirebaseIntegration";
 import {NotificationContext} from "../../Context/NotificationContext";
+import {sortReceivedNotifications} from "../../Modules/Common Functionality/CommonFunctionality";
+import '../../Styles/Feed/Feed.scss';
+
+const NewUsers = lazy(() => import("./Right Panel/New Users/NewUsers"));
 
 export default function Feed() {
     const [update, setUpdate] = useState(false);
@@ -69,7 +73,7 @@ export default function Feed() {
                 }
             });
 
-            //sortReceivedNotifications(result);
+            sortReceivedNotifications(result);
             console.table(result)
             setMessageNotifications(result);
             validatedNotifications = [];
@@ -109,8 +113,22 @@ export default function Feed() {
                 resetPageTitleToFeedState={resetPageTitleToFeedState}
                 scheduleUpdate={scheduleUpdate}
             />
-            <div id="SignOutModal"/>
+            <div className="FeedWrapper">
+                <div className="LeftSide">
+                    <p>Post</p>
+                    <p>Post</p>
+                    <p>Post</p>
+                    <p>Post</p>
+                    <p>Post</p>
+                    <p>Post</p>
+                </div>
+                <div className="RightSide">
+                    <NewUsers/>
+                    <p>User activity</p>
+                </div>
+            </div>
             <ToastContainer/>
+            <div id="SignOutModal"/>
         </>
     );
 }

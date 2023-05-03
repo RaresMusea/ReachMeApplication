@@ -3,7 +3,6 @@ import Grid from '@mui/material/Grid';
 import connection from '../../../Media/Images/logoPic.jpg';
 import '../../../Styles/Authentication/Core/AuthenticationCore.scss';
 import SignUp from "../Sign Up/SignUp";
-import logoPic from '../../../Media/Images/logoPic.svg';
 import googleLogo from '../../../Media/Images/google.svg';
 import Login from "../Login/Login";
 import lottie from "lottie-web";
@@ -73,9 +72,6 @@ export default function AuthenticationCore(props) {
                         <div className='AuthContainer'>
                             <div className='LogoWrapper'>
                                 <div id="LogoAnimation">
-                                    <img src={logoPic}
-                                         alt='Logo'
-                                         className="ReachMeLogoImage"/>
                                 </div>
                                 <h1 className='LogoText'>ReachMe</h1>
                             </div>

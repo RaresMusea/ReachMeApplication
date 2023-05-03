@@ -1,0 +1,7 @@
+.NewUsersSkeletonWrapper{
+  display:flex;
+  flex-direction: column;
+  .SkeletonElement{
+    margin-bottom:1em;
+  }
+}

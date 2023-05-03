@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext } from "react";
+import {useContext} from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -10,20 +10,18 @@ import {
 } from "../../../Services/Feed Services/FeedDrawerService";
 import "../../../Styles/Navbar/FeedDrawer.scss";
 import "../../../Styles/Navbar/ProfilePictureManagerDialog.scss";
-import { Avatar, Divider, ListItem, Slide } from "@mui/material";
+import {Avatar, Divider, ListItem, Slide} from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { CameraAlt, Cancel, DeleteForever, Upload } from "@mui/icons-material";
+import {CameraAlt, Cancel, DeleteForever, Upload} from "@mui/icons-material";
 import {
   getProfilePictureForLoggedInUser,
   updateProfilePictureWithLocalFileUpload,
   verifyPictureUpload,
 } from "../../../Modules/Feed/Navbar/Account Management/AccountManagementModule";
-import { ConversationContext } from "../../../Context/ConversationContext";
+import {ConversationContext} from "../../../Context/ConversationContext";
+import {StateManagementContext} from "../../../Context/StateManagementContext";
 
-/*const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Zoom timeout={500} ref={ref} {...props}  children={{name:"John"}}/>;
-});*/
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -31,6 +29,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function ProfilePhotoManager(props) {
   const [open, setOpen] = React.useState(false);
+  const {setJoinedUserUpdate} = useContext(StateManagementContext);
   const { dispatch } = useContext(ConversationContext);
 
   const handleClickOpen = () => {
@@ -44,6 +43,7 @@ export default function ProfilePhotoManager(props) {
   const removeProfilePicture = async () => {
     await removeProfilePictureForUser();
     props.update();
+    setJoinedUserUpdate(true);
     setTimeout(() => handleClose(), 700);
   };
 
@@ -52,6 +52,7 @@ export default function ProfilePhotoManager(props) {
     if (fileToUpload !== undefined) {
       await updateProfilePictureWithLocalFileUpload(fileToUpload);
       props.update();
+      setJoinedUserUpdate(true);
       const extension = fileToUpload.name.split(`.`)[1].toLowerCase();
       console.log(extension);
       setTimeout(() => handleClose(), 1500);

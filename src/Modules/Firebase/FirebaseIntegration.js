@@ -5,12 +5,12 @@ import {collection, getFirestore} from "firebase/firestore";
 
 //Firebase Configuration-Conexiunea catre server-ul firebase, va permite autentificarea, cat si stocarea de date din cadrul aplicatiei intr-o platforma Cloud de la Google.
 const firebaseConfig = {
-  apiKey: "AIzaSyCktpPB5PnRpS5iK0Vpt6jDSjtyQ3w3BWQ",
-  authDomain: "reachme-e6b0a.firebaseapp.com",
-  projectId: "reachme-e6b0a",
-  storageBucket: "reachme-e6b0a.appspot.com",
-  messagingSenderId: "843735547881",
-  appId: "1:843735547881:web:6d05ef5c5ec943cd1e9578",
+    apiKey: "AIzaSyCktpPB5PnRpS5iK0Vpt6jDSjtyQ3w3BWQ",
+    authDomain: "reachme-e6b0a.firebaseapp.com",
+    projectId: "reachme-e6b0a",
+    storageBucket: "reachme-e6b0a.appspot.com",
+    messagingSenderId: "843735547881",
+    appId: "1:843735547881:web:6d05ef5c5ec943cd1e9578",
 };
 
 //Initializam o aplicatie de tip firebase
@@ -21,9 +21,10 @@ const authentication = firebase.auth();
 const storage = firebase.storage();
 export const firebaseFirestore = getFirestore();
 export const notificationsRef = collection(
-  firebaseFirestore,
-  "messagesNotifications"
+    firebaseFirestore,
+    "messagesNotifications"
 );
+export const accountsRef = collection(firebaseFirestore, "userData");
 
 //Export explicit al acestor 2 componente catre alte module Javascript din cadrul proiectului
-export { storage, authentication };
+export {storage, authentication};

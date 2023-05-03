@@ -119,6 +119,32 @@
         @apply mb-2;
         @apply cursor-pointer;
       }
+
+      .ActivityContainer{
+        display:flex;
+        flex-direction: row;
+        align-items: center;
+        gap:10px;
+        @apply mb-3;
+        justify-content: space-between;
+        @apply ml-2;
+
+        div{
+          display:flex;
+          align-items: center;
+          gap:10px;
+        }
+
+        .ActivityDate{
+          font-family: 'PT Sans', sans-serif;
+          @apply mr-2;
+        }
+
+        .ActivityDescriptor{
+          font-family:'PT Sans',sans-serif;
+          @apply font-bold;
+        }
+      }
     }
   }
 }

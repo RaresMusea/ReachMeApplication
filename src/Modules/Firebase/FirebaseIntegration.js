@@ -25,6 +25,7 @@ export const notificationsRef = collection(
     "messagesNotifications"
 );
 export const accountsRef = collection(firebaseFirestore, "userData");
+export const activitiesRef = collection(firebaseFirestore, "userActivity");
 
 //Export explicit al acestor 2 componente catre alte module Javascript din cadrul proiectului
 export {storage, authentication};

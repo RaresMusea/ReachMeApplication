@@ -19,11 +19,13 @@
   }
 
   .RightSide {
+    position:sticky;
+    top:100px;
     flex: 2;
     display: flex;
     align-items: center;
     flex-direction: column;
-/*    @apply mt-8;*/
+    align-self:flex-start;
 
     .NewUsersWrapper {
       position:sticky;
@@ -34,6 +36,7 @@
       @apply bg-[#fff];
       @apply p-2;
       @apply rounded-md;
+      @apply mb-[1rem];
 
       h3 {
         font-family: 'Rajdhani', sans-serif;
@@ -84,16 +87,37 @@
             @apply p-[0.2em];
             border-radius:10px;
             transition:.2s ease-in-out;
+            @apply mr-1;
 
             span{
               @apply ml-1;
             }
           }
-
           .SendMessageButton:hover{
             @apply bg-[#094561];
           }
         }
+      }
+    }
+
+    .UserActivityCollectionWrapper{
+      @apply w-[80%];
+      border: 2px solid #dbdbdb;
+      box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+      align-items: center;
+      @apply bg-[#fff];
+      @apply p-2;
+      @apply rounded-md;
+
+      h3{
+        font-family: 'Rajdhani', sans-serif;
+        @apply text-[1.5em];
+        @apply text-center;
+        @apply text-[#108e8e];
+        @apply font-bold;
+        @apply mt-1;
+        @apply mb-2;
+        @apply cursor-pointer;
       }
     }
   }

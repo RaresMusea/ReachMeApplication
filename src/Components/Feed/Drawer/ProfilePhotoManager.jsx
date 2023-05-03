@@ -21,6 +21,7 @@ import {
 } from "../../../Modules/Feed/Navbar/Account Management/AccountManagementModule";
 import {ConversationContext} from "../../../Context/ConversationContext";
 import {StateManagementContext} from "../../../Context/StateManagementContext";
+import {markProfilePhotoRemovalActivity} from "../../../Services/Firebase Service/Feed/FirebaseFeedService";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -37,6 +38,7 @@ export default function ProfilePhotoManager(props) {
   };
 
   const handleClose = () => {
+    setJoinedUserUpdate(true);
     setOpen(false);
   };
 
@@ -44,6 +46,7 @@ export default function ProfilePhotoManager(props) {
     await removeProfilePictureForUser();
     props.update();
     setJoinedUserUpdate(true);
+    await markProfilePhotoRemovalActivity();
     setTimeout(() => handleClose(), 700);
   };
 
@@ -51,10 +54,9 @@ export default function ProfilePhotoManager(props) {
     const fileToUpload = verifyPictureUpload(e);
     if (fileToUpload !== undefined) {
       await updateProfilePictureWithLocalFileUpload(fileToUpload);
-      props.update();
       setJoinedUserUpdate(true);
+      props.update();
       const extension = fileToUpload.name.split(`.`)[1].toLowerCase();
-      console.log(extension);
       setTimeout(() => handleClose(), 1500);
       if (extension === "jpg") props.update();
     }

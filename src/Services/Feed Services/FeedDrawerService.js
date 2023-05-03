@@ -5,19 +5,20 @@ import {
   displaySuccessAlert,
   displayUploadStatusAlertBox,
 } from "../../Modules/Feed/Navbar/Account Management/AccountManagementModule";
-import { storage } from "../../Modules/Firebase/FirebaseIntegration";
-import { isConnectionAvailable } from "../Authentication Services/SignUpService";
-import { currentlyLoggedInUser } from "../../Modules/Session/CurrentSessionModule";
-import { getDownloadURL } from "firebase/storage";
-import { getAuth, signOut } from "firebase/auth";
-import { modifiedAccountDetails } from "../../Modules/Object/AccountInfoManagementObjects";
+import {storage} from "../../Modules/Firebase/FirebaseIntegration";
+import {isConnectionAvailable} from "../Authentication Services/SignUpService";
+import {currentlyLoggedInUser} from "../../Modules/Session/CurrentSessionModule";
+import {getDownloadURL} from "firebase/storage";
+import {getAuth, signOut} from "firebase/auth";
+import {modifiedAccountDetails} from "../../Modules/Object/AccountInfoManagementObjects";
 import {
+  markProfilePhotoUpdateAsActivity,
   removeProfilePictureHrefFromFirestore,
   updateProfilePictureHrefInFirestore,
 } from "../Firebase Service/Feed/FirebaseFeedService";
-import { updateUserIdentityDataInFirestore } from "../Firebase Service/Authentication/FirebaseAuthService";
-import { defaultProfilePic } from "../../Modules/Exporters/ImageExporter";
-import { updateImageInConversations } from "../Firebase Service/Messaging/FirebaseMessagingService";
+import {updateUserIdentityDataInFirestore} from "../Firebase Service/Authentication/FirebaseAuthService";
+import {defaultProfilePic} from "../../Modules/Exporters/ImageExporter";
+import {updateImageInConversations} from "../Firebase Service/Messaging/FirebaseMessagingService";
 
 export let update = false;
 export let loggedInAccount = {};
@@ -125,14 +126,13 @@ const uploadLocalProfilePicture = async (payload) => {
     },
     () => {
       getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-        console.log(downloadURL);
         await saveUploadedProfilePictureDataLocally(downloadURL);
         loggedInAccount.profilePhotoHref = downloadURL;
         await updateProfilePictureHrefInFirestore(
           loggedInAccount.userFirebaseIdentifier,
           downloadURL
         );
-
+        await markProfilePhotoUpdateAsActivity(downloadURL);
         await updateImageInConversations(
           downloadURL,
           loggedInAccount.userFirebaseIdentifier

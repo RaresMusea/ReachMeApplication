@@ -11,6 +11,7 @@ import {sortReceivedNotifications} from "../../Modules/Common Functionality/Comm
 import '../../Styles/Feed/Feed.scss';
 
 const NewUsers = lazy(() => import("./Right Panel/New Users/NewUsers"));
+const UserActivityCollection = lazy(() => import("./Right Panel/User Activity/UserActivityCollection"));
 
 export default function Feed() {
     const [update, setUpdate] = useState(false);
@@ -65,7 +66,7 @@ export default function Feed() {
                     }
                 }
             });
-            console.table("VALIDATED:", validatedNotifications);
+
             validatedNotifications.forEach(validatedMsg => {
                 console.log(validatedMsg)
                 if (validatedMsg.senderId !== loggedInAccount.userFirebaseIdentifier) {
@@ -124,7 +125,7 @@ export default function Feed() {
                 </div>
                 <div className="RightSide">
                     <NewUsers/>
-                    <p>User activity</p>
+                    <UserActivityCollection/>
                 </div>
             </div>
             <ToastContainer/>

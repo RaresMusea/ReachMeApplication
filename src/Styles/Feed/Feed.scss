@@ -1,40 +1,43 @@
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.FeedWrapper{
-  display:flex;
+.FeedWrapper {
+  display: flex;
   justify-content: space-between;
   @apply mt-5;
+  height:20000px;
 
-  .LeftSide{
-    flex:4;
+  .LeftSide {
+    flex: 4;
     display: flex;
     align-items: center;
     flex-direction: column;
     @apply mt-8;
   }
-  .RightSide{
-    flex:2;
+
+  .RightSide {
+    flex: 2;
     display: flex;
     align-items: center;
     flex-direction: column;
-    @apply mt-8;
+/*    @apply mt-8;*/
 
-    .NewUsersWrapper{
+    .NewUsersWrapper {
+      position:sticky;
       @apply w-[80%];
       border: 2px solid #dbdbdb;
       box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
-      align-items:center;
+      align-items: center;
       @apply bg-[#fff];
       @apply p-2;
       @apply rounded-md;
 
-      h3{
-        font-family:'Rajdhani',sans-serif;
-        @apply text-[1.3em];
+      h3 {
+        font-family: 'Rajdhani', sans-serif;
+        @apply text-[1.5em];
         @apply text-center;
         @apply text-[#108e8e];
         @apply font-bold;
@@ -43,22 +46,53 @@
         @apply cursor-pointer;
       }
 
-      .NewUser{
+      .NewUser {
         @apply mb-[1em];
         @apply ml-2;
         @apply cursor-pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-        .NewUserLeftSide{
-          display:flex;
-          flex-direction:row;
-          align-items:center;
-          gap:1em;
-          .NameDetailsColumn{
-            .UserRealName{
-              font-family:'PT Sans', sans-serif;
+        .NewUserLeftSide {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 1em;
+
+          .NameDetailsColumn {
+
+            .UserRealName {
+              font-family: 'PT Sans', sans-serif;
               @apply font-bold;
             }
+          }
         }
+
+        .NewUserRightSide {
+          display: flex;
+          flex-direction:column;
+
+          .SendMessageButton{
+            display: flex;
+            justify-content: center;
+            @apply bg-[#108e8e];
+            @apply text-white;
+            gap:10px;
+            font-family: 'PT Sans', sans-serif;
+            @apply font-medium;
+            @apply p-[0.2em];
+            border-radius:10px;
+            transition:.2s ease-in-out;
+
+            span{
+              @apply ml-1;
+            }
+          }
+
+          .SendMessageButton:hover{
+            @apply bg-[#094561];
+          }
         }
       }
     }

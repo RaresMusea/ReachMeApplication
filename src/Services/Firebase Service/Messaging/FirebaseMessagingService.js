@@ -5,13 +5,16 @@ import {
     doc,
     getDoc,
     getDocs,
-    onSnapshot,
     serverTimestamp,
     setDoc,
     updateDoc,
 } from "firebase/firestore";
 import {firebaseFirestore} from "../../../Modules/Firebase/FirebaseIntegration";
-import {buildMessagePayload, displayUserSearcherAlert,} from "../../../Modules/Messaging/MessagingModule";
+import {
+    buildMessagePayload,
+    displayUserSearcherAlert,
+    getConversationId,
+} from "../../../Modules/Messaging/MessagingModule";
 import {loggedInAccount} from "../../Feed Services/FeedDrawerService";
 import {v4 as uuid} from "uuid";
 
@@ -51,26 +54,6 @@ export const createConversationBetween = async (person1, person2) => {
         await updateConversationDocBetween(person2, person1, conversationId);
     }
 };
-
-const createConversationDocBetween = async (
-    person1,
-    person2,
-    conversationId
-) => {
-    await setDoc(
-        doc(firebaseFirestore, "userConversations", person1.userFirebaseIdentifier),
-        {
-            [conversationId + ".userDetails"]: {
-                userFirebaseIdentifier: person2.userFirebaseIdentifier,
-                userName: person2.userName,
-                userRealName: person2.userRealName,
-                profilePhotoHref: person2.profilePhotoHref,
-            },
-            [conversationId + ".date"]: serverTimestamp(),
-        }
-    );
-};
-
 const updateConversationDocBetween = async (
     person1,
     person2,
@@ -88,21 +71,6 @@ const updateConversationDocBetween = async (
             [conversationId + ".date"]: serverTimestamp(),
         }
     );
-};
-
-export const retrieveChatListInRealTimeForCurrentUser = (
-    currentUserIdentifier
-) => {
-    let chatList = [];
-    const chats = onSnapshot(
-        doc(firebaseFirestore, "userConversations", currentUserIdentifier),
-        (doc) => {
-            chatList = doc.data();
-        }
-    );
-
-    chats();
-    return chatList;
 };
 
 export const sendMessage = async (
@@ -265,3 +233,12 @@ export const updateImageInConversations = async (profilePicture, userId) => {
         })
     );
 };
+
+export const conversationExists = async (userId1, userId2)=>{
+    const conversationId = getConversationId(userId1, userId2);
+    const conversation = await getDoc(
+        doc(firebaseFirestore, "conversationsCollection", conversationId)
+    );
+
+    return conversation.exists();
+}

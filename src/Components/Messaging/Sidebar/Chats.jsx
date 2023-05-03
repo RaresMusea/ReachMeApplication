@@ -16,12 +16,14 @@ import emptyConversationSvg from "../../../Media/Images/undraw_social_networking
 import {MessageRounded} from "@mui/icons-material";
 import {increaseTheOpacity} from "../../../Modules/Animation Control/Opacity";
 import {NotificationContext} from "../../../Context/NotificationContext";
+import {StateManagementContext} from "../../../Context/StateManagementContext";
 
 export default function Chats() {
     const [chats, setChats] = useState([]);
     const {conversationOpened, targetUser, handleConversationOpen} =
         useContext(OpenContext);
     const {messageNotifications} = useContext(NotificationContext);
+    const {conversationEmpty} = useContext(StateManagementContext);
 
 
     useEffect(() => {
@@ -108,8 +110,10 @@ export default function Chats() {
                             <div className="MessageDate">
                                 {conv[1].date ? parseDateAndTime(conv[1].date.toDate()) : ``}
                                 {
+                                    !conversationEmpty &&
+                                    conv[1] &&
                                     getMissedNotificationsForChat(messageNotifications,
-                                        conv[1]?.lastMessageInConversation.conversationIdentifier)!==0 &&
+                                        conv[0]) !== 0 &&
                                     <div className="MessageNotification">
                                         {getMissedNotificationsForChat(messageNotifications,
                                             conv[1]?.lastMessageInConversation.conversationIdentifier)}

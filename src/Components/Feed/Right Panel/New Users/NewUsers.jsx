@@ -12,7 +12,7 @@ export default function NewUsers() {
     const [observerCounter, setObserverCounter] = useState(0);
     const [loading, setLoading] = useState(true);
     const {joinedUserUpdate, setJoinedUserUpdate} = useContext(StateManagementContext);
-    let count=0;
+    let count = 0;
 
     useEffect(() => {
         const unsubscribe = onSnapshot(accountsRef, (snapshot) => {
@@ -26,8 +26,8 @@ export default function NewUsers() {
         }
     }, []);
 
-    useEffect(()=>{
-        if(observerCounter!==0 || joinedUserUpdate===true) {
+    useEffect(() => {
+        if (observerCounter !== 0 || joinedUserUpdate === true) {
             fetch("http://localhost:8080/lastRegistration/lastFive")
                 .then(response => response.json())
                 .then(data => {
@@ -46,12 +46,10 @@ export default function NewUsers() {
                 loading ?
                     <NewUsersSkeleton/>
                     :
-
                     newUsers.length !== 0 &&
                     newUsers.map(newUser =>
                         <NewUser newUser={newUser}/>
                     )
-
             }
         </div>
     )

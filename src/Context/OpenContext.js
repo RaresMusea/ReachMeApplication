@@ -1,6 +1,13 @@
 import {createContext, useContext, useState} from "react";
-import {clearMessageNotificationsForLoggedUser} from "../Services/Firebase Service/Messaging/FirebaseMessagingService";
+import {
+    clearMessageNotificationsForLoggedUser,
+    conversationAlreadyExists,
+    createConversationBetween
+} from "../Services/Firebase Service/Messaging/FirebaseMessagingService";
 import {ConversationContext} from "./ConversationContext";
+import {loggedInAccount} from "../Services/Feed Services/FeedDrawerService";
+import {displayUserSearcherInfoAlert} from "../Modules/Messaging/MessagingModule";
+import {StateManagementContext} from "./StateManagementContext";
 
 export const OpenContext = createContext(undefined);
 
@@ -11,6 +18,7 @@ export const OpenContextProvider = ({children}) => {
     const [target, setTarget] = useState("");
     const [closeMessaging, setCloseMessaging] = useState(true);
     const {dispatch, data} = useContext(ConversationContext);
+    const {setConversationEmpty} = useContext(StateManagementContext);
 
     const handleConversationOpen = async (target) => {
         if (conversationOpened) {
@@ -25,6 +33,18 @@ export const OpenContextProvider = ({children}) => {
         setTarget(target.userRealName);
         await clearMessageNotificationsForLoggedUser(data.conversationIdentifier);
         setConversationOpened(true);
+        setConversationEmpty(false);
+    };
+
+    const handleUserSelection = async (targetUser) => {
+        await createConversationBetween(loggedInAccount, targetUser);
+        if (conversationAlreadyExists) {
+            displayUserSearcherInfoAlert(`The conversation between you and ${targetUser.userRealName} already exists. 
+            You are being redirected to that conversation.`);
+            setConversationOpened(true);
+            dispatch({ type: "CHANGE_USER", payload: targetUser });
+        }
+        setConversationEmpty(true);
     };
 
     return (
@@ -41,6 +61,7 @@ export const OpenContextProvider = ({children}) => {
                 closeMessaging,
                 setCloseMessaging,
                 handleConversationOpen,
+                handleUserSelection
             }}
         >
             {children}

@@ -83,10 +83,10 @@ export const buildMessagePayload = (
     };
 };
 
-export const getConversationId = (loggedUser, targetUser) => {
-    return loggedUser.userFirebaseIdentifier > targetUser.userFirebaseIdentifier
-        ? `${loggedUser.userFirebaseIdentifier}-${targetUser.userFirebaseIdentifier}`
-        : `${targetUser.userFirebaseIdentifier}-${loggedUser.userFirebaseIdentifier}`;
+export const getConversationId = (loggedUserId, targetUserId) => {
+    return loggedUserId > targetUserId
+        ? `${loggedUserId}-${targetUserId}`
+        : `${targetUserId}-${loggedUserId}`;
 };
 
 export const determineChatLastMessage = (chat) => {

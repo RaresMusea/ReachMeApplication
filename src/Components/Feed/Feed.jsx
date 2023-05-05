@@ -23,46 +23,48 @@ export default function Feed() {
 
     useEffect(() => {
         const unsubscribe = onSnapshot(notificationsRef, (snapshot) => {
-            snapshot.docs.map((doc) => {
-                notif = doc.data();
-                if (notif !== {}) {
-                    if (
-                        Object.keys(notif).length !== 0 &&
-                        Object.keys(notif)[0].includes(loggedInAccount.userFirebaseIdentifier)
-                    ) {
-                        Object.entries(notif).forEach((entry) => {
-                            if (entry[1].notificationDetails.length !== 0) {
-                                if (validatedNotifications.length !== 0) {
-                                    validatedNotifications.forEach((validatedNotification) => {
-                                        if (
-                                            validatedNotification.senderId ===
-                                            entry[1].notificationDetails[0].senderId
-                                        ) {
-                                            validatedNotification.numberOfUnreadMessages++;
-                                        } else {
-                                            validatedNotifications.push({
-                                                sender: entry[1].notificationDetails[0].senderName,
-                                                senderId: entry[1].notificationDetails[0].senderId,
-                                                conversationId: Object.keys(notif)[0],
-                                                numberOfUnreadMessages:
-                                                entry[1].notificationDetails.length,
-                                                notificationDate: entry[1].notificationDetails[entry[1].notificationDetails.length - 1].sendingDate,
-                                            });
-                                        }
-                                    });
-                                } else {
-                                    console.table(validatedNotifications);
-                                    validatedNotifications.push({
-                                        sender: entry[1].notificationDetails[0].senderName,
-                                        senderId: entry[1].notificationDetails[0].senderId,
-                                        receiverId: entry[1].notificationDetails[0].receiverId,
-                                        conversationId: Object.keys(notif)[0],
-                                        numberOfUnreadMessages: entry[1].notificationDetails.length,
-                                        notificationDate: entry[1].notificationDetails[entry[1].notificationDetails.length - 1].sendingDate,
-                                    });
+            snapshot.docs.map((doc, index) => {
+                if (snapshot.docs[index]._key.path.segments[6] === loggedInAccount.userFirebaseIdentifier) {
+                    notif = doc.data();
+                    if (notif !== {}) {
+                        if (
+                            Object.keys(notif).length !== 0 &&
+                            Object.keys(notif)[0].includes(loggedInAccount.userFirebaseIdentifier)
+                        ) {
+                            Object.entries(notif).forEach((entry) => {
+                                if (entry[1].notificationDetails.length !== 0) {
+                                    if (validatedNotifications.length !== 0) {
+                                        validatedNotifications.forEach((validatedNotification) => {
+                                            if (
+                                                validatedNotification.senderId ===
+                                                entry[1].notificationDetails[0].senderId
+                                            ) {
+                                                validatedNotification.numberOfUnreadMessages++;
+                                            } else {
+                                                validatedNotifications.push({
+                                                    sender: entry[1].notificationDetails[0].senderName,
+                                                    senderId: entry[1].notificationDetails[0].senderId,
+                                                    conversationId: Object.keys(notif)[0],
+                                                    numberOfUnreadMessages:
+                                                    entry[1].notificationDetails.length,
+                                                    notificationDate: entry[1].notificationDetails[entry[1].notificationDetails.length - 1].sendingDate,
+                                                });
+                                            }
+                                        });
+                                    } else {
+                                        console.table(validatedNotifications);
+                                        validatedNotifications.push({
+                                            sender: entry[1].notificationDetails[0].senderName,
+                                            senderId: entry[1].notificationDetails[0].senderId,
+                                            receiverId: entry[1].notificationDetails[0].receiverId,
+                                            conversationId: Object.keys(notif)[0],
+                                            numberOfUnreadMessages: entry[1].notificationDetails.length,
+                                            notificationDate: entry[1].notificationDetails[entry[1].notificationDetails.length - 1].sendingDate,
+                                        });
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
                 }
             });

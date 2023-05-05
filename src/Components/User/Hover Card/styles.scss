@@ -1,0 +1,180 @@
+/* reset */
+a {
+  all: unset;
+}
+
+.HoverCardContent {
+  border-radius: 6px;
+  padding: 20px;
+  width: 300px;
+  background-color: white;
+  box-shadow: hsl(206 22% 7% / 35%) 0 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.HoverCardContent[data-side='top'] {
+  animation-name: slideDownAndFade;
+}
+
+.HoverCardContent[data-side='right'] {
+  animation-name: slideLeftAndFade;
+}
+
+.HoverCardContent[data-side='bottom'] {
+  animation-name: slideUpAndFade;
+}
+
+.HoverCardContent[data-side='left'] {
+  animation-name: slideRightAndFade;
+}
+
+.HoverCardArrow {
+  fill: #dbdbdb;
+}
+
+.ImageTrigger {
+  cursor: pointer;
+  border-radius: 100%;
+  display: inline-block;
+}
+
+.ImageTrigger:focus {
+  box-shadow: 0 0 0 2px white;
+}
+
+.Image {
+  display: block;
+  border-radius: 100%;
+}
+
+.Image.normal {
+  width: 45px;
+  height: 45px;
+}
+
+.Image.large {
+  width: 60px;
+  height: 60px;
+}
+
+.Text {
+  margin: 0;
+  color: black;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.Text.faded {
+  color: black;
+}
+
+.Text.bold {
+  font-weight: 500;
+}
+
+/* styles.css */
+.HoverCardContent {
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.HoverCardContent[data-side='top'] {
+  animation-name: slideUp;
+}
+
+.HoverCardContent[data-side='bottom'] {
+  animation-name: slideDown;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.HoverCardContent {
+  background-color: #fff;
+  border: 2px solid #dbdbdb;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.CardFlexWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap:15px;
+
+  .CardFirstRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-family: 'PT Sans', sans-serif;
+    gap: 15px;
+
+    .UserDetails {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .Username {
+        @apply font-extrabold;
+        @apply text-[#108e8e];
+        font-family: 'Rajdhani', sans-serif;
+      }
+    }
+  }
+
+    .Bio {
+      display:flex;
+      align-items: center;
+      flex-direction: column;
+
+      .BioHeading{
+        font-weight:bolder;
+        @apply text-[#108e8e];
+      }
+
+      .BioText {
+        font-family: "PT Sans", sans-serif;
+        margin:0 auto;
+      }
+    }
+
+    .CardAvatar {
+      @apply w-[50px];
+      @apply h-[50px];
+    }
+
+  .AdditionalInfo{
+    margin:0 auto;
+    font-family: "Roboto Light", sans-serif;
+  }
+
+  .Logo {
+    display: inline-block;
+
+    img{
+      @apply w-[70px];
+    }
+
+  }
+}

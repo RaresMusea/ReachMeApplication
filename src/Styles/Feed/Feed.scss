@@ -71,32 +71,6 @@
             }
           }
         }
-
-        .NewUserRightSide {
-          display: flex;
-          flex-direction:column;
-
-          .SendMessageButton{
-            display: flex;
-            justify-content: center;
-            @apply bg-[#108e8e];
-            @apply text-white;
-            gap:10px;
-            font-family: 'PT Sans', sans-serif;
-            @apply font-medium;
-            @apply p-[0.2em];
-            border-radius:10px;
-            transition:.2s ease-in-out;
-            @apply mr-1;
-
-            span{
-              @apply ml-1;
-            }
-          }
-          .SendMessageButton:hover{
-            @apply bg-[#094561];
-          }
-        }
       }
     }
 

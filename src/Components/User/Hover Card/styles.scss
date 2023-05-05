@@ -114,13 +114,14 @@ a {
   background-color: #fff;
   border: 2px solid #dbdbdb;
   box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  @apply cursor-pointer;
 }
 
 .CardFlexWrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap:15px;
+  gap: 15px;
 
   .CardFirstRow {
     display: flex;
@@ -143,36 +144,57 @@ a {
     }
   }
 
-    .Bio {
-      display:flex;
-      align-items: center;
-      flex-direction: column;
+  .Bio {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 
-      .BioHeading{
-        font-weight:bolder;
-        @apply text-[#108e8e];
-      }
-
-      .BioText {
-        font-family: "PT Sans", sans-serif;
-        margin:0 auto;
-      }
+    .BioHeading {
+      font-weight: bolder;
+      @apply text-[#108e8e];
     }
 
-    .CardAvatar {
-      @apply w-[50px];
-      @apply h-[50px];
+    .BioText {
+      font-family: "PT Sans", sans-serif;
+      margin: 0 auto;
+    }
+  }
+
+  .CardAvatar {
+    @apply w-[50px];
+    @apply h-[50px];
+  }
+
+  .CardButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .RoundedIcon {
+      @apply text-[#094561];
+      transition: .2s ease-in-out;
     }
 
-  .AdditionalInfo{
-    margin:0 auto;
+    .RoundedIcon:hover {
+      transform: scale(1.2);
+      @apply text-[#108u8e];
+    }
+  }
+
+  .AdditionalInfo {
+    display:block;
+    margin: 0 auto;
     font-family: "Roboto Light", sans-serif;
+    p{
+      @apply text-center;
+      font-family: 'PT Sans', sans-serif;
+    }
   }
 
   .Logo {
     display: inline-block;
 
-    img{
+    img {
       @apply w-[70px];
     }
 

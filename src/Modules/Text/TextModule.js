@@ -39,3 +39,11 @@ export const startsWithVowel = (word) => {
     const firstWord = word[0];
     return firstWord === 'a' || firstWord === 'e' || firstWord === 'i' || firstWord === 'o' || firstWord === 'u';
 }
+
+export const endsWithVowel = (input) => {
+    if (isEmptyString(input)) {
+        return false;
+    }
+    const lastChar = input[input.length - 1]
+    return lastChar === 'a' || lastChar === 'e' || lastChar === 'i' || lastChar === 'o' || lastChar === 'u';
+}

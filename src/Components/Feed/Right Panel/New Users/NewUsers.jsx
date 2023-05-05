@@ -1,5 +1,5 @@
 import {lazy, useContext, useEffect, useState} from "react";
-import NewUsersSkeleton from "../../../Skeleton/Feed/NewProfileSkeleton/NewUsersSkeleton";
+import NewUsersSkeleton from "../../../Skeleton/Feed/RightSideFeedSkeleton/NewUsersSkeleton";
 import {onSnapshot} from "firebase/firestore";
 import {accountsRef} from "../../../../Modules/Firebase/FirebaseIntegration";
 import {StateManagementContext} from "../../../../Context/StateManagementContext";
@@ -11,7 +11,7 @@ export default function NewUsers() {
     const [newUsers, setNewUsers] = useState([]);
     const [observerCounter, setObserverCounter] = useState(0);
     const [loading, setLoading] = useState(true);
-    const {joinedUserUpdate, setJoinedUserUpdate} = useContext(StateManagementContext);
+    const {joinedUserUpdate} = useContext(StateManagementContext);
     let count = 0;
 
     useEffect(() => {
@@ -32,19 +32,20 @@ export default function NewUsers() {
                 .then(response => response.json())
                 .then(data => {
                     setNewUsers(data);
-                    setLoading(false);
+                    setTimeout(()=>{
+                        setLoading(false);
+                    },500);
                 })
                 .catch(() => console.error);
-            setJoinedUserUpdate(false);
         }
-    }, [observerCounter, joinedUserUpdate]);
+    }, [observerCounter]);
 
     return (
         <div className="NewUsersWrapper">
             <h3>Recently joined ReachMe</h3>
             {
                 loading ?
-                    <NewUsersSkeleton/>
+                    <NewUsersSkeleton rows={5}/>
                     :
                     newUsers.length !== 0 &&
                     newUsers.map(newUser =>

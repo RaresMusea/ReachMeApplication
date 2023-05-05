@@ -3,7 +3,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import {AccountBox, TagFaces} from "@mui/icons-material";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import {forwardRef, useState} from "react";
+import {forwardRef, useContext, useState} from "react";
 import '../../../Styles/Navbar/FeedDrawer.scss';
 import ImageInput from "../../Forms/Inputs/ImageInput";
 import {modifiedAccountDetails} from "../../../Modules/Object/AccountInfoManagementObjects";
@@ -19,6 +19,8 @@ import {validateName} from "../../../Modules/Validation/SignUpValidation";
 import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
 import {validateUsername} from "../../../Modules/Validation/AuthValidationBase";
 import GenericModal from "../../Modals/GenericModal";
+import {markBioRemoval, markNewBio} from "../../../Services/Firebase Service/Feed/FirebaseFeedService";
+import {StateManagementContext} from "../../../Context/StateManagementContext";
 
 const RightMoveTransition = forwardRef(function Transition(props, ref) {
     return <Slide direction="right" ref={ref} {...props}/>;
@@ -38,6 +40,7 @@ export default function ProfileInfoManager(props) {
     const [usernameError, setUsernameError] = useState({});
     const [bioAdded, setBioAdded] = useState(loggedInAccount.bio !== "empty");
     const [formTouched, setFormTouched] = useState(false);
+    const {setBioUpdate} = useContext(StateManagementContext);
     textareaBio = loggedInAccount.bio;
 
     const handleClickOpen = () => {
@@ -76,15 +79,18 @@ export default function ProfileInfoManager(props) {
     }
 
     const updateBio = async () => {
-
         await updateBioForUser();
         props.scheduleUpdate();
-        console.log("bio after update: " + textareaBio);
+
         if (textareaBio === "") {
+            await markBioRemoval();
             setBioAdded(false);
-            return;
+        } else {
+            await markNewBio(textareaBio);
+            setBioAdded(true);
         }
-        setBioAdded(true);
+
+        setBioUpdate(true);
     }
 
     const resetFields = () => {

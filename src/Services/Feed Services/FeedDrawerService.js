@@ -12,6 +12,7 @@ import {getDownloadURL} from "firebase/storage";
 import {getAuth, signOut} from "firebase/auth";
 import {modifiedAccountDetails} from "../../Modules/Object/AccountInfoManagementObjects";
 import {
+  markProfilePhotoRemovalActivity,
   markProfilePhotoUpdateAsActivity,
   removeProfilePictureHrefFromFirestore,
   updateProfilePictureHrefInFirestore,
@@ -77,6 +78,7 @@ export const removeProfilePictureForUser = async () => {
         style: "ProfilePictureSuccessAlert",
       };
       displayRemovalSuccessfulAlert(alertConfiguration);
+      markProfilePhotoRemovalActivity();
     })
     .catch((err) => {
       console.log(err);

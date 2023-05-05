@@ -1,21 +1,43 @@
-import {Avatar} from "@mui/joy";
-import {parseDateAndTime} from "../../../../Modules/Date/DatePipeModule";
+import UserHoverCard from "../../../User/Hover Card/UserHoverCard";
+import {useContext, useEffect, useState} from "react";
+import {StateManagementContext} from "../../../../Context/StateManagementContext";
+import {formatLatestActivity} from "../../../../Modules/Feed/Latest Activities/LatestActivitiesModule";
 
 export default function Activity(props) {
-    const activityType = props.activity.activityType;
+    const [target, setTarget] = useState({});
+    const {profilePhotoUpdate, setProfilePhotoUpdate, bioUpdate, setBioUpdate} = useContext(StateManagementContext);
+
+    useEffect(() => {
+        fetch(`http://localhost:8080/account/${props.activity.initiatorId}`)
+            .then(response => response.json())
+            .then((data) => setTarget(data))
+            .catch(err => console.log(err));
+
+        setTimeout(() => {
+        }, 200);
+
+        if (profilePhotoUpdate) {
+            setProfilePhotoUpdate(false);
+        }
+
+        if (bioUpdate) {
+            setBioUpdate(false);
+        }
+
+    }, [profilePhotoUpdate, bioUpdate]);
+
     return (
         <div className="ActivityContainer">
-            {
-                activityType === "removed the profile picture" || activityType === "added a new profile picture." &&
-                <>
-                    <div>
-                    <Avatar src={props.activity.initiatorProfilePicture}/>
+            <>
+                <div>
+                    <UserHoverCard
+                        additionalInfo={formatLatestActivity(props.activity)}
+                        userInfo={target}
+                        currentProfilePhoto={props.activity.initiatorProfilePicture}/>
                     <p className="ActivityDescriptor">{`${props.activity.activityInitiator} 
                     ${props.activity.activityType}`}</p>
-                    </div>
-                    <p className="ActivityDate">{parseDateAndTime(new Date(props.activity.activityDate))}</p>
-                </>
-            }
+                </div>
+            </>
         </div>
     );
 }

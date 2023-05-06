@@ -19,8 +19,12 @@ export default function PostPreview(props) {
             </p>
             {
                 props.resource !== null && getFileType(props.resource) === "photo" &&
-                <img className="ImageResource" src={URL.createObjectURL(props.resource)}
+                <img className="ResourcePreview" src={URL.createObjectURL(props.resource)}
                      alt="PostToBeUploaded"/>
+            }
+            {
+                props.resource !== null && getFileType(props.resource) === "video" &&
+                <video controls src={URL.createObjectURL(props.resource)}/>
             }
         </div>
     )

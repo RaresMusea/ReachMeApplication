@@ -7,13 +7,13 @@ import {ThemeProvider} from "@mui/material";
 import {isObjectEmpty} from "../../../Modules/Object/ObjectModule";
 import {styles, theme} from "../../../Modules/Themes/InputTheme";
 import useInputValue from "../../../Hooks/Forms/useInputValue";
+import useGeoLocation from "../../../Hooks/useGeoLocation";
 
 export default function LocationInput(props) {
     const {inputValue, setInputValue} = useInputValue(props.inputValue);
     const [focus, setFocus] = useState("action.active");
     const [error, setError] = useState(props.error);
-    const [geoLocationUsed, setGeoLocationUsed] = useState(false);
-
+    const {geo} = useGeoLocation();
 
     useEffect(() => {
         if (!isObjectEmpty(props.error)) {
@@ -31,18 +31,14 @@ export default function LocationInput(props) {
     useEffect(() => {
         if (props.geoLocationResultChanged) {
             setInputValue(props.geoLocationResult);
-            setGeoLocationUsed(true);
         }
         props.resetGeoLocationResult(false);
     }, [props.geoLocationResultChanged]);
 
-    useEffect(() => {
-        if (geoLocationUsed) {
-            props.getGPSInferredLocation(inputValue);
-        }
 
-        setGeoLocationUsed(false);
-    }, [geoLocationUsed]);
+    useEffect(()=>{
+       props.getGPSInferredLocation(geo);
+    },[geo]);
 
     const focused = () => {
         if (error['hasErrors']) {
@@ -77,6 +73,7 @@ export default function LocationInput(props) {
                                    variant="standard"
                                    error={isObjectEmpty(props.error) ? undefined : true}
                                    helperText={(isObjectEmpty(error) || !error['hasErrors']) ? undefined : error['message']}
+                                   autoFocus="true"
                                    onChange={(e) => {
 
                                        props.getInputText(e);

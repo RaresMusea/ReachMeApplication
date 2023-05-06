@@ -2,20 +2,32 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import location from "../../../../../Media/Images/map.svg";
 import '../../../../../Styles/Feed/Posts/Post Preview/Dialog/LocationDialog.scss'
 import {LocationOn} from "@mui/icons-material";
 import {buildError} from "../../../../../Modules/Sign Up/SignUpUtils";
 import LocationInput from "../../../../Forms/Inputs/LocationInput";
 import {isEmptyString} from "../../../../../Modules/Text/TextModule";
+import useGeoLocation from "../../../../../Hooks/useGeoLocation";
+import {isObjectEmpty} from "../../../../../Modules/Object/ObjectModule";
 
 export default function LocationDialog(props) {
     const [open, setOpen] = useState(false);
     const [error, setError] = useState({});
-    const [input, setInput] = useState(undefined);
+    const [input, setInput] = useState(` `);
     const [geoLocationResult, setGeoLocationResult] = useState("");
     const [geoLocationResultChanged, setGeoLocationResultChanged] = useState(false);
+    const {geo, getCoordinates} = useGeoLocation();
+
+    useEffect(() => {
+        if (!isObjectEmpty(geo)) {
+            setGeoLocationResult(`${geo.county}, ${geo.country}`);
+            setInput(`${geo.county}, ${geo.country}`);
+            props.setLocation(`${geo.county}, ${geo.country}`);
+            setGeoLocationResultChanged(true);
+        }
+    }, [geo]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -33,9 +45,8 @@ export default function LocationDialog(props) {
         setInput(value);
     }
 
-    const handleGPSLocalization = () => {
-        setGeoLocationResult("Amerika");
-        setGeoLocationResultChanged(true);
+    const handleGPSLocalization = async () => {
+        await getCoordinates();
     }
 
     const handleLocationSubmit = () => {
@@ -52,7 +63,7 @@ export default function LocationDialog(props) {
         <div>
             <div className="ClickableObject"
                  onClick={handleClickOpen}>
-                <span>{isEmptyString(input) || input.length === 0 ?
+                <span>{isEmptyString(input) || input === ` ` || input === `` ?
                     `Add location` : `Edit location`}
                 </span>
                 <img src={location} alt="Add location"

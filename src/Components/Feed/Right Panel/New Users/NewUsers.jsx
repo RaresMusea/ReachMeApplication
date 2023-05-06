@@ -1,5 +1,5 @@
 import {lazy, useContext, useEffect, useState} from "react";
-import NewUsersSkeleton from "../../../Skeleton/Feed/RightSideFeedSkeleton/NewUsersSkeleton";
+import RightSideFeedSkeleton from "../../../Skeleton/Feed/RightSideFeedSkeleton/RightSideFeedSkeleton";
 import {onSnapshot} from "firebase/firestore";
 import {accountsRef} from "../../../../Modules/Firebase/FirebaseIntegration";
 import {StateManagementContext} from "../../../../Context/StateManagementContext";
@@ -45,7 +45,7 @@ export default function NewUsers() {
             <h3>Recently joined ReachMe</h3>
             {
                 loading ?
-                    <NewUsersSkeleton rows={5}/>
+                    <RightSideFeedSkeleton rows={5}/>
                     :
                     newUsers.length !== 0 &&
                     newUsers.map(newUser =>

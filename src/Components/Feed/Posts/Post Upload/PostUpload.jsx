@@ -1,0 +1,100 @@
+import '../../../../Styles/Feed/Posts/Post Upload/PostUpload.scss';
+import gallery from '../../../../Media/Images/gallery.svg';
+import {Avatar} from "@mui/joy";
+import {loggedInAccount} from "../../../../Services/Feed Services/FeedDrawerService";
+import {Slide} from "@mui/material";
+import PostUploadSkeleton from "../../../Skeleton/Feed/PostUploadSkeleton/PostUploadSkeleton";
+import PostPreview from "../Post Preview/PostPreview";
+import usePostUploader from "../../../../Hooks/usePostUploader";
+import {ToastContainer} from "react-toastify";
+import {RemoveCircle} from "@mui/icons-material";
+import {useRef} from "react";
+import LocationDialog from "../Post Preview/Dialog/LocationDialog";
+
+export default function PostUpload() {
+    const {
+        description,
+        handleInputChange,
+        handleFileSelection,
+        loading,
+        start,
+        resource,
+        setResource,
+        location,
+        setLocation,
+    } = usePostUploader();
+
+    const topRef = useRef();
+
+
+    return (
+        <div className="PostUploadWrapper" ref={topRef}>
+            {
+                loading === true ?
+                    <PostUploadSkeleton/>
+                    :
+                    <div className="UploadFirstRow">
+                        <label htmlFor=" username">
+                            <Avatar className="PostUploadAvatar" src={loggedInAccount.profilePhotoHref}/>
+                        </label>
+                        <textarea onChange={handleInputChange}
+                                  className="UploadInput" id="username"
+                                  placeholder={`Reach out other users @${loggedInAccount.userName}`}/>
+                    </div>
+            }
+            {
+                start &&
+                <Slide direction="right" in={start} mountOnEnter unmountOnExit>
+                    <div className="PostUploadPreview">
+                        <h2 className="UploadHeader">Upload a post</h2>
+                        <PostPreview
+                            location={location}
+                            setLocation={setLocation}
+                            setResource={setResource}
+                            resource={resource}
+                            description={description}/>
+                    </div>
+                </Slide>
+            }
+            {
+                start &&
+                <div className="Options">
+                    <div className="Divider"/>
+                    <Slide direction="right" in={start} mountOnEnter unmountOnExit>
+                        <div className="Options">
+                            <input type="file"
+                                   style={{display: "none"}}
+                                   id="media"
+                                   onChange={handleFileSelection}/>
+                            <label htmlFor="media">
+                                <div className="ClickableObject">
+                                    <span>Add media</span>
+                                    <img src={gallery} alt="Attach an image or a video as a post"
+                                         className="ClickableIcon"/>
+                                </div>
+                            </label>
+                            <LocationDialog location={location}
+                                            setLocation={setLocation}/>
+                            {
+                                resource !== null &&
+                                <div className="ClickableObject"
+                                     onClick={() => {
+                                         setResource(null);
+                                         topRef.current?.scrollIntoView({
+                                             behavior: "smooth"
+                                         });
+                                     }}>
+                                    <span>Remove attached media</span>
+                                    <RemoveCircle
+                                        style={{color: "red"}}
+                                        className="ClickableIcon"/>
+                                </div>
+                            }
+                        </div>
+                    </Slide>
+                </div>
+            }
+            <ToastContainer position="top-left"/>
+        </div>
+    );
+}

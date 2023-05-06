@@ -1,0 +1,33 @@
+.PostPreviewWrapper{
+  overflow: hidden;
+  margin: 0 auto;
+  border: 2px solid #dbdbdb;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  border-radius: 10px;
+  width:60%;
+  justify-content: center;
+  display:flex;
+  flex-direction: column;
+
+  .PostPreviewHeader{
+    @apply p-3;
+    display:flex;
+    gap:10px;
+    flex-direction: row;
+    align-items: center;
+    font-family: 'PT Sans', sans-serif;
+    justify-content: flex-start;
+  }
+
+  .PostDescription{
+    @apply p-3;
+    white-space: pre;
+  }
+
+  .ImageResource{
+    width:100%;
+    max-height: 80%;
+    @apply mb-10;
+  }
+
+}

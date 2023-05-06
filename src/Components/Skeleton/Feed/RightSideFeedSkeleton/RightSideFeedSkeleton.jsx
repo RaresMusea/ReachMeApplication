@@ -1,9 +1,9 @@
 import {Skeleton} from "@mui/material";
 import '../../../../Styles/Skeleton/NewUsersSkeleton.scss';
 
-export default function NewUsersSkeleton(props) {
+export default function RightSideFeedSkeleton(props) {
     const items = props.rows;
-    const list = Array.from(Array(5).fill(items));
+    const list = Array.from(Array(items).fill(items));
 
     return (
         <>

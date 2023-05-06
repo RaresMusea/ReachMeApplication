@@ -1,0 +1,35 @@
+.LocationDialogTitle{
+  font-family: "Rajdhani", sans-serif!important;
+  font-size:1.5em;
+}
+
+.Paragraph{
+  font-family: 'PT Sans', sans-serif;
+  margin-top:1em;
+}
+
+.DialogActions{
+
+  button{
+    transition: .2s ease-in-out;
+    @apply text-white;
+    @apply rounded-md;
+    @apply p-1;
+    @apply mr-2;
+  }
+  button:hover{
+    transform:scale(1.1);
+  }
+
+  .AddLocation{
+    @apply bg-[#108e8e];
+  }
+
+  .UseGeolocationButton{
+    @apply bg-[#094561];
+  }
+
+  .CloseButton{
+    @apply bg-[#fed349]
+  }
+}

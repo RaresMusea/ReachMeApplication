@@ -47,7 +47,8 @@ export default function ImageInput(props) {
                         <TextField label="TextField"
                                    InputProps={{
                                        startAdornment: (
-                                           <InputAdornment position={props.adornmentPosition}>
+                                           <InputAdornment
+                                               position={props.adornmentPosition}>
                                                <props.icon sx={{color: focus, mr: 1, my: 0.5}}/>
                                            </InputAdornment>
                                        ),

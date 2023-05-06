@@ -3,12 +3,12 @@ import Navbar from "../Navbar/Navbar";
 import {getRequiredMetadata, loggedInAccount,} from "../../Services/Feed Services/FeedDrawerService";
 import {currentlyLoggedInUser} from "../../Modules/Session/CurrentSessionModule";
 import "react-toastify/dist/ReactToastify.css";
-import {ToastContainer} from "react-toastify";
 import {onSnapshot} from "firebase/firestore";
 import {notificationsRef} from "../../Modules/Firebase/FirebaseIntegration";
 import {NotificationContext} from "../../Context/NotificationContext";
 import {sortReceivedNotifications} from "../../Modules/Common Functionality/CommonFunctionality";
 import '../../Styles/Feed/Feed.scss';
+import PostUpload from "./Posts/Post Upload/PostUpload";
 
 const NewUsers = lazy(() => import("./Right Panel/New Users/NewUsers"));
 const UserActivityCollection = lazy(() => import("./Right Panel/User Activity/UserActivityCollection"));
@@ -118,6 +118,7 @@ export default function Feed() {
             />
             <div className="FeedWrapper">
                 <div className="LeftSide">
+                    <PostUpload/>
                     <p>Post</p>
                     <p>Post</p>
                     <p>Post</p>
@@ -130,7 +131,6 @@ export default function Feed() {
                     <UserActivityCollection/>
                 </div>
             </div>
-            <ToastContainer/>
             <div id="SignOutModal"/>
         </>
     );

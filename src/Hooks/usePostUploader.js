@@ -9,7 +9,7 @@ export default function usePostUploader() {
     const [valid, setValid] = useState(true);
     const [additionalMessage, setAdditionalMessage] = useState("");
     const [resource, setResource] = useState(null);
-    const [location, setLocation] = useState(null);
+    const [location, setLocation] = useState("");
 
     useEffect(() => {
         setTimeout(() => {

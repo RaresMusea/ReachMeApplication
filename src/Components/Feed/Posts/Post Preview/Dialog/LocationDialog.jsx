@@ -5,14 +5,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {useState} from "react";
 import location from "../../../../../Media/Images/map.svg";
 import '../../../../../Styles/Feed/Posts/Post Preview/Dialog/LocationDialog.scss'
-import ImageInput from "../../../../Forms/Inputs/ImageInput";
 import {LocationOn} from "@mui/icons-material";
 import {buildError} from "../../../../../Modules/Sign Up/SignUpUtils";
+import LocationInput from "../../../../Forms/Inputs/LocationInput";
+import {isEmptyString} from "../../../../../Modules/Text/TextModule";
 
 export default function LocationDialog(props) {
     const [open, setOpen] = useState(false);
     const [error, setError] = useState({});
-    const [input, setInput] = useState("");
+    const [input, setInput] = useState(undefined);
+    const [geoLocationResult, setGeoLocationResult] = useState("");
+    const [geoLocationResultChanged, setGeoLocationResultChanged] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -22,8 +25,17 @@ export default function LocationDialog(props) {
         setOpen(false);
     };
 
-    const getLocationInput = (e) => {
+    const getLocation = (e) => {
         setInput(e.target.value);
+    }
+
+    const getGPSInferredLocation = (value) => {
+        setInput(value);
+    }
+
+    const handleGPSLocalization = () => {
+        setGeoLocationResult("Amerika");
+        setGeoLocationResultChanged(true);
     }
 
     const handleLocationSubmit = () => {
@@ -40,8 +52,10 @@ export default function LocationDialog(props) {
         <div>
             <div className="ClickableObject"
                  onClick={handleClickOpen}>
-                <span>Add location</span>
-                <img src={location} alt="Attach an image or a video as a post"
+                <span>{isEmptyString(input) || input.length === 0 ?
+                    `Add location` : `Edit location`}
+                </span>
+                <img src={location} alt="Add location"
                      className="ClickableIcon"/>
             </div>
             <Dialog open={open} onClose={handleClose}>
@@ -56,16 +70,20 @@ export default function LocationDialog(props) {
                         Still there? Use our geo-location service in order to get localized even more faster!
                     </p>
                     <div className="LocationForm">
-                        <ImageInput
+                        <LocationInput
                             classname="location"
                             className='location'
                             type={2}
                             error={error}
-                            inputValue={""}
+                            inputValue={input}
+                            resetGeoLocationResult={setGeoLocationResultChanged}
+                            geoLocationResultChanged={geoLocationResultChanged}
                             icon={LocationOn}
                             placeholder={'Location'}
+                            geoLocationResult={geoLocationResult}
                             adornmentPosition={'start'}
-                            getInputText={getLocationInput}/>
+                            getGPSInferredLocation={getGPSInferredLocation}
+                            getInputText={getLocation}/>
                     </div>
                 </DialogContent>
                 <DialogActions className="DialogActions">
@@ -73,7 +91,10 @@ export default function LocationDialog(props) {
                         onClick={handleLocationSubmit}
                         className="AddLocation">Add location
                     </button>
-                    <button className="UseGeolocationButton">Use geo-location</button>
+                    <button
+                        onClick={handleGPSLocalization}
+                        className="UseGeolocationButton">Use geo-location
+                    </button>
                     <button className="CloseButton"
                             onClick={handleClose}>Close
                     </button>

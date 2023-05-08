@@ -7,6 +7,10 @@ export const StateManagementContextProvider = ({children}) => {
     const [conversationEmpty, setConversationEmpty] = useState(true);
     const [profilePhotoUpdate, setProfilePhotoUpdate] = useState(false);
     const [bioUpdate, setBioUpdate] = useState(false);
+    const [posts, setPosts] = useState([]);
+    const [newPosts, setNewPosts] = useState([]);
+    const [update, setUpdate] = useState(false);
+
 
     return (
         <StateManagementContext.Provider
@@ -14,7 +18,13 @@ export const StateManagementContextProvider = ({children}) => {
                 joinedUserUpdate,
                 setJoinedUserUpdate,
                 conversationEmpty,
+                newPosts,
+                setNewPosts,
                 setConversationEmpty,
+                update,
+                setUpdate,
+                posts,
+                setPosts,
                 profilePhotoUpdate,
                 setProfilePhotoUpdate,
                 bioUpdate,

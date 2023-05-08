@@ -57,6 +57,7 @@ export default function ProfilePhotoManager(props) {
             props.update();
             const extension = fileToUpload.name.split(`.`)[1].toLowerCase();
             setTimeout(() => handleClose(), 1500);
+            loggedInAccount.profilePhotoHref = localStorage.getItem("profilePhoto");
             if (extension === "jpg") props.update();
         }
     };

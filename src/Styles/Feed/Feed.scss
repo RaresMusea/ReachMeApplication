@@ -4,11 +4,14 @@
   box-sizing: border-box;
 }
 
+.FeedWrapper::-webkit-scrollbar{
+  display: none;
+}
+
 .FeedWrapper {
   display: flex;
   justify-content: space-between;
   @apply mt-5;
-  height:20000px;
 
   .LeftSide {
     flex: 4;
@@ -121,5 +124,15 @@
         }
       }
     }
+  }
+
+  .PostsWrapper{
+    @apply mt-10;
+    @apply mb-10;
+    @apply w-[100%];
+    gap:1em;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
   }
 }

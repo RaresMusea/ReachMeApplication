@@ -140,3 +140,20 @@ export const markNewBio = async (newBio) => {
     await checkForActivities();
     await updateActivitiesRegardingBioChange(newBio);
 }
+
+export const markNewPost = async (postType, resource, postId) => {
+    await updateDoc(doc(firebaseFirestore, "userActivity", "reachmeActivities"), {
+        ["activities"]: arrayUnion({
+            "activityInitiator": loggedInAccount.userRealName,
+            "initiatorId": loggedInAccount.userFirebaseIdentifier,
+            "initiatorBio": loggedInAccount.bio,
+            "initiatorProfilePicture": loggedInAccount.profilePhotoHref,
+            "postIdentifier": postId,
+            "activityType": `uploaded a new ${postType === "text" ? "post" : postType}.`,
+            "activityDate": Date.now(),
+            "resource": resource,
+        })
+    });
+
+    await checkForActivities();
+}

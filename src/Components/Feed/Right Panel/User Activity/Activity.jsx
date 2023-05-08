@@ -31,7 +31,26 @@ export default function Activity(props) {
             <>
                 <div>
                     <UserHoverCard
-                        additionalInfo={formatLatestActivity(props.activity)}
+                        additionalInfo={<div>
+                            <p>{formatLatestActivity(props.activity)}</p>
+                            {
+                                "postIdentifier" in props.activity &&
+                                <div>
+                                    {
+                                        props.activity.activityType === "uploaded a new post." &&
+                                        <p>{props.activity.resource}</p>
+                                    }
+                                    {
+                                        props.activity.activityType === "uploaded a new photo." &&
+                                        <img src={props.activity.resource} alt="Uploaded photo"/>
+                                    }
+                                    {
+                                        props.activity.activityType === "uploaded a new video." &&
+                                        <video controls src={props.activity.resource}/>
+                                    }
+                                </div>
+                            }
+                        </div>}
                         userInfo={target}
                         currentProfilePhoto={props.activity.initiatorProfilePicture}/>
                     <p className="ActivityDescriptor">{`${props.activity.activityInitiator} 

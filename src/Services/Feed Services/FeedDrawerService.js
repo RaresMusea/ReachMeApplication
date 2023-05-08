@@ -79,6 +79,7 @@ export const removeProfilePictureForUser = async () => {
       };
       displayRemovalSuccessfulAlert(alertConfiguration);
       markProfilePhotoRemovalActivity();
+      localStorage.setItem("profilePhoto", defaultProfilePic);
     })
     .catch((err) => {
       console.log(err);
@@ -134,6 +135,7 @@ const uploadLocalProfilePicture = async (payload) => {
           loggedInAccount.userFirebaseIdentifier,
           downloadURL
         );
+        localStorage.setItem("profilePhoto",downloadURL);
         await markProfilePhotoUpdateAsActivity(downloadURL);
         await updateImageInConversations(
           downloadURL,

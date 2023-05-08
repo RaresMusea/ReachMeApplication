@@ -19,6 +19,10 @@ export const isSelectedFileValid = (file) => {
 }
 
 export const getFileType = (file) => {
+    if (file === null) {
+        return "text";
+    }
+
     const fileExtension = file.name.split(".")[1];
     if (acceptedVideoFormats.includes(fileExtension)) {
         return "video";

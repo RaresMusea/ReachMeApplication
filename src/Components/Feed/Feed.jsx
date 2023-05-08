@@ -12,6 +12,7 @@ import PostUpload from "./Posts/Post Upload/PostUpload";
 
 const NewUsers = lazy(() => import("./Right Panel/New Users/NewUsers"));
 const UserActivityCollection = lazy(() => import("./Right Panel/User Activity/UserActivityCollection"));
+const PostsCollection = lazy(()=>import ("./Posts/Posts Collection/PostsCollection"));
 
 export default function Feed() {
     const [update, setUpdate] = useState(false);
@@ -119,12 +120,7 @@ export default function Feed() {
             <div className="FeedWrapper">
                 <div className="LeftSide">
                     <PostUpload/>
-                    <p>Post</p>
-                    <p>Post</p>
-                    <p>Post</p>
-                    <p>Post</p>
-                    <p>Post</p>
-                    <p>Post</p>
+                    <PostsCollection/>
                 </div>
                 <div className="RightSide">
                     <NewUsers/>

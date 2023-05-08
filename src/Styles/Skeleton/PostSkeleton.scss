@@ -1,0 +1,32 @@
+.SkeletonPostHeader{
+  display:flex;
+  flex-direction:row;
+  align-items: center;
+  gap:10px;
+  @apply p-3;
+
+  .Details{
+    width: 50%!important;
+  }
+}
+
+.TextPostSkeleton{
+  @apply p-3;
+
+  .Description{
+    width: 100%!important;
+  }
+}
+
+.MediaPostSkeleton{
+ @apply p-3;
+
+  .TinyDescription{
+    @apply mb-3;
+    width:100% !important;
+  }
+
+  .MediaResource{
+    width:100%!important;
+  }
+}

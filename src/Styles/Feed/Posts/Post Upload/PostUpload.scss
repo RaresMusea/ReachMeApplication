@@ -31,6 +31,7 @@
       padding: 5.5px 0;
       @apply pl-3;
       resize: none;
+      white-space: pre-wrap;
     }
 
     .UploadInput::placeholder {
@@ -91,10 +92,19 @@
       opacity: 15%;
     }
 
-    .Options {
+    .Actions {
       display: flex;
       flex-direction: row;
-      gap:15px;
+      align-items: center;
+      justify-content: space-between;
+      @apply mt-3;
+
+      .PostEditActions {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 15px;
+      }
 
       .ClickableObject {
         @apply mt-1;
@@ -113,11 +123,30 @@
       }
 
       .ClickableObject:hover,
-      .ClickableObject:focus{
+      .ClickableObject:focus {
         opacity: 70%;
+        text-decoration: underline;
       }
 
+      .UploadButton {
+        @apply bg-[#094561];
+        @apply p-2;
+        @apply text-white;
+        @apply font-bold;
+        font-family: 'PT Sans', sans-serif;
+        transition: .2s ease-in-out;
+      }
+
+      .UploadButton:hover {
+        @apply bg-[#2c3e50];
+      }
     }
   }
+}
 
+.Toastify__progress-bar--success {
+  background-color: #108c8e;
+}
+.Toastify__toast-icon {
+  color: #108c8e;
 }

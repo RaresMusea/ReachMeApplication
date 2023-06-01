@@ -4,50 +4,20 @@ import {parseDateAndTime} from "../../../../Modules/Date/DatePipeModule";
 import PostSkeleton from "../../../Skeleton/Feed/PostSkeleton";
 import PostOptionsMenu from "../Post Options/PostOptionsMenu";
 import FsLightbox from "fslightbox-react";
-import {useEffect, useState} from "react";
-import liked from '../../../../Media/Images/heart (2).svg';
-import like from '../../../../Media/Images/like (1).svg';
-import dislike from '../../../../Media/Images/dislike (1).svg';
-import disliked from '../../../../Media/Images/dislike (2).svg';
+import {useState} from "react";
+import useReactions from "../../../../Hooks/useReactions";
 
 
 export default function Post(props) {
     const [lightBoxToggled, setLightBoxToggled] = useState(false);
-    const [likedPost, setLikedPost] = useState(false);
-    const [dislikedPost, setDislikedPost] = useState(true);
-    const [likeIcon, setLikeIcon] = useState(like);
-    const [dislikeIcon, setDislikeIcon] = useState(dislike);
-
-    useEffect(() => {
-        if (likedPost) {
-            setLikeIcon(liked);
-        } else {
-            setLikeIcon(like);
-        }
-    }, [likedPost]);
-
-    useEffect(() => {
-        if (dislikedPost) {
-            setDislikeIcon(disliked);
-        } else {
-            setDislikeIcon(dislike);
-        }
-    }, [dislikedPost]);
-
-    const handleLikeSend=()=>{
-        if(dislikedPost){
-            setDislikedPost(!dislikedPost);
-        }
-        setLikedPost(!likedPost);
-    }
-
-    const handleDislikeSend=()=>{
-        if(likedPost){
-            setLikedPost(!likedPost);
-        }
-
-        setDislikedPost(!dislikedPost);
-    }
+    const {
+        handleLikeSend,
+        handleDislikeSend,
+        likeIcon,
+        likesList,
+        dislikeIcon,
+        dislikesList,
+    } = useReactions(props);
 
     return (
         <div className="PostWrapper">
@@ -95,16 +65,22 @@ export default function Post(props) {
                         <div className="PostDivider"/>
                         <div className="PostReactions">
                             <div
-                                onClick={handleLikeSend}
                                 className="Reaction">
-                                <img src={likeIcon} alt="Like Reaction Icon"/>
-                                <span>Likes</span>
+                                <img
+                                    onClick={handleLikeSend}
+                                    src={likeIcon} alt="Like Reaction Icon"/>
+                                <span>
+                                    {likesList.length !== undefined ? likesList.length + " likes" : "No likes"}
+                                </span>
                             </div>
                             <div
-                                onClick={handleDislikeSend}
                                 className="Reaction">
-                                <img src={dislikeIcon} alt="Like Reaction Icon"/>
-                                <span>Dislikes</span>
+                                <img
+                                    onClick={handleDislikeSend}
+                                    src={dislikeIcon} alt="Like Reaction Icon"/>
+                                <span>
+                                    {dislikesList.length !== undefined ? dislikesList.length + " dislikes" : "No dislikes"}
+                                </span>
                             </div>
                         </div>
                     </div>

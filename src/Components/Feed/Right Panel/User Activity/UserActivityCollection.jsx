@@ -35,18 +35,20 @@ export default function UserActivityCollection() {
     useEffect(() => {
         if (!effectRan.current === false) {
             if (posts.length !== 0 && activities.length !== 0) {
-                const lastPostId = activities[0].postIdentifier;
-                const identifiers = [];
-                posts.forEach(post => {
-                    identifiers.push(post.postIdentifier);
-                });
-                if (!identifiers.includes(lastPostId)) {
-                    fetch("http://localhost:8080/feed/post/" + lastPostId)
-                        .then(response => response.json())
-                        .then(data => {
-                            setPosts([data, ...posts]);
-                        })
-                        .catch(console.error);
+                if ("postIdentifier" in activities[0]) {
+                    const lastPostId = activities[0].postIdentifier;
+                    const identifiers = [];
+                    posts.forEach(post => {
+                        identifiers.push(post.postIdentifier);
+                    });
+                    if (!identifiers.includes(lastPostId)) {
+                        fetch("http://localhost:8080/feed/post/" + lastPostId)
+                            .then(response => response.json())
+                            .then(data => {
+                                setPosts([data, ...posts]);
+                            })
+                            .catch(console.error);
+                    }
                 }
             }
         }

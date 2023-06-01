@@ -1,5 +1,5 @@
 .ConversationWrapper {
-  flex: 2;
+  flex: 3;
   @apply text-white;
   .ConversationHeader {
     @apply overflow-hidden;
@@ -26,6 +26,7 @@
     @apply cursor-pointer;
     @apply flex;
     @apply items-center;
+
     .ConversationAvatar {
       @apply mr-[.5em];
       @apply w-[3em];

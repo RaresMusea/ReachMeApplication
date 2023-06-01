@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useContext} from "react";
+import {useContext, useRef} from "react";
 import Dialog from "@mui/material/Dialog";
 import Slide from "@mui/material/Slide";
 import "../../Styles/Messaging/MessagingFrame.scss";
@@ -15,7 +15,8 @@ export const Transition = React.forwardRef(function Transition(props, ref) {
 export default function MessagingFrame() {
     const {conversationOpened, setConversationOpened, closeMessaging, messagingOpened, setMessagingOpened} =
         useContext(OpenContext);
-
+    const sideBarRef = useRef(null);
+    const effectRan = useRef(false);
     /*  useEffect(() => {
       if (open) {
         document.title = `ReachMe Messaging`;
@@ -56,7 +57,7 @@ export default function MessagingFrame() {
                 TransitionComponent={Transition}
             >
                 <div className="ReachMeMessagingWrapper">
-                    <MessagingFrameSideBar close={handleClose}/>
+                    <MessagingFrameSideBar ref={sideBarRef} close={handleClose}/>
                     {conversationOpened && <Conversation/>}
                 </div>
             </Dialog>

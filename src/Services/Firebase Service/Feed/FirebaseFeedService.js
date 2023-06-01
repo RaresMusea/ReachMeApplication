@@ -157,3 +157,20 @@ export const markNewPost = async (postType, resource, postId) => {
 
     await checkForActivities();
 }
+
+export const markLike = async(postOwner, postOwnerId, postType, postId)=>{
+    await updateDoc(doc(firebaseFirestore, "userActivity", "reachmeActivities"), {
+        ["activities"]: arrayUnion({
+            "activityInitiator": loggedInAccount.userRealName,
+            "initiatorId": loggedInAccount.userFirebaseIdentifier,
+            "initiatorBio": loggedInAccount.bio,
+            "initiatorProfilePicture": loggedInAccount.profilePhotoHref,
+            "postId": postId,
+            "postOwner":postOwner,
+            "postOwnerId":postOwnerId,
+            "activityType": `liked the  ${postType === "text" ? "post" : postType} uploaded by`,
+            "activityDate": Date.now(),
+            "resource": null,
+        })
+    });
+}

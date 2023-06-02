@@ -24,6 +24,7 @@ export const notificationsRef = collection(
     firebaseFirestore,
     "messagesNotifications"
 );
+export const reactionsRef = collection(firebaseFirestore, "postReactions");
 export const accountsRef = collection(firebaseFirestore, "userData");
 export const activitiesRef = collection(firebaseFirestore, "userActivity");
 

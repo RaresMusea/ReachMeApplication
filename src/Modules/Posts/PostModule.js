@@ -1,4 +1,5 @@
 import {toast} from "react-toastify";
+import RechargeToast from "../../Components/RechargeToast/RechargeToast";
 
 export const buildPostObject = (location, description, file, owner) => {
     return {
@@ -19,4 +20,10 @@ export const renderUploadFailedToast = (message) => {
 
 export const renderUploadSuccessfulToast = (message) => {
     notifyToast(message);
+}
+
+const notifyRechargePost = (component) => toast.info(component, {autoClose:10000});
+
+export const renderRechargeToast = () =>{
+    notifyRechargePost(<RechargeToast/>);
 }

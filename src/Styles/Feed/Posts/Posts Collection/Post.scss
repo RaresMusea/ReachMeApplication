@@ -77,3 +77,30 @@
     gap: .2em;
   }
 }
+.ReactionsDialogTitle{
+  font-family: 'Rajdhani', sans-serif;
+  @apply text-[1.5em];
+  @apply text-center;
+  @apply font-extrabold;
+}
+
+.NoReactions{
+  @apply text-center;
+  font-family:'PT Sans', sans-serif;
+  @apply mb-[1em];
+  @apply text-[1.1em];
+}
+
+
+.ListElement{
+  transition: .2s ease-in-out;
+  cursor:pointer;
+}
+
+.ListElement:hover{
+  background-color: #dbdbdb;
+}
+
+.ReactionsList:last-child{
+  @apply mb-[0.5em];
+}

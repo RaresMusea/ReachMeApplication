@@ -6,6 +6,7 @@ import {renderUploadFailedToast, renderUploadSuccessfulToast} from "../../Module
 import {getFileType} from "../../Modules/Validation/PostUploadFileFormatValidator";
 import {generateUuid} from "../../Modules/Common Functionality/CommonFunctionality";
 import {markNewPost} from "../Firebase Service/Feed/FirebaseFeedService";
+import {setFirebasePostReactionsCollection} from "../Firebase Service/Post Service/FirebasePostService";
 
 const uploadPostPayload = `http://localhost:8080/feed/post`;
 let uploadPostPayloadBody = {
@@ -39,6 +40,7 @@ export const uploadPost = async (postObject) => {
         uploadPostPayloadBody.postType = postType;
         await savePost(postObject);
         await markNewPost("text", postObject.description, uploadPostPayloadBody.postIdentifier);
+        await setFirebasePostReactionsCollection(uploadPostPayloadBody.postIdentifier);
         return;
     }
 

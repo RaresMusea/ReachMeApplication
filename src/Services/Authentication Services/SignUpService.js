@@ -3,6 +3,8 @@ import {signUpCredentials} from "../../Modules/Validation/SignUpValidation";
 import {getAuth, signOut} from "firebase/auth";
 import {storeRequiredUserDataToFirestore} from "../Firebase Service/Authentication/FirebaseAuthService";
 import {createMessageNotificationsCollection} from "../Firebase Service/Messaging/FirebaseMessagingService";
+import {doc, setDoc} from "firebase/firestore";
+import {firebaseFirestore} from "../../Modules/Firebase/FirebaseIntegration";
 
 const postEndpoint = `http://localhost:8080/account`;
 const testConnectionEndpoint = `http://localhost:8080/connectionAvailable`;
@@ -78,6 +80,7 @@ export const saveUserAccountMetadata = async (user) => {
         .then((data) => {
             storeRequiredUserDataToFirestore(data);
             createMessageNotificationsCollection(payloadBody.userFirebaseIdentifier);
+            createPostsNotificationsCollection(payloadBody.userFirebaseIdentifier);
             displaySignUpSuccessAlert(`Account created successfully, ${signUpCredentials.fullName}! Enjoy the ReachMe app and
                     stay surrounded only by wonderful people!&nbsp;You will be automatically redirected to the Log In
                     page where you can enter your credentials and access your profile.`);
@@ -86,6 +89,10 @@ export const saveUserAccountMetadata = async (user) => {
         .catch(() => {
             displaySignUpFailedAlert(`Sign up failed due to an internal server error!\nPlease try again later.`);
         })
+}
+
+const createPostsNotificationsCollection=async(userId)=>{
+    await setDoc(doc(firebaseFirestore, "postsNotifications", userId), {});
 }
 
 export const signOutUser = () => {

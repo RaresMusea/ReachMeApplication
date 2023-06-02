@@ -5,7 +5,7 @@ const Post = lazy(() => import ("./Post"));
 
 export default function PostsCollection() {
 
-    const {posts, setPosts} = useContext(StateManagementContext);
+    const {posts, setPosts, manualRecharge, setManualRecharge} = useContext(StateManagementContext);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -22,6 +22,22 @@ export default function PostsCollection() {
 
     }, []);
 
+    useEffect(() => {
+        if (manualRecharge) {
+            setLoading(true);
+            setPosts([]);
+            fetch(`http://localhost:8080/feed/post`)
+                .then(response => response.json())
+                .then(data => {
+                    setPosts(data);
+                    setTimeout(()=> {
+                        setManualRecharge(false);
+                        setLoading(false);
+                    },1500);
+                })
+                .catch(console.error);
+        }
+    }, [manualRecharge])
 
     return (<div className="PostsWrapper">
         {

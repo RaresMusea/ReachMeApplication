@@ -158,7 +158,15 @@ export const markNewPost = async (postType, resource, postId) => {
     await checkForActivities();
 }
 
-export const markLike = async(postOwner, postOwnerId, postType, postId)=>{
+export const markLike = async (postOwnerName, postOwnerId, postType, postId) => {
+    let activityType;
+
+    if (postOwnerName === loggedInAccount.userRealName) {
+        activityType = `liked his/her post.`;
+    } else {
+        activityType = `liked the ${postType === "text" ? "post" : postType} uploaded by ${postOwnerName}`;
+    }
+
     await updateDoc(doc(firebaseFirestore, "userActivity", "reachmeActivities"), {
         ["activities"]: arrayUnion({
             "activityInitiator": loggedInAccount.userRealName,
@@ -166,11 +174,63 @@ export const markLike = async(postOwner, postOwnerId, postType, postId)=>{
             "initiatorBio": loggedInAccount.bio,
             "initiatorProfilePicture": loggedInAccount.profilePhotoHref,
             "postId": postId,
-            "postOwner":postOwner,
-            "postOwnerId":postOwnerId,
-            "activityType": `liked the  ${postType === "text" ? "post" : postType} uploaded by`,
+            "postOwner": postOwnerName,
+            "postOwnerId": postOwnerId,
+            "activityType": activityType,
             "activityDate": Date.now(),
             "resource": null,
         })
     });
+    await checkForActivities();
 }
+
+export const markDislike = async(postOwnerName, postOwnerId, postType, postId) =>{
+    let activityType;
+
+    if (postOwnerName === loggedInAccount.userRealName) {
+        activityType = `disliked his/her post.`;
+    } else {
+        activityType = `disliked the ${postType === "text" ? "post" : postType} uploaded by ${postOwnerName}`;
+    }
+
+    await updateDoc(doc(firebaseFirestore, "userActivity", "reachmeActivities"), {
+        ["activities"]: arrayUnion({
+            "activityInitiator": loggedInAccount.userRealName,
+            "initiatorId": loggedInAccount.userFirebaseIdentifier,
+            "initiatorBio": loggedInAccount.bio,
+            "initiatorProfilePicture": loggedInAccount.profilePhotoHref,
+            "postId": postId,
+            "postOwner": postOwnerName,
+            "postOwnerId": postOwnerId,
+            "activityType": activityType,
+            "activityDate": Date.now(),
+            "resource": null,
+        })
+    });
+    await checkForActivities();
+}
+
+export const unmarkReaction = async (postIdentifier) => {
+    const currentActivities = await getDoc(doc(firebaseFirestore, "userActivity", "reachmeActivities"));
+    let activitiesList = currentActivities.data().activities;
+
+    if (activitiesList.length === 0) {
+        return;
+    }
+
+    const newActivities = [];
+    activitiesList.forEach(activity => {
+        if (activity.postId !== postIdentifier) {
+            newActivities.push(activity);
+        }
+    });
+
+    await updateDoc(doc(firebaseFirestore, "userActivity", "reachmeActivities"),
+        {
+            ["activities"]: newActivities,
+        });
+
+    await checkForActivities();
+}
+
+

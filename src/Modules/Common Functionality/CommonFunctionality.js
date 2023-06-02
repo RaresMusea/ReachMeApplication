@@ -9,7 +9,7 @@ export const getDownloadLink = (fileName, url) => {
 }
 
 export const sortReceivedNotifications = (array) => {
-    array.sort((a, b) => b.notificationDate - a.notificationDate);
+    array.sort((a, b) => b.sendingDate - a.sendingDate);
 }
 
 export const sortActivitiesDescending = (array) => {

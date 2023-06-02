@@ -10,6 +10,8 @@ export const StateManagementContextProvider = ({children}) => {
     const [posts, setPosts] = useState([]);
     const [newPosts, setNewPosts] = useState([]);
     const [update, setUpdate] = useState(false);
+    const [refreshReactions, setRefreshReactions] = useState(false);
+    const [manualRecharge, setManualRecharge] = useState(false);
 
 
     return (
@@ -22,7 +24,11 @@ export const StateManagementContextProvider = ({children}) => {
                 setNewPosts,
                 setConversationEmpty,
                 update,
+                manualRecharge,
+                setManualRecharge,
                 setUpdate,
+                refreshReactions,
+                setRefreshReactions,
                 posts,
                 setPosts,
                 profilePhotoUpdate,

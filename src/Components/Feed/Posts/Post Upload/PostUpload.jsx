@@ -29,7 +29,7 @@ export default function PostUpload() {
         setLocation,
     } = usePostUploader();
 
-    let {setUpdate} = useContext(StateManagementContext);
+    let {setUpdate, setRefreshReactions} = useContext(StateManagementContext);
     const topRef = useRef();
     const textAreaRef = useRef();
 
@@ -46,9 +46,11 @@ export default function PostUpload() {
     const handlePostUpload = async () => {
         const postObject = buildPostObject(location, description, resource, loggedInAccount);
         await uploadPost(postObject);
+        setRefreshReactions(true);
         setTimeout(()=>{}, 700);
         setUpdate(true);
         abortPostUpload();
+        window.location.reload();
     }
 
     return (

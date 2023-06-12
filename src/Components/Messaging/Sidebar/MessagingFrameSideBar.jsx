@@ -22,9 +22,10 @@ export default function MessagingFrameSideBar(props) {
             <div className="SidebarWrapper">
                 <MessagingHeader close={props.close}
                                  enableSearch={enableSearch}/>
-                {searcherVisible ?
-                    <UserSearcher/>
-                    : null
+                {
+                    searcherVisible ?
+                        <UserSearcher/>
+                        : null
                 }
                 <Chats/>
             </div>

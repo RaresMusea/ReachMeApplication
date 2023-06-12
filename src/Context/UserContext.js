@@ -10,7 +10,6 @@ export const UserContextProvider = ({children}) => {
     useEffect = (() => {
         const subscribe = onAuthStateChanged(authentication, (user) => {
             setCurrentUser(user);
-            console.log(user);
         });
         return () => {
             subscribe();
@@ -23,5 +22,4 @@ export const UserContextProvider = ({children}) => {
             {children}
         </UserContext.Provider>
     );
-
 };

@@ -50,7 +50,7 @@ export default function PostUpload() {
         setTimeout(()=>{}, 700);
         setUpdate(true);
         abortPostUpload();
-        window.location.reload();
+        //window.location.reload();
     }
 
     return (

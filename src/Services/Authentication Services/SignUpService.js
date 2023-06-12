@@ -82,8 +82,9 @@ export const saveUserAccountMetadata = async (user) => {
             createMessageNotificationsCollection(payloadBody.userFirebaseIdentifier);
             createPostsNotificationsCollection(payloadBody.userFirebaseIdentifier);
             displaySignUpSuccessAlert(`Account created successfully, ${signUpCredentials.fullName}! Enjoy the ReachMe app and
-                    stay surrounded only by wonderful people!&nbsp;You will be automatically redirected to the Log In
-                    page where you can enter your credentials and access your profile.`);
+                    stay surrounded only by wonderful people! You will be automatically redirected to the Log In
+                    page where we automatically filled out the credentials for you based on your
+                     previous activity. Feel free accessing your profile!`);
 
         })
         .catch(() => {

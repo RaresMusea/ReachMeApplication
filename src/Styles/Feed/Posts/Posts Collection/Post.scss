@@ -62,7 +62,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  gap:10px;
+  gap: 10px;
   @apply p-3;
 
   .Reaction {
@@ -77,30 +77,128 @@
     gap: .2em;
   }
 }
-.ReactionsDialogTitle{
+
+.ReactionsDialogTitle {
   font-family: 'Rajdhani', sans-serif;
   @apply text-[1.5em];
   @apply text-center;
   @apply font-extrabold;
 }
 
-.NoReactions{
+.NoReactions {
   @apply text-center;
-  font-family:'PT Sans', sans-serif;
+  font-family: 'PT Sans', sans-serif;
   @apply mb-[1em];
   @apply text-[1.1em];
 }
 
 
-.ListElement{
+.ListElement {
   transition: .2s ease-in-out;
-  cursor:pointer;
+  cursor: pointer;
 }
 
-.ListElement:hover{
+.ListElement:hover {
   background-color: #dbdbdb;
 }
 
-.ReactionsList:last-child{
+.ReactionsList:last-child {
   @apply mb-[0.5em];
+}
+
+.CommentsList {
+  overflow-y: scroll;
+}
+
+.CommentsList::-webkit-scrollbar{
+  display: none;
+}
+
+.NoComments {
+  display: block;
+  margin: 0 auto;
+  @apply mt-[2em];
+
+  .NoCommentsImage {
+    @apply w-[40%];
+    @apply block;
+    margin: 0 auto;
+  }
+
+  h3 {
+    font-family: "PT Sans", sans-serif;
+    @apply font-bold;
+    @apply text-[1.2em];
+    @apply text-center;
+    @apply mb-[0.5em];
+  }
+}
+
+
+.Comment {
+  @apply cursor-pointer;
+  @apply p-2;
+  @apply w-[100%];
+  overflow: visible;
+  font-family: 'PT Sans', sans-serif !important;
+  transition: .2s ease-in-out;
+}
+
+.Comment:hover {
+  background-color: #dbdbdb;
+}
+
+.CommentForm {
+  position: sticky;
+  bottom: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  @apply w-[100%];
+  @apply h-[70px];
+  @apply p-2;
+  border-top: 1px solid #dbdbdb;
+
+  textarea {
+    @apply outline-0;
+    @apply resize-none;
+    @apply w-[90%];
+    @apply h-[40px];
+    @apply pt-2;
+    white-space: pre-line;
+    font-family: 'PT Sans', sans-serif;
+    @apply pl-2;
+  }
+
+  textarea::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+
+.SendCommentIcon {
+  @apply text-[#108e8e];
+  @apply w-[30px];
+  @apply h-[30px];
+}
+
+.MuiDialog-container{
+  margin-bottom:0!important;
+  padding-bottom: 0!important;
+
+  & .MuiPaper-root{
+    margin-bottom:0!important;
+    padding-bottom: 0!important;
+  }
+}
+
+.MuiDialog-container::-webkit-scrollbar{
+  display: none!important;
+}
+.MuiDialog-container {
+  & .MuiPaper-root::-webkit-scrollbar {
+    display: none!important;
+  }
 }

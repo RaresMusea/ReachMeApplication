@@ -1,4 +1,4 @@
-import {lazy, useContext, useEffect, useState} from "react";
+import {lazy, useContext, useEffect, useRef, useState} from "react";
 import {onSnapshot} from "firebase/firestore";
 import {activitiesRef} from "../../../../Modules/Firebase/FirebaseIntegration";
 import {sortActivitiesDescending} from "../../../../Modules/Common Functionality/CommonFunctionality";
@@ -18,25 +18,41 @@ export default function UserActivityCollection() {
         setPosts
     } = useContext(StateManagementContext);
     let temp = [];
+    const effectRan = useRef(false);
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(activitiesRef, (snapshot) => {
-            snapshot.docs.map((doc) => {
-                temp = doc.data().activities;
+        if (effectRan.current === false) {
+            const unsubscribe = onSnapshot(activitiesRef, (snapshot) => {
+                snapshot.docs.map((doc) => {
+                    temp = doc.data().activities;
+                });
+
+                sortActivitiesDescending(temp);
+                console.log(temp);
+                console.log(loggedInAccount.userRealName);
+                setActivities(temp.slice(0, 4));
+                setLoading(false);
             });
 
-            sortActivitiesDescending(temp);
-
-            if(temp[0].activityInitiator!==loggedInAccount.userRealName && temp[0].activityType!=="uploaded a new post."){
-                renderRechargeToast();
+            return () => {
+                unsubscribe();
+                effectRan.current = true;
             }
-            setActivities(temp.slice(0, 4));
-            setLoading(false);
-        });
-        return () => {
-            unsubscribe();
         }
     }, []);
+
+    useEffect(() => {
+        if (effectRan.current === true) {
+            if (activities !== undefined && activities[0].hasOwnProperty('activityInitiator')) {
+                if (activities[0].activityInitiator !== loggedInAccount.userRealName &&
+                    activities[0].activityType !== "uploaded a new post.") {
+                    renderRechargeToast();
+                    effectRan.current = false;
+                }
+            }
+        }
+        effectRan.current = true;
+    }, [activities])
 
     useEffect(() => {
         if (posts.length !== 0 && activities.length !== 0) {

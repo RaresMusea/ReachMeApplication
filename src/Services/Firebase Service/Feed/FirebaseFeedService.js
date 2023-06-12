@@ -184,7 +184,7 @@ export const markLike = async (postOwnerName, postOwnerId, postType, postId) => 
     await checkForActivities();
 }
 
-export const markDislike = async(postOwnerName, postOwnerId, postType, postId) =>{
+export const markDislike = async (postOwnerName, postOwnerId, postType, postId) => {
     let activityType;
 
     if (postOwnerName === loggedInAccount.userRealName) {
@@ -229,6 +229,31 @@ export const unmarkReaction = async (postIdentifier) => {
         {
             ["activities"]: newActivities,
         });
+
+    await checkForActivities();
+}
+
+export const markCommentActivity = async (postAuthor, commentText) => {
+    let activityType;
+
+    if (postAuthor === loggedInAccount.userRealName) {
+        activityType = `added a new comment to his/her post.`;
+    } else {
+        activityType = `added a new comment to ${postAuthor}'s post.`
+    }
+
+    await updateDoc(doc(firebaseFirestore, "userActivity", "reachmeActivities"), {
+        ["activities"]: arrayUnion({
+            "activityInitiator": loggedInAccount.userRealName,
+            "initiatorId": loggedInAccount.userFirebaseIdentifier,
+            "initiatorBio": loggedInAccount.bio,
+            "initiatorProfilePicture": loggedInAccount.profilePhotoHref,
+            "commentAuthor": postAuthor,
+            "activityType": activityType,
+            "activityDate": Date.now(),
+            "resource": commentText,
+        })
+    });
 
     await checkForActivities();
 }

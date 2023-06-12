@@ -41,7 +41,6 @@ export default function Message(props) {
         setShowDate(!showDate);
     };
 
-
     return (
         <>
                 <div

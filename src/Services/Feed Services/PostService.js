@@ -63,6 +63,7 @@ export const uploadPost = async (postObject) => {
             }, 120);
         },
         (error) => {
+            console.log(error);
             renderUploadFailedToast("An error occurred while uploading your post. " +
                 "We're trying the solve the problem as soon as possible. Please try again later." +
                 "More details: " + error);
@@ -102,7 +103,4 @@ const savePost = async (postObject) => {
             renderUploadFailedToast("An error occurred while attempting to upload your post. We're sorry for this" +
                 "inconvenient. Please try again later. More details: " + error);
         });
-
-
-
 }

@@ -30,10 +30,10 @@ export default function PostsCollection() {
                 .then(response => response.json())
                 .then(data => {
                     setPosts(data);
-                    setTimeout(()=> {
+                    setTimeout(() => {
                         setManualRecharge(false);
                         setLoading(false);
-                    },1500);
+                    }, 1500);
                 })
                 .catch(console.error);
         }
@@ -43,6 +43,7 @@ export default function PostsCollection() {
         {
             posts.map(post =>
                 <Post
+                    key={post.postIdentifier}
                     loading={loading}
                     post={post}/>
             )

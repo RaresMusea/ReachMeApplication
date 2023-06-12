@@ -1,9 +1,9 @@
 import {
-  displayAlertBox,
-  displayFailAlert,
-  displayRemovalSuccessfulAlert,
-  displaySuccessAlert,
-  displayUploadStatusAlertBox,
+    displayAlertBox,
+    displayFailAlert,
+    displayRemovalSuccessfulAlert,
+    displaySuccessAlert,
+    displayUploadStatusAlertBox,
 } from "../../Modules/Feed/Navbar/Account Management/AccountManagementModule";
 import {storage} from "../../Modules/Firebase/FirebaseIntegration";
 import {isConnectionAvailable} from "../Authentication Services/SignUpService";
@@ -12,10 +12,10 @@ import {getDownloadURL} from "firebase/storage";
 import {getAuth, signOut} from "firebase/auth";
 import {modifiedAccountDetails} from "../../Modules/Object/AccountInfoManagementObjects";
 import {
-  markProfilePhotoRemovalActivity,
-  markProfilePhotoUpdateAsActivity,
-  removeProfilePictureHrefFromFirestore,
-  updateProfilePictureHrefInFirestore,
+    markProfilePhotoRemovalActivity,
+    markProfilePhotoUpdateAsActivity,
+    removeProfilePictureHrefFromFirestore,
+    updateProfilePictureHrefInFirestore,
 } from "../Firebase Service/Feed/FirebaseFeedService";
 import {updateUserIdentityDataInFirestore} from "../Firebase Service/Authentication/FirebaseAuthService";
 import {defaultProfilePic} from "../../Modules/Exporters/ImageExporter";
@@ -25,265 +25,297 @@ export let update = false;
 export let loggedInAccount = {};
 export let profilePictureRef = defaultProfilePic;
 export const allowedProfilePicturesTypes =
-  "image/png,image/jpeg,image/svg,image/jpg";
+    "image/png,image/jpeg,image/svg,image/jpg";
 const uploadProfilePictureEndpoint = `http://localhost:8080/account/${localStorage.getItem(
-  `currentlyLoggedInUser`
+    `currentlyLoggedInUser`
 )}
 /RemoveProfilePicture`;
 const updateBioEndpoint = `http://localhost:8080/account/updateBio/accountIdentifier=${localStorage.getItem(
-  `currentlyLoggedInUser`
+    `currentlyLoggedInUser`
 )}`;
 const updateUserIdentityEndpoint = `http://localhost:8080/account/updateUserIdentity/accountIdentifier=${localStorage.getItem(
-  `currentlyLoggedInUser`
+    `currentlyLoggedInUser`
 )}`;
 
 export const setUpdate = (value) => {
-  update = value;
+    update = value;
 };
 
 const getCurrentUserInfo = (identifier) => {
-  fetch(`http://localhost:8080/account/${identifier}`)
-    .then((response) => response.json())
-    .then((data) => {
-      loggedInAccount = data;
-      console.log(data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    fetch(`http://localhost:8080/account/${identifier}`)
+        .then((response) => response.json())
+        .then((data) => {
+            loggedInAccount = data;
+            console.log(data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 };
 
 export const getRequiredMetadata = (identifier) => {
-  getCurrentUserInfo(identifier);
+    getCurrentUserInfo(identifier);
 };
 
 export const removeProfilePictureForUser = async () => {
-  const imageHref = loggedInAccount.profilePhotoHref;
-  const patchRequestConfig = {
-    method: "PATCH",
-    body: "",
-    headers: {
-      "Content-type": `text/html;`,
-      Accept: "application/json",
-    },
-  };
+    const imageHref = loggedInAccount.profilePhotoHref;
+    const patchRequestConfig = {
+        method: "PATCH",
+        body: "",
+        headers: {
+            "Content-type": `text/html;`,
+            Accept: "application/json",
+        },
+    };
 
-  fetch(uploadProfilePictureEndpoint, patchRequestConfig)
-    .then((response) => response.json())
-    .then(() => {
-      const alertConfiguration = {
-        message: "The picture was deleted successfully!",
-        severity: "success",
-        target: "#ProfilePictureManagementAlerts",
-        style: "ProfilePictureSuccessAlert",
-      };
-      displayRemovalSuccessfulAlert(alertConfiguration);
-      markProfilePhotoRemovalActivity();
-      localStorage.setItem("profilePhoto", defaultProfilePic);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  await deletePictureFromFirebaseStorage(imageHref);
+    fetch(uploadProfilePictureEndpoint, patchRequestConfig)
+        .then((response) => response.json())
+        .then(() => {
+            const alertConfiguration = {
+                message: "The picture was deleted successfully!",
+                severity: "success",
+                target: "#ProfilePictureManagementAlerts",
+                style: "ProfilePictureSuccessAlert",
+            };
+            displayRemovalSuccessfulAlert(alertConfiguration);
+            markProfilePhotoRemovalActivity();
+            localStorage.setItem("profilePhoto", defaultProfilePic);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    await deletePictureFromFirebaseStorage(imageHref);
 };
 
 const deletePictureFromFirebaseStorage = async (url) => {
-  const pictureReference = storage.refFromURL(url);
-  await removeProfilePictureHrefFromFirestore(
-    loggedInAccount.userFirebaseIdentifier
-  );
-  pictureReference
-    .delete()
-    .then(() => console.log("Deletion from firebase successfully"))
-    .catch((err) => console.log(err));
+    const pictureReference = storage.refFromURL(url);
+    await removeProfilePictureHrefFromFirestore(
+        loggedInAccount.userFirebaseIdentifier
+    );
+    pictureReference
+        .delete()
+        .then(() => console.log("Deletion from firebase successfully"))
+        .catch((err) => console.log(err));
 };
+
+const setNewProfilePictureForAllLoggedUsersPosts = async (newPhotoUrl) => {
+    fetch(`http://localhost:8080/feed/post`)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(post => {
+                if (post.post.accountIdentifier === loggedInAccount.userFirebaseIdentifier) {
+                    updateProfilePhotoForPost(post.postIdentifier);
+                }
+            })
+        });
+}
+
+const updateProfilePhotoForPost = async (postId) => {
+    const patchRequestConfig = {
+        method: "PATCH",
+        body: "",
+        headers: {
+            "Content-type": `text/html;`,
+            Accept: "application/json",
+        },
+    };
+    fetch(`http://localhost:8080/feed/post/edit-profile-picture/${postId}`, patchRequestConfig)
+        .then(response => response.json())
+        .then(data => {
+        })
+        .catch(console.error);
+}
+
 const uploadLocalProfilePicture = async (payload) => {
-  const fileName = payload.name;
+    const fileName = payload.name;
 
-  const uploadTask = storage
-    .ref("ProfilePictures")
-    .child(loggedInAccount.userFirebaseIdentifier)
-    .child(fileName)
-    .put(payload);
+    const uploadTask = storage
+        .ref("ProfilePictures")
+        .child(loggedInAccount.userFirebaseIdentifier)
+        .child(fileName)
+        .put(payload);
 
-  uploadTask.on(
-    "state_changed",
-    (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      displayUploadStatusAlertBox(`Your new profile picture is being uploaded on ReachMe - 
+    uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            displayUploadStatusAlertBox(`Your new profile picture is being uploaded on ReachMe - 
         ${Math.floor(progress)}% complete`);
 
-      setTimeout(() => {}, 120);
-    },
-    (error) => {
-      const alertConfiguration = {
-        message:
-          "Cannot process your request due to an internal server error." +
-          "More details: " +
-          error,
-        severity: "error",
-        target: "#ProfilePictureManagementAlerts",
-        style: "ProfilePictureErrorAlert",
-      };
-      displayFailAlert(alertConfiguration);
-    },
-    () => {
-      getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-        await saveUploadedProfilePictureDataLocally(downloadURL);
-        loggedInAccount.profilePhotoHref = downloadURL;
-        await updateProfilePictureHrefInFirestore(
-          loggedInAccount.userFirebaseIdentifier,
-          downloadURL
-        );
-        localStorage.setItem("profilePhoto",downloadURL);
-        await markProfilePhotoUpdateAsActivity(downloadURL);
-        await updateImageInConversations(
-          downloadURL,
-          loggedInAccount.userFirebaseIdentifier
-        );
-      });
-    }
-  );
+            setTimeout(() => {
+            }, 120);
+        },
+        (error) => {
+            const alertConfiguration = {
+                message:
+                    "Cannot process your request due to an internal server error." +
+                    "More details: " +
+                    error,
+                severity: "error",
+                target: "#ProfilePictureManagementAlerts",
+                style: "ProfilePictureErrorAlert",
+            };
+            displayFailAlert(alertConfiguration);
+        },
+        () => {
+            getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                await saveUploadedProfilePictureDataLocally(downloadURL);
+
+                loggedInAccount.profilePhotoHref = downloadURL;
+                await updateProfilePictureHrefInFirestore(
+                    loggedInAccount.userFirebaseIdentifier,
+                    downloadURL
+                );
+                localStorage.setItem("profilePhoto", downloadURL);
+                await markProfilePhotoUpdateAsActivity(downloadURL);
+                await updateImageInConversations(
+                    downloadURL,
+                    loggedInAccount.userFirebaseIdentifier
+                );
+            });
+        }
+    );
 };
 
 const saveUploadedProfilePictureDataLocally = async (href) => {
-  const patchRequestOptions = {
-    method: `PATCH`,
-    body: href,
-    headers: {
-      "Content-Type": `text/html`,
-      Accept: "application/json",
-    },
-  };
+    const patchRequestOptions = {
+        method: `PATCH`,
+        body: href,
+        headers: {
+            "Content-Type": `text/html`,
+            Accept: "application/json",
+        },
+    };
 
-  fetch(
-    `http://localhost:8080/account/${localStorage.getItem(
-      "currentlyLoggedInUser"
-    )}/ChangeProfilePicture`,
-    patchRequestOptions
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      loggedInAccount.profilePhotoHref = data.profilePhotoHref;
-    })
-    .catch(() => {
-      const alertConfiguration = {
-        message:
-          "Cannot process your request due to an internal server error. Please try again later.",
-        severity: "error",
-        target: "#ProfilePictureManagementAlerts",
-        style: "ProfilePictureErrorAlert",
-      };
-      displayFailAlert(alertConfiguration);
-    });
+    fetch(
+        `http://localhost:8080/account/${localStorage.getItem(
+            "currentlyLoggedInUser"
+        )}/ChangeProfilePicture`,
+        patchRequestOptions
+    )
+        .then((response) => response.json())
+        .then((data) => {
+            loggedInAccount.profilePhotoHref = data.profilePhotoHref;
+            setNewProfilePictureForAllLoggedUsersPosts(data.profilePhotoHref);
+        })
+        .catch(() => {
+            const alertConfiguration = {
+                message:
+                    "Cannot process your request due to an internal server error. Please try again later.",
+                severity: "error",
+                target: "#ProfilePictureManagementAlerts",
+                style: "ProfilePictureErrorAlert",
+            };
+            displayFailAlert(alertConfiguration);
+        });
 };
 
 export const saveLocalStoredProfilePicture = async (file) => {
-  if (await isConnectionAvailable()) {
-    if (loggedInAccount.profilePhotoHref !== "") {
-      await deletePictureFromFirebaseStorage(loggedInAccount.profilePhotoHref);
+    if (await isConnectionAvailable()) {
+        if (loggedInAccount.profilePhotoHref !== "") {
+            await deletePictureFromFirebaseStorage(loggedInAccount.profilePhotoHref);
+        }
+        await uploadLocalProfilePicture(file);
+    } else {
+        const alertConfiguration = {
+            message:
+                "The server is down for maintenance. Your picture upload could not be processed.",
+            severity: "error",
+            target: "#ProfilePictureManagementAlerts",
+            style: "ProfilePictureErrorAlert",
+        };
+        displayFailAlert(alertConfiguration);
     }
-    await uploadLocalProfilePicture(file);
-  } else {
-    const alertConfiguration = {
-      message:
-        "The server is down for maintenance. Your picture upload could not be processed.",
-      severity: "error",
-      target: "#ProfilePictureManagementAlerts",
-      style: "ProfilePictureErrorAlert",
-    };
-    displayFailAlert(alertConfiguration);
-  }
 };
 
 export const signOutUser = async () => {
-  const currentAuth = getAuth();
+    const currentAuth = getAuth();
 
-  signOut(currentAuth)
-    .then(() => {
-      localStorage.removeItem("currentlyLoggedInUser");
-      displayAlertBox("You are being logged out...");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    signOut(currentAuth)
+        .then(() => {
+            localStorage.removeItem("currentlyLoggedInUser");
+            displayAlertBox("You are being logged out...");
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 };
 
 export const updateBio = async (newBio) => {
-  const patchRequestConfig = {
-    method: "PATCH",
-    body: newBio === "" ? "empty" : newBio,
-    headers: {
-      "Content-type": `text/html;`,
-      Accept: "application/json",
-    },
-  };
+    const patchRequestConfig = {
+        method: "PATCH",
+        body: newBio === "" ? "empty" : newBio,
+        headers: {
+            "Content-type": `text/html;`,
+            Accept: "application/json",
+        },
+    };
 
-  fetch(updateBioEndpoint, patchRequestConfig)
-    .then((response) => response.json())
-    .then((data) => {
-      loggedInAccount = data;
-      const successAlertConfig = {
-        message: "Successfully updated your bio!",
-        severity: "success",
-        target: "#ProfileInfoManagementAlerts",
-        style: "SuccessAlert",
-      };
-      displaySuccessAlert(successAlertConfig);
-    })
-    .catch((err) => {
-      console.log(err);
-      const alertConfiguration = {
-        message: "Cannot process your request due to an internal server error!",
-        severity: "error",
-        target: "#ProfileInfoManagementAlerts",
-        style: "ErrorAlert",
-      };
-      displayFailAlert(alertConfiguration);
-    });
+    fetch(updateBioEndpoint, patchRequestConfig)
+        .then((response) => response.json())
+        .then((data) => {
+            loggedInAccount = data;
+            const successAlertConfig = {
+                message: "Successfully updated your bio!",
+                severity: "success",
+                target: "#ProfileInfoManagementAlerts",
+                style: "SuccessAlert",
+            };
+            displaySuccessAlert(successAlertConfig);
+        })
+        .catch((err) => {
+            console.log(err);
+            const alertConfiguration = {
+                message: "Cannot process your request due to an internal server error!",
+                severity: "error",
+                target: "#ProfileInfoManagementAlerts",
+                style: "ErrorAlert",
+            };
+            displayFailAlert(alertConfiguration);
+        });
 };
 
 export const updateUserIdentity = async () => {
-  const patchRequestConfig = {
-    method: "PATCH",
-    body: JSON.stringify({
-      userName: modifiedAccountDetails.username,
-      userRealName: modifiedAccountDetails.userRealName,
-    }),
-    headers: {
-      "Content-type": `application/json;`,
-      Accept: "application/json",
-    },
-  };
+    const patchRequestConfig = {
+        method: "PATCH",
+        body: JSON.stringify({
+            userName: modifiedAccountDetails.username,
+            userRealName: modifiedAccountDetails.userRealName,
+        }),
+        headers: {
+            "Content-type": `application/json;`,
+            Accept: "application/json",
+        },
+    };
 
-  fetch(updateUserIdentityEndpoint, patchRequestConfig)
-    .then((response) => response.json())
-    .then((data) => {
-      loggedInAccount = data;
-      const successAlertConfig = {
-        message: "Your name and username were updated successfully!",
-        severity: "success",
-        target: "#ProfileInfoManagementAlerts",
-        style: "SuccessAlert",
-      };
-      updateUserIdentityDataInFirestore(
-        loggedInAccount.userFirebaseIdentifier,
-        modifiedAccountDetails.userRealName,
-        modifiedAccountDetails.username
-      );
-      displaySuccessAlert(successAlertConfig);
-    })
-    .catch((err) => {
-      console.log(err);
-      const alertConfiguration = {
-        message: "Cannot process your request due to an internal server error!",
-        severity: "error",
-        target: "#ProfileInfoManagementAlerts",
-        style: "ErrorAlert",
-      };
-      displayFailAlert(alertConfiguration);
-    });
+    fetch(updateUserIdentityEndpoint, patchRequestConfig)
+        .then((response) => response.json())
+        .then((data) => {
+            loggedInAccount = data;
+            const successAlertConfig = {
+                message: "Your name and username were updated successfully!",
+                severity: "success",
+                target: "#ProfileInfoManagementAlerts",
+                style: "SuccessAlert",
+            };
+            updateUserIdentityDataInFirestore(
+                loggedInAccount.userFirebaseIdentifier,
+                modifiedAccountDetails.userRealName,
+                modifiedAccountDetails.username
+            );
+            displaySuccessAlert(successAlertConfig);
+        })
+        .catch((err) => {
+            console.log(err);
+            const alertConfiguration = {
+                message: "Cannot process your request due to an internal server error!",
+                severity: "error",
+                target: "#ProfileInfoManagementAlerts",
+                style: "ErrorAlert",
+            };
+            displayFailAlert(alertConfiguration);
+        });
 };

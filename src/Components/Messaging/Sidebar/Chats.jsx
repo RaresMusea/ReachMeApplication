@@ -41,14 +41,11 @@ export default function Chats() {
                     setChats(chatData);
                     setTimeout(() => {
                     }, 200);
-                }
-            );
-
+                });
             return () => {
                 unsubscribe();
             };
         };
-
         loggedInAccount.userFirebaseIdentifier && getChats();
     }, []);
 
@@ -93,7 +90,7 @@ export default function Chats() {
                         >
                             <div className="UserChats">
                                 <Avatar
-                                    src={conv[1].userDetails.profilePhotoHref}
+                                    src={conv[1]?.userDetails.profilePhotoHref}
                                     className="UserProfilePic"
                                 />
                                 <div className="SearchResultNames">

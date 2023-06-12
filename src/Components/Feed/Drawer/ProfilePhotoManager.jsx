@@ -13,7 +13,7 @@ import "../../../Styles/Navbar/ProfilePictureManagerDialog.scss";
 import {Avatar, Divider, ListItem, Slide} from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import {CameraAlt, Cancel, DeleteForever, Upload} from "@mui/icons-material";
+import {Cancel, DeleteForever, Upload} from "@mui/icons-material";
 import {
     getProfilePictureForLoggedInUser,
     updateProfilePictureWithLocalFileUpload,
@@ -109,14 +109,14 @@ export default function ProfilePhotoManager(props) {
                         </ListItemButton>
                     </ListItem>
                     <Divider/>
-                    <ListItem disablePadding>
+                    {/*<ListItem disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
                                 <CameraAlt colorRendering={"red"}/>
                             </ListItemIcon>
                             <p className="UploadButton">Upload an instant picture</p>
                         </ListItemButton>
-                    </ListItem>
+                    </ListItem>*/}
                     <Divider/>
                     {loggedInAccount.profilePhotoHref === "" ? null : (
                         <>

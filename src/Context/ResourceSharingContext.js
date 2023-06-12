@@ -10,25 +10,17 @@ export const ResourceSharingContextProvider = ({children}) => {
     const [extra, setExtra] = useState({});
     const [fileList, setFileList] = useState([]);
 
-
     return (
         <ResourceSharingContext.Provider
             value={{
-                isSharable,
-                setIsSharable,
-                resource,
-                setResource,
-                preview,
-                setPreview,
-                type,
-                setType,
-                extra,
-                setExtra,
-                fileList,
-                setFileList
+                isSharable, setIsSharable,
+                resource, setResource,
+                preview, setPreview,
+                type, setType,
+                extra, setExtra,
+                fileList, setFileList
             }}>
             {children}
         </ResourceSharingContext.Provider>
     );
-
 };

@@ -240,8 +240,8 @@ export default function ProfileInfoManager(props) {
                                 }}>Close
                                 </button>
                         }
-                        <button className="AdditionalManagementButton LastAdditionalButton">More account settings
-                        </button>
+                        {/*<button className="AdditionalManagementButton LastAdditionalButton">More account settings
+                        </button>*/}
                     </div>
                     <Divider/>
                 </DialogContent>

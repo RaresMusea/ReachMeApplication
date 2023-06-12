@@ -15,6 +15,8 @@ export default function useReactions(props) {
     const [dislikeIcon, setDislikeIcon] = useState(dislike);
     const [likesList, setLikesList] = useState([]);
     const [dislikesList, setDislikesList] = useState([]);
+/*    const [commentsCount, setCommentsCount] = useState(0);*/
+    const [postAuthorName, setPostAuthorName] = useState("");
     const increaseLikesEndpoint = `http://localhost:8080/feed/post/increase-likes/`;
     const increaseDislikesEndpoint = `http://localhost:8080/feed/post/increase-dislikes/`;
     const requestConfig = {
@@ -23,6 +25,16 @@ export default function useReactions(props) {
         headers: {'Content-type': `application / json; charset = UTF - 8`}
     };
 
+
+
+    useEffect(() => {
+        fetch(`http://localhost:8080/account/${props.post.accountIdentifier}`)
+            .then(response => response.json())
+            .then(data => {
+                setPostAuthorName(data.userRealName);
+            })
+            .catch(console.error);
+    }, []);
 
     useEffect(() => {
         if (!refreshReactions) {
@@ -145,6 +157,7 @@ export default function useReactions(props) {
         handleDislikeSend,
         handleLikeSend,
         likeIcon,
+        postAuthorName,
         likesList,
         dislikeIcon,
         dislikesList,
